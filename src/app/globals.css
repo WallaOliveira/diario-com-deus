@@ -1,0 +1,301 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Work+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white min-h-screen;
+    font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1e293b;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    color: #0f172a;
+  }
+}
+
+@layer components {
+  /* Botões - Design Minimalista */
+  .btn-primary {
+    @apply bg-blue-700 hover:bg-blue-800 text-white font-medium py-3.5 px-8 rounded-xl transition-all shadow-sm hover:shadow-md;
+  }
+  
+  .btn-secondary {
+    @apply bg-white hover:bg-slate-50 text-slate-700 font-medium py-3.5 px-8 rounded-xl transition-all border border-slate-300 hover:border-slate-400 shadow-sm;
+  }
+
+  .btn-tertiary {
+    @apply text-blue-700 hover:text-blue-800 font-medium py-3 px-6 rounded-xl hover:bg-blue-50 transition-all;
+  }
+
+  .btn-success {
+    @apply bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3.5 px-8 rounded-xl transition-all shadow-sm;
+  }
+  
+  /* Cards - Clean e Minimalista */
+  .card {
+    @apply bg-white rounded-2xl shadow-sm p-6 border border-slate-200 hover:shadow-md transition-shadow;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-2xl shadow-lg p-6 border border-slate-100;
+  }
+
+  .card-flat {
+    @apply bg-slate-50 rounded-2xl p-6 border border-slate-200;
+  }
+  
+  /* Input - Profissional */
+  .input-field {
+    @apply w-full px-4 py-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-slate-400 bg-white;
+  }
+
+  /* Badges - Sutis */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold;
+  }
+
+  .badge-premium {
+    @apply bg-amber-100 text-amber-800 border border-amber-200;
+  }
+
+  .badge-trial {
+    @apply bg-blue-100 text-blue-800 border border-blue-200;
+  }
+
+  .badge-new {
+    @apply bg-emerald-100 text-emerald-800 border border-emerald-200;
+  }
+
+  /* Gradientes Sutis */
+  .gradient-primary {
+    @apply bg-gradient-to-br from-blue-600 to-blue-800;
+  }
+
+  .gradient-secondary {
+    @apply bg-gradient-to-br from-emerald-500 to-emerald-700;
+  }
+
+  .gradient-accent {
+    @apply bg-gradient-to-br from-amber-400 to-amber-600;
+  }
+
+  .gradient-soft {
+    @apply bg-gradient-to-br from-blue-50 to-slate-50;
+  }
+
+  /* Divisores Sutis */
+  .divider {
+    @apply border-t border-slate-200 my-6;
+  }
+
+  /* Scrollbar Minimalista */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-400;
+  }
+
+  /* Container responsivo */
+  .container-app {
+    @apply max-w-6xl mx-auto px-4 md:px-6 lg:px-8;
+  }
+}
+
+/* Animações Sutis */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* Animação de confete */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.animate-confetti-fall {
+  animation: confetti-fall 3s ease-in forwards;
+}
+
+/* Shimmer effect para loading */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f8fafc 25%, #f1f5f9 50%, #f8fafc 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+  @apply rounded-xl;
+}
+
+/* Text effects */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-emerald-600;
+}
+
+/* Hover effects minimalistas */
+.hover-lift {
+  @apply transition-transform duration-200 hover:-translate-y-0.5;
+}
+
+.hover-scale {
+  @apply transition-transform duration-200 hover:scale-[1.02];
+}
+
+/* Focus states melhorados */
+*:focus-visible {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}
+
+/* Selection color */
+::selection {
+  @apply bg-blue-100 text-blue-900;
+}
+
+/* Estados de interação */
+.interactive {
+  @apply cursor-pointer select-none transition-all active:scale-[0.98];
+}
+
+/* Espaçamento consistente (8px grid) */
+.space-y-section {
+  @apply space-y-8;
+}
+
+.space-y-component {
+  @apply space-y-4;
+}
+
+/* Sombras padronizadas */
+.shadow-subtle {
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+}
+
+.shadow-normal {
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 0.06);
+}
+
+.shadow-elevated {
+  box-shadow: 0 4px 16px 0 rgb(0 0 0 / 0.08);
+}
+
+/* Mobile improvements */
+@media (max-width: 640px) {
+  .card, .card-elevated, .card-flat {
+    @apply p-5;
+  }
+
+  .btn-primary, .btn-secondary, .btn-success {
+    @apply py-3 px-6 text-base;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+
+  h2 {
+    @apply text-xl;
+  }
+}
+
+/* Animação para tutorial */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dark mode ready (futuro) */
+@media (prefers-color-scheme: dark) {
+  /* Preparado para dark mode */
+}
