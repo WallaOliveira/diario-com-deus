@@ -77,6 +77,7 @@ const PLANOS_PREMIUM = {
       'Progresso visual',
       'Áudio text-to-speech',
     ],
+    badge: undefined,
   },
   premium: {
     nome: 'Premium',
@@ -100,6 +101,7 @@ const PLANOS_PREMIUM = {
       'Lives mensais',
       'Conteúdo exclusivo',
     ],
+    badge: undefined,
   },
 };
 
