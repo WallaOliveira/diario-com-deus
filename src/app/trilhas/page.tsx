@@ -3,7 +3,9 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
-import { FiArrowLeft, FiClock, FiCheckCircle } from 'react-icons/fi';
+import { FiArrowLeft, FiClock, FiCheckCircle, FiMap } from 'react-icons/fi';
+import Container from '@/components/Container';
+import { colors, typography, spacing } from '@/lib/design-system';
 import Link from 'next/link';
 
 // Mock de trilhas
@@ -14,7 +16,8 @@ const TRILHAS = [
     descricao: 'Para quem quer (re)começar sua jornada com Deus sem culpa',
     dias: 7,
     progresso: 0,
-    cor: 'from-orange-500 to-red-500',
+    emoji: '🌱',
+    cor: 'linear-gradient(135deg, #f97316 0%, #dc2626 100%)',
   },
   {
     id: '14-dias-paz-ansiedade',
@@ -22,7 +25,8 @@ const TRILHAS = [
     descricao: 'Encontre descanso para seu coração em meio às tempestades',
     dias: 14,
     progresso: 0,
-    cor: 'from-blue-500 to-indigo-500',
+    emoji: '🕊️',
+    cor: 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)',
   },
   {
     id: '30-dias-evangelho-joao',
@@ -30,7 +34,8 @@ const TRILHAS = [
     descricao: 'Conheça Jesus através de passagens selecionadas',
     dias: 30,
     progresso: 0,
-    cor: 'from-purple-500 to-pink-500',
+    emoji: '✝️',
+    cor: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)',
   },
 ];
 
@@ -51,65 +56,193 @@ export default function TrilhasPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="border-b border-gray-200 sticky top-0 bg-white z-10">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
-            <FiArrowLeft size={24} />
-          </Link>
-          <div>
-            <h1 className="text-xl font-bold text-gray-900">Trilhas Guiadas</h1>
-            <p className="text-sm text-gray-600">Jornadas de 7, 14 ou 30 dias</p>
+    <div 
+      className="min-h-screen"
+      style={{
+        background: colors.background.primary,
+        minHeight: '100vh'
+      }}
+    >
+      {/* Header com Nova Identidade */}
+      <header className="sticky top-0 z-10" style={{
+        background: colors.background.card,
+        borderBottom: `1px solid ${colors.border}`,
+        backdropFilter: 'blur(10px)'
+      }}>
+        <Container maxWidth="xl" className="py-4">
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard" className="transition-colors hover:opacity-80" style={{ color: colors.text.whiteMuted }}>
+              <FiArrowLeft size={24} />
+            </Link>
+            <div>
+              <h1 
+                className="font-bold"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: typography.heading.h2,
+                  fontWeight: typography.weights.semibold,
+                  color: colors.text.white
+                }}
+              >
+                Trilhas Devocionais
+              </h1>
+              <p 
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.sm,
+                  color: colors.text.whiteMuted
+                }}
+              >
+                Jornadas temáticas de 7, 14 e 30 dias
+              </p>
+            </div>
           </div>
-        </div>
+        </Container>
       </header>
 
-      <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-        {/* Explicação */}
-        <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
-          <h2 className="font-bold text-gray-900 mb-2">🗺️ O que são Trilhas?</h2>
-          <p className="text-sm text-gray-700">
-            Trilhas são jornadas guiadas com devocionais sequenciais sobre um tema específico. 
-            Cada dia tem um roteiro completo: versículo → reflexão → ação → oração.
-          </p>
+      <Container maxWidth="xl" className="py-6 space-y-6">
+        {/* Explicação com Nova Identidade */}
+        <div style={{
+          background: colors.background.card,
+          borderRadius: '16px',
+          padding: spacing.fixed.cardPadding,
+          border: `1px solid ${colors.border}`,
+          backdropFilter: 'blur(10px)'
+        }}>
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
+              background: colors.text.blue
+            }}>
+              <FiMap size={24} className="text-white" />
+            </div>
+            <div>
+              <h2 
+                className="font-bold mb-2"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: typography.heading.h3,
+                  fontWeight: typography.weights.semibold,
+                  color: colors.text.white
+                }}
+              >
+                🗺️ O que são Trilhas?
+              </h2>
+              <p 
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.md,
+                  color: colors.text.whiteMuted,
+                  lineHeight: '1.6'
+                }}
+              >
+                Trilhas são jornadas guiadas com devocionais sequenciais sobre um tema específico. 
+                Cada dia tem um roteiro completo: versículo → reflexão → ação → oração.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Lista de Trilhas */}
-        <div className="space-y-4">
+        {/* Lista de Trilhas com Nova Identidade */}
+        <div className="space-y-6">
           {TRILHAS.map((trilha) => (
-            <div key={trilha.id} className="card hover:shadow-lg transition-shadow">
-              {/* Header colorido */}
-              <div className={`bg-gradient-to-r ${trilha.cor} -m-6 mb-4 p-6 rounded-t-xl text-white`}>
-                <h3 className="text-xl font-bold mb-2">{trilha.titulo}</h3>
-                <p className="text-sm opacity-90">{trilha.descricao}</p>
+            <div 
+              key={trilha.id} 
+              className="group transition-all hover:scale-105"
+              style={{
+                background: colors.background.card,
+                borderRadius: '20px',
+                border: `1px solid ${colors.border}`,
+                backdropFilter: 'blur(10px)',
+                overflow: 'hidden'
+              }}
+            >
+              {/* Header com gradiente */}
+              <div 
+                className="p-6 text-white"
+                style={{ background: trilha.cor }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="text-3xl">{trilha.emoji}</div>
+                  <div className="flex-1">
+                    <h3 
+                      className="font-bold mb-2"
+                      style={{ 
+                        fontFamily: typography.serif,
+                        fontSize: typography.heading.h2,
+                        fontWeight: typography.weights.semibold,
+                        color: 'white'
+                      }}
+                    >
+                      {trilha.titulo}
+                    </h3>
+                    <p 
+                      className="opacity-90"
+                      style={{ 
+                        fontFamily: typography.sans,
+                        fontSize: typography.body.md,
+                        color: 'white'
+                      }}
+                    >
+                      {trilha.descricao}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Detalhes */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-6 text-sm text-gray-600">
+              <div className="p-6 space-y-4">
+                <div className="flex items-center gap-6" style={{ color: colors.text.whiteMuted }}>
                   <div className="flex items-center gap-2">
                     <FiClock size={16} />
-                    <span>{trilha.dias} dias</span>
+                    <span 
+                      style={{ 
+                        fontFamily: typography.sans,
+                        fontSize: typography.body.sm
+                      }}
+                    >
+                      {trilha.dias} dias
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <FiCheckCircle size={16} />
-                    <span>{trilha.progresso}/{trilha.dias} concluídos</span>
+                    <span 
+                      style={{ 
+                        fontFamily: typography.sans,
+                        fontSize: typography.body.sm
+                      }}
+                    >
+                      {trilha.progresso}/{trilha.dias} concluídos
+                    </span>
                   </div>
                 </div>
 
                 {/* Barra de progresso */}
                 <div>
-                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div 
+                    className="h-2 rounded-full overflow-hidden"
+                    style={{ background: colors.background.primary }}
+                  >
                     <div
-                      className={`h-full bg-gradient-to-r ${trilha.cor}`}
-                      style={{ width: `${(trilha.progresso / trilha.dias) * 100}%` }}
+                      className="h-full transition-all duration-500"
+                      style={{ 
+                        background: trilha.cor,
+                        width: `${(trilha.progresso / trilha.dias) * 100}%`
+                      }}
                     />
                   </div>
                 </div>
 
                 {/* CTA */}
-                <button className="btn-primary w-full">
+                <button 
+                  className="w-full py-3 px-6 rounded-xl font-medium transition-all hover:scale-105"
+                  style={{
+                    background: colors.text.gold,
+                    color: 'white',
+                    fontFamily: typography.sans,
+                    fontSize: typography.body.md,
+                    fontWeight: typography.weights.medium
+                  }}
+                >
                   {trilha.progresso === 0 ? 'Começar Trilha' : 'Continuar'}
                 </button>
               </div>
@@ -118,16 +251,52 @@ export default function TrilhasPage() {
         </div>
 
         {/* CTA para mais trilhas */}
-        <div className="card bg-gradient-to-br from-gray-50 to-gray-100 border-gray-200 text-center">
-          <h3 className="font-bold text-gray-900 mb-2">✨ Quer mais trilhas?</h3>
-          <p className="text-sm text-gray-600 mb-4">
+        <div 
+          className="text-center"
+          style={{
+            background: colors.background.card,
+            borderRadius: '16px',
+            padding: spacing.fixed.cardPadding,
+            border: `1px solid ${colors.border}`,
+            backdropFilter: 'blur(10px)'
+          }}
+        >
+          <h3 
+            className="font-bold mb-2"
+            style={{ 
+              fontFamily: typography.serif,
+              fontSize: typography.heading.h3,
+              fontWeight: typography.weights.semibold,
+              color: colors.text.white
+            }}
+          >
+            ✨ Quer mais trilhas?
+          </h3>
+          <p 
+            className="mb-4"
+            style={{ 
+              fontFamily: typography.sans,
+              fontSize: typography.body.md,
+              color: colors.text.whiteMuted
+            }}
+          >
             Acesse trilhas exclusivas sobre maternidade, casamento, trabalho e muito mais
           </p>
-          <button className="btn-secondary">
+          <button 
+            className="px-6 py-3 rounded-xl font-medium transition-all hover:scale-105"
+            style={{
+              background: 'transparent',
+              border: `2px solid ${colors.text.gold}`,
+              color: colors.text.gold,
+              fontFamily: typography.sans,
+              fontSize: typography.body.md,
+              fontWeight: typography.weights.medium
+            }}
+          >
             Ver Trilhas Extras
           </button>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }

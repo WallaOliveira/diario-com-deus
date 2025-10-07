@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-white min-h-screen;
+    @apply min-h-screen;
     font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     color: #1e293b;
   }
@@ -151,6 +151,17 @@
   }
 }
 
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes pulse-soft {
   0%, 100% {
     opacity: 1;
@@ -166,6 +177,10 @@
 
 .animate-slideInRight {
   animation: slideInRight 0.3s ease-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out;
 }
 
 .animate-scaleIn {
@@ -293,6 +308,267 @@
 
 .animate-scaleIn {
   animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Landing Page Animations */
+@keyframes clouds-move {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100vw); }
+}
+
+@keyframes clouds-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.clouds {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  animation: clouds-move 30s linear infinite, clouds-float 8s ease-in-out infinite;
+}
+
+.cloud::before {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  width: 50px;
+  height: 50px;
+  top: -25px;
+  left: 10px;
+}
+
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  width: 60px;
+  height: 60px;
+  top: -35px;
+  right: 10px;
+}
+
+.cloud-1 {
+  width: 80px;
+  height: 30px;
+  top: 20%;
+  animation-delay: 0s;
+}
+
+.cloud-2 {
+  width: 120px;
+  height: 40px;
+  top: 40%;
+  animation-delay: -10s;
+}
+
+.cloud-3 {
+  width: 100px;
+  height: 35px;
+  top: 60%;
+  animation-delay: -20s;
+}
+
+.cloud-4 {
+  width: 90px;
+  height: 32px;
+  top: 80%;
+  animation-delay: -5s;
+}
+
+/* Livro 3D Animations */
+@keyframes book-float {
+  0% { transform: translateY(0px) rotateX(10deg); }
+  50% { transform: translateY(-10px) rotateX(10deg); }
+  100% { transform: translateY(0px) rotateX(10deg); }
+}
+
+@keyframes book-glow {
+  0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4); }
+  100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+}
+
+@keyframes title-glow {
+  0% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+  50% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.6); }
+  100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+}
+
+@keyframes glow-pulse {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 0.4; transform: scale(1.1); }
+  100% { opacity: 0.2; transform: scale(0.8); }
+}
+
+@keyframes glow-pulse-fast {
+  0% { opacity: 0.1; transform: scale(0.9); }
+  50% { opacity: 0.3; transform: scale(1.05); }
+  100% { opacity: 0.1; transform: scale(0.9); }
+}
+
+@keyframes light-beam-pulse {
+  0% { opacity: 0.1; transform: scaleY(0.8); }
+  50% { opacity: 0.3; transform: scaleY(1); }
+  100% { opacity: 0.1; transform: scaleY(0.8); }
+}
+
+.animate-book-float {
+  animation: book-float 6s ease-in-out infinite;
+}
+
+.animate-book-glow {
+  animation: book-glow 4s ease-in-out infinite;
+}
+
+.animate-title-glow {
+  animation: title-glow 3s ease-in-out infinite;
+}
+
+.glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.glow-pulse-fast {
+  animation: glow-pulse-fast 2s ease-in-out infinite;
+}
+
+/* Livro 3D Styles - Design Realista */
+.book-3d {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.book-wrapper {
+  position: relative;
+  width: 240px;
+  height: 320px;
+  margin: 0 auto;
+  transform: rotateX(8deg) rotateY(-2deg);
+  transform-style: preserve-3d;
+  animation: book-float 8s ease-in-out infinite;
+}
+
+.book-page {
+  position: absolute;
+  width: 120px;
+  height: 320px;
+  background: linear-gradient(135deg, #fdfcf7 0%, #f5f3ed 100%);
+  border: 1px solid rgba(139, 69, 19, 0.2);
+  transform-style: preserve-3d;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+}
+
+.book-page-left {
+  left: 0;
+  transform: rotateY(-15deg);
+  transform-origin: right center;
+  border-radius: 0 8px 8px 0;
+}
+
+.book-page-right {
+  right: 0;
+  transform: rotateY(15deg);
+  transform-origin: left center;
+  border-radius: 8px 0 0 8px;
+}
+
+.book-spine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 320px;
+  background: linear-gradient(135deg, #8b4513 0%, #654321 50%, #8b4513 100%);
+  border-radius: 6px;
+  z-index: -1;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.book-content {
+  padding: 25px 20px;
+  height: 100%;
+  position: relative;
+  background: linear-gradient(135deg, #fefefe 0%, #f8f6f0 100%);
+}
+
+.book-lines {
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(0,0,0,0.08) 28px,
+      rgba(0,0,0,0.08) 29px
+    );
+  position: relative;
+}
+
+.book-lines::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(139, 69, 19, 0.1), transparent);
+}
+
+.book-lines::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 20px;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(139, 69, 19, 0.1), transparent);
+}
+
+/* Raios de luz */
+.light-beam {
+  position: absolute;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+  filter: blur(10px);
+  animation: light-beam-pulse 4s infinite ease-in-out;
+  transform-origin: bottom center;
+}
+
+.beam-center {
+  width: 100px;
+  height: 100%;
+  animation-delay: 0s;
+}
+
+.beam-left-1 { width: 60px; height: 100%; left: 30%; transform: rotate(-15deg); animation-delay: 0.5s; }
+.beam-left-2 { width: 40px; height: 100%; left: 20%; transform: rotate(-30deg); animation-delay: 1s; }
+.beam-left-3 { width: 30px; height: 100%; left: 10%; transform: rotate(-45deg); animation-delay: 1.5s; }
+.beam-right-1 { width: 60px; height: 100%; right: 30%; transform: rotate(15deg); animation-delay: 0.2s; }
+.beam-right-2 { width: 40px; height: 100%; right: 20%; transform: rotate(30deg); animation-delay: 0.7s; }
+.beam-right-3 { width: 30px; height: 100%; right: 10%; transform: rotate(45deg); animation-delay: 1.2s; }
+.beam-extra-1 { width: 80px; height: 100%; top: 0; transform: rotate(90deg) translateX(-50%); left: 50%; animation-delay: 0.3s; }
+.beam-extra-2 { width: 50px; height: 100%; top: 0; transform: rotate(75deg) translateX(-50%); left: 60%; animation-delay: 0.8s; }
+
+/* Partículas */
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: white;
+  border-radius: 50%;
+  animation: particles-float 5s infinite linear;
 }
 
 /* Dark mode ready (futuro) */

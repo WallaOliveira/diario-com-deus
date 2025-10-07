@@ -4,6 +4,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import Link from 'next/link';
+import Title from '@/components/Title';
+import Button from '@/components/Button';
+import Container from '@/components/Container';
+import Toast from '@/components/Toast';
+import { useToast } from '@/hooks/useToast';
+import { analytics } from '@/lib/analytics';
+import { colors, typography, spacing } from '@/lib/design-system';
 
 export default function RegistroPage() {
   const router = useRouter();
@@ -12,8 +19,8 @@ export default function RegistroPage() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { toasts, hideToast, showError, success } = useToast();
 
   // Formatar telefone (BR)
   const formatPhone = (value: string) => {
@@ -32,11 +39,10 @@ export default function RegistroPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
 
     if (password.length < 6) {
-      setError('A senha deve ter pelo menos 6 caracteres');
+      showError('A senha deve ter pelo menos 6 caracteres');
       setLoading(false);
       return;
     }
@@ -44,76 +50,93 @@ export default function RegistroPage() {
     const result = await signUp(email, password, name, phone);
 
     if (result.error) {
-      setError(result.error);
+      showError(result.error);
       setLoading(false);
     } else {
-      // Redirecionar para onboarding após criar conta
-      router.push('/onboarding');
+      analytics.signUp();
+      success('Conta criada com sucesso!');
+      setTimeout(() => router.push('/login'), 1500);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="max-w-md w-full animate-fadeIn">
-        {/* Header */}
+    <div 
+      className="min-h-screen flex items-center justify-center"
+      style={{
+        background: colors.background.primary,
+        minHeight: '100vh'
+      }}
+    >
+      <Container maxWidth="md" className="animate-fadeIn">
+        {/* Header com Nova Identidade */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-block mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl mx-auto flex items-center justify-center shadow-lg">
-              <span className="text-3xl">✝️</span>
+            <div className="w-16 h-16 rounded-full mx-auto flex items-center justify-center shadow-lg" style={{
+              background: colors.text.gold
+            }}>
+              <span className="text-3xl text-white">📖</span>
             </div>
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Comece sua jornada
+          
+          {/* Título responsivo */}
+          <h1 
+            className="mb-2"
+            style={{ 
+              fontFamily: typography.serif,
+              fontWeight: typography.weights.semibold,
+              fontSize: typography.heading.h1,
+              color: colors.text.white
+            }}
+          >
+            Crie sua conta gratuita
           </h1>
-          <p className="text-gray-600">
-            Crie sua conta gratuita agora
+          
+          <p 
+            style={{ 
+              fontFamily: typography.sans,
+              fontWeight: typography.weights.normal,
+              fontSize: typography.body.md,
+              color: colors.text.whiteMuted
+            }}
+          >
+            Junte-se a milhares de pessoas em sua jornada de fé
           </p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="card space-y-4">
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
+        {/* Form com Sistema de Design */}
+        <form onSubmit={handleSubmit} className="space-y-6" style={{
+          background: colors.background.card,
+          borderRadius: '16px',
+          padding: spacing.fixed.cardPadding,
+          border: `1px solid ${colors.border}`,
+          backdropFilter: 'blur(10px)'
+        }}>
 
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-              Nome
+            <label 
+              htmlFor="name" 
+              className="block text-sm font-medium text-blue-100 mb-2"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Nome completo
             </label>
             <input
               id="name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="input-field"
-              placeholder="Seu nome"
+              className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              placeholder="Seu nome completo"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-              WhatsApp
-            </label>
-            <input
-              id="phone"
-              type="tel"
-              value={phone}
-              onChange={handlePhoneChange}
-              className="input-field"
-              placeholder="(11) 98765-4321"
-              maxLength={15}
-              required
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              Para te avisar sobre novidades e suporte
-            </p>
-          </div>
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label 
+              htmlFor="email" 
+              className="block text-sm font-medium text-blue-100 mb-2"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
               E-mail
             </label>
             <input
@@ -121,14 +144,42 @@ export default function RegistroPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="input-field"
+              className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
               placeholder="seu@email.com"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label 
+              htmlFor="phone" 
+              className="block text-sm font-medium text-blue-100 mb-2"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Telefone (opcional)
+            </label>
+            <input
+              id="phone"
+              type="tel"
+              value={phone}
+              onChange={handlePhoneChange}
+              className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              placeholder="(11) 99999-9999"
+            />
+            <p 
+              className="text-xs text-blue-200/80 mt-1"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Para lembretes personalizados via WhatsApp
+            </p>
+          </div>
+
+          <div>
+            <label 
+              htmlFor="password" 
+              className="block text-sm font-medium text-blue-100 mb-2"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
               Senha
             </label>
             <input
@@ -136,30 +187,44 @@ export default function RegistroPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="input-field"
-              placeholder="••••••••"
+              className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              placeholder="Mínimo 6 caracteres"
               required
             />
-            <p className="text-xs text-gray-500 mt-1">Mínimo 6 caracteres</p>
           </div>
 
-          <button
+          <Button
             type="submit"
             disabled={loading}
-            className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="primary"
+            size="lg"
           >
-            {loading ? 'Criando conta...' : 'Criar Conta Gratuita'}
-          </button>
-
-          <div className="text-center text-sm text-gray-600">
-            Já tem conta?{' '}
-            <Link href="/login" className="text-primary-600 hover:text-primary-700 font-medium">
-              Entrar
+            {loading ? 'Criando conta...' : 'Criar Conta'}
+          </Button>
+          <p className="text-center" style={{ 
+            fontFamily: typography.sans,
+            fontSize: typography.body.sm,
+            color: colors.text.whiteMuted
+          }}>
+            Já tem uma conta?{' '}
+            <Link href="/login" className="hover:underline font-medium" style={{
+              color: colors.accent.gold
+            }}>
+              Fazer login
             </Link>
-          </div>
+          </p>
         </form>
-      </div>
+      </Container>
+
+      {/* Toasts */}
+      {toasts.map((toast) => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => hideToast(toast.id)}
+        />
+      ))}
     </div>
   );
 }
-

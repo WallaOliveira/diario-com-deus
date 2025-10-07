@@ -4,58 +4,99 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import Link from 'next/link';
+import Title from '@/components/Title';
+import Button from '@/components/Button';
+import Container from '@/components/Container';
+import Toast from '@/components/Toast';
+import { useToast } from '@/hooks/useToast';
+import { analytics } from '@/lib/analytics';
+import { colors, typography, spacing } from '@/lib/design-system';
 
 export default function LoginPage() {
   const router = useRouter();
   const { signIn } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { toasts, hideToast, showError, success } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
 
     const result = await signIn(email, password);
 
     if (result.error) {
-      setError(result.error);
+      showError(result.error);
       setLoading(false);
     } else {
-      router.push('/dashboard');
+      analytics.signIn();
+      success('Login realizado com sucesso!');
+      setTimeout(() => router.push('/dashboard'), 1000);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="max-w-md w-full animate-fadeIn">
-        {/* Header */}
+    <div 
+      className="min-h-screen flex items-center justify-center"
+      style={{
+        background: colors.background.primary,
+        minHeight: '100vh'
+      }}
+    >
+      <Container maxWidth="md" className="animate-fadeIn">
+        {/* Header com Nova Identidade */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-block mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl mx-auto flex items-center justify-center shadow-lg">
-              <span className="text-3xl">✝️</span>
+            <div className="w-16 h-16 rounded-full mx-auto flex items-center justify-center shadow-lg" style={{
+              background: colors.text.gold
+            }}>
+              <span className="text-3xl text-white">📖</span>
             </div>
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          
+          {/* Título com fonte da LP */}
+          <h1 
+            className="mb-2"
+            style={{ 
+              fontFamily: "'Cormorant Garamond', serif",
+              fontWeight: 600,
+              fontSize: typography.heading.h1,
+              color: colors.text.white,
+              letterSpacing: '-0.02em'
+            }}
+          >
             Bem-vindo de volta
           </h1>
-          <p className="text-gray-600">
+          
+          <p 
+            style={{ 
+              fontFamily: typography.sans,
+              fontWeight: typography.weights.normal,
+              fontSize: typography.body.md,
+              color: colors.text.whiteMuted
+            }}
+          >
             Entre para continuar sua jornada
           </p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="card space-y-4">
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
+        {/* Form com Sistema de Design */}
+        <form onSubmit={handleSubmit} className="space-y-6" style={{
+          background: colors.background.card,
+          borderRadius: '16px',
+          padding: spacing.fixed.cardPadding,
+          border: `1px solid ${colors.border}`,
+          backdropFilter: 'blur(10px)'
+        }}>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block mb-2" style={{ 
+              fontFamily: typography.sans,
+              fontSize: typography.fixed.label,
+              fontWeight: typography.weights.medium,
+              color: colors.text.whiteMuted
+            }}>
               E-mail
             </label>
             <input
@@ -63,14 +104,29 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="input-field"
+              className="w-full rounded-xl outline-none transition-all focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 hover:bg-white/12"
               placeholder="seu@email.com"
               required
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                border: `1px solid rgba(255,255,255,0.2)`,
+                padding: '1rem 1.25rem',
+                fontFamily: typography.sans,
+                fontSize: typography.body.md,
+                color: colors.text.white,
+                borderRadius: '12px',
+                minHeight: '56px'
+              }}
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="password" className="block mb-2" style={{ 
+              fontFamily: typography.sans,
+              fontSize: typography.fixed.label,
+              fontWeight: typography.weights.medium,
+              color: colors.text.whiteMuted
+            }}>
               Senha
             </label>
             <input
@@ -78,29 +134,55 @@ export default function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="input-field"
+              className="w-full rounded-xl outline-none transition-all focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 hover:bg-white/12"
               placeholder="••••••••"
               required
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                border: `1px solid rgba(255,255,255,0.2)`,
+                padding: '1rem 1.25rem',
+                fontFamily: typography.sans,
+                fontSize: typography.body.md,
+                color: colors.text.white,
+                borderRadius: '12px',
+                minHeight: '56px'
+              }}
             />
           </div>
 
-          <button
+          <Button
             type="submit"
             disabled={loading}
-            className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="primary"
+            size="lg"
           >
             {loading ? 'Entrando...' : 'Entrar'}
-          </button>
+          </Button>
 
-          <div className="text-center text-sm text-gray-600">
-            Não tem conta?{' '}
-            <Link href="/registro" className="text-primary-600 hover:text-primary-700 font-medium">
-              Criar conta gratuita
+          <p className="text-center" style={{ 
+            fontFamily: typography.sans,
+            fontSize: typography.body.sm,
+            color: colors.text.whiteMuted
+          }}>
+            Não tem uma conta?{' '}
+            <Link href="/registro" className="hover:underline font-medium" style={{
+              color: colors.accent.gold
+            }}>
+              Crie uma agora
             </Link>
-          </div>
+          </p>
         </form>
-      </div>
+      </Container>
+
+      {/* Toasts */}
+      {toasts.map((toast) => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => hideToast(toast.id)}
+        />
+      ))}
     </div>
   );
 }
-

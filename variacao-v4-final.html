@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variação V4 - Com Entre as Palavras</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        
+        .mobile-container {
+            max-width: 375px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            border-radius: 2rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+        
+        .serif-elegant {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        
+        .serif-light {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+        }
+        
+        .inter-light {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+        }
+        
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .blue-gradient {
+            background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .decorative-line {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            margin: 0 auto 2rem;
+            border-radius: 1px;
+        }
+        
+        .button-elegant {
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #0f172a;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            margin-top: 2rem;
+            width: 100%;
+        }
+        
+        .button-elegant:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.4);
+        }
+        
+        .design-analysis {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 1rem;
+            font-size: 0.8rem;
+        }
+        
+        .rating-excellent { color: #10b981; }
+        .rating-good { color: #f59e0b; }
+        
+        .demo-label {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(212, 175, 55, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        /* VERSÃO V4 COM "COM" ENTRE AS PALAVRAS */
+        .title-v4-between {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            line-height: 1;
+        }
+        
+        .diario-v4 {
+            font-size: 3.8rem;
+        }
+        
+        .com-v4 {
+            font-size: 1.6rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.4);
+            margin: 0 0.2rem;
+            transform: translateY(-0.05em);
+        }
+        
+        .deus-v4 {
+            font-size: 4.2rem;
+        }
+        
+        /* VERSÃO V4 REFINADA */
+        .title-v4-refined {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            line-height: 1;
+        }
+        
+        .diario-v4-refined {
+            font-size: 3.75rem;
+        }
+        
+        .com-v4-refined {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.35);
+            margin: 0 0.15rem;
+            transform: translateY(-0.08em);
+        }
+        
+        .deus-v4-refined {
+            font-size: 4.1rem;
+        }
+        
+        /* VERSÃO V4 ULTRA */
+        .title-v4-ultra {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+            line-height: 1;
+        }
+        
+        .diario-v4-ultra {
+            font-size: 3.9rem;
+        }
+        
+        .com-v4-ultra {
+            font-size: 1.55rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.3);
+            margin: 0 0.18rem;
+            transform: translateY(-0.06em);
+        }
+        
+        .deus-v4-ultra {
+            font-size: 4.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold mb-4 serif-elegant gold-gradient">Variação V4 - Com Entre as Palavras</h1>
+        <p class="text-lg text-gray-400 inter-light">"com" posicionado entre Diário e Deus</p>
+    </div>
+
+    <!-- VERSÃO V4 ORIGINAL (REFERÊNCIA) -->
+    <div class="mobile-container">
+        <div class="demo-label">V4 Original</div>
+        <div class="decorative-line"></div>
+        <div class="text-center">
+            <div class="title-v4-between mb-6">
+                <span class="title-word serif-elegant gold-gradient diario-v4">Diário</span>
+                <span class="title-word serif-light com-v4">com</span>
+                <span class="title-word serif-elegant blue-gradient deus-v4">Deus</span>
+            </div>
+            <p class="text-lg text-gray-300 mb-6 inter-light">Devocional guiado em 7-10 minutos</p>
+            <p class="text-sm text-gray-400 italic mb-8 serif-elegant">"Lâmpada para os meus pés é a tua palavra e luz para o meu caminho"</p>
+            <button class="button-elegant">Começar Agora</button>
+        </div>
+        <div class="design-analysis">
+            <p class="font-bold rating-excellent mb-2">🎭 V4 Original:</p>
+            <p class="text-gray-300 text-xs mb-2">• "Deus" 4.2rem, "Diário" 3.8rem, "com" 1.6rem</p>
+            <p class="text-gray-300 text-xs mb-2">• "com" quase invisível (40% opacity)</p>
+            <p class="text-gray-300 text-xs mb-2">• Espaçamento 0.6rem</p>
+            <p class="font-bold rating-excellent">Harmonia: 10/10 | Elegância: 10/10</p>
+        </div>
+    </div>
+
+    <!-- VERSÃO V4 REFINADA -->
+    <div class="mobile-container">
+        <div class="demo-label">V4 Refinada</div>
+        <div class="decorative-line"></div>
+        <div class="text-center">
+            <div class="title-v4-refined mb-6">
+                <span class="title-word serif-elegant gold-gradient diario-v4-refined">Diário</span>
+                <span class="title-word serif-light com-v4-refined">com</span>
+                <span class="title-word serif-elegant blue-gradient deus-v4-refined">Deus</span>
+            </div>
+            <p class="text-lg text-gray-300 mb-6 inter-light">Devocional guiado em 7-10 minutos</p>
+            <p class="text-sm text-gray-400 italic mb-8 serif-elegant">"Lâmpada para os meus pés é a tua palavra e luz para o meu caminho"</p>
+            <button class="button-elegant">Começar Agora</button>
+        </div>
+        <div class="design-analysis">
+            <p class="font-bold rating-excellent mb-2">✨ V4 Refinada:</p>
+            <p class="text-gray-300 text-xs mb-2">• "Deus" 4.1rem, "Diário" 3.75rem, "com" 1.5rem</p>
+            <p class="text-gray-300 text-xs mb-2">• "com" mais sutil (35% opacity)</p>
+            <p class="text-gray-300 text-xs mb-2">• Espaçamento mais apertado (0.5rem)</p>
+            <p class="font-bold rating-excellent">Sofisticação: 10/10 | Alinhamento: 10/10</p>
+        </div>
+    </div>
+
+    <!-- VERSÃO V4 ULTRA -->
+    <div class="mobile-container">
+        <div class="demo-label">V4 Ultra</div>
+        <div class="decorative-line"></div>
+        <div class="text-center">
+            <div class="title-v4-ultra mb-6">
+                <span class="title-word serif-elegant gold-gradient diario-v4-ultra">Diário</span>
+                <span class="title-word serif-light com-v4-ultra">com</span>
+                <span class="title-word serif-elegant blue-gradient deus-v4-ultra">Deus</span>
+            </div>
+            <p class="text-lg text-gray-300 mb-6 inter-light">Devocional guiado em 7-10 minutos</p>
+            <p class="text-sm text-gray-400 italic mb-8 serif-elegant">"Lâmpada para os meus pés é a tua palavra e luz para o meu caminho"</p>
+            <button class="button-elegant">Começar Agora</button>
+        </div>
+        <div class="design-analysis">
+            <p class="font-bold rating-excellent mb-2">🎨 V4 Ultra:</p>
+            <p class="text-gray-300 text-xs mb-2">• "Deus" 4.3rem, "Diário" 3.9rem, "com" 1.55rem</p>
+            <p class="text-gray-300 text-xs mb-2">• "com" ultra discreto (30% opacity)</p>
+            <p class="text-gray-300 text-xs mb-2">• Espaçamento balanceado (0.55rem)</p>
+            <p class="font-bold rating-excellent">Perfeição: 10/10 | Harmonia: 10/10</p>
+        </div>
+    </div>
+
+    <!-- RECOMENDAÇÃO FINAL -->
+    <div class="mobile-container border-2 border-green-500/50">
+        <div class="demo-label bg-green-500/20">🏆 FINAL</div>
+        <div class="text-center">
+            <h3 class="text-xl font-bold mb-4 serif-elegant text-green-400">VERSÃO V4 ULTRA</h3>
+            <div class="decorative-line"></div>
+            <div class="title-v4-ultra mb-6">
+                <span class="title-word serif-elegant gold-gradient diario-v4-ultra">Diário</span>
+                <span class="title-word serif-light com-v4-ultra">com</span>
+                <span class="title-word serif-elegant blue-gradient deus-v4-ultra">Deus</span>
+            </div>
+            <p class="text-lg text-gray-300 mb-6 inter-light">Devocional guiado em 7-10 minutos</p>
+            <p class="text-sm text-gray-400 italic mb-8 serif-elegant">"Lâmpada para os meus pés é a tua palavra e luz para o meu caminho"</p>
+            <button class="button-elegant">Começar Agora</button>
+        </div>
+        <div class="design-analysis bg-green-500/10 border-green-500/30">
+            <p class="font-bold text-green-400 mb-2">🎯 Por que esta versão:</p>
+            <p class="text-gray-300 text-xs mb-2">• "com" posicionado entre as palavras principais</p>
+            <p class="text-gray-300 text-xs mb-2">• "Deus" 4.3rem, "Diário" 3.9rem, "com" 1.55rem</p>
+            <p class="text-gray-300 text-xs mb-2">• "com" ultra discreto (30% opacity)</p>
+            <p class="text-gray-300 text-xs mb-2">• Espaçamento balanceado e proporcional</p>
+            <p class="font-bold text-green-400">Alinhamento: 10/10 | Harmonia: 10/10 | Mobile: 10/10</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useProgressStore } from '@/store/useProgressStore';
-import { FiArrowLeft, FiTrendingUp, FiHeart, FiSmile } from 'react-icons/fi';
+import { FiArrowLeft, FiTrendingUp, FiHeart, FiSmile, FiCheckCircle } from 'react-icons/fi';
 import Link from 'next/link';
-import { format, subDays } from 'date-fns';
+import { format, subDays, startOfWeek, addDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 interface CheckInEmocional {
@@ -86,6 +86,14 @@ export default function ProgressoPage() {
   };
 
   const evolucao = calcularEvolucao();
+
+  // Calcular dias da semana para "Minha Semana"
+  const hoje = new Date();
+  const inicioSemana = startOfWeek(hoje, { locale: ptBR });
+  const diasSemana = Array.from({ length: 7 }, (_, i) => addDays(inicioSemana, i));
+
+  // Mock de progresso (em produção viria do banco)
+  const progressoDias = [true, true, false, true, false, false, false];
 
   if (!user) return null;
 
@@ -293,6 +301,72 @@ export default function ProgressoPage() {
               {Math.round((streak / 7) * 100)}%
             </div>
             <p className="text-sm text-gray-600">Meta semanal</p>
+          </div>
+        </div>
+
+        {/* Minha Semana */}
+        <div className="card">
+          <h3 className="font-bold text-gray-900 mb-4">📅 Minha Semana</h3>
+          
+          <div className="grid grid-cols-7 gap-2">
+            {diasSemana.map((dia, index) => {
+              const concluido = progressoDias[index];
+              const ehHoje = format(dia, 'dd/MM') === format(hoje, 'dd/MM');
+
+              return (
+                <div
+                  key={index}
+                  className={`text-center p-3 rounded-lg border-2 ${
+                    concluido
+                      ? 'bg-green-50 border-green-500'
+                      : ehHoje
+                      ? 'bg-primary-50 border-primary-500'
+                      : 'bg-gray-50 border-gray-200'
+                  }`}
+                >
+                  <p className={`text-xs font-medium mb-1 ${
+                    concluido ? 'text-green-700' : ehHoje ? 'text-primary-700' : 'text-gray-600'
+                  }`}>
+                    {format(dia, 'EEE', { locale: ptBR })}
+                  </p>
+                  <p className={`text-lg font-bold ${
+                    concluido ? 'text-green-700' : ehHoje ? 'text-primary-700' : 'text-gray-900'
+                  }`}>
+                    {format(dia, 'd')}
+                  </p>
+                  {concluido && (
+                    <FiCheckCircle className="text-green-500 mx-auto mt-1" size={16} />
+                  )}
+                  {ehHoje && !concluido && (
+                    <div className="w-2 h-2 bg-primary-500 rounded-full mx-auto mt-1" />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-4 flex items-center justify-between text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-green-500 rounded"></div>
+              <span className="text-gray-600">Concluído</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-primary-500 rounded"></div>
+              <span className="text-gray-600">Hoje</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-gray-300 rounded"></div>
+              <span className="text-gray-600">Pendente</span>
+            </div>
+          </div>
+
+          <div className="mt-4 text-center">
+            <Link 
+              href="/sessao-express" 
+              className="btn-primary inline-block"
+            >
+              Fazer Devocional de Hoje
+            </Link>
           </div>
         </div>
 

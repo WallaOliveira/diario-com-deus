@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Ícone - UX Sênior</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .test-container {
+            margin-bottom: 4rem;
+            padding: 4rem;
+            border-radius: 2rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .serif-elegant {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        
+        .inter-light {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+        }
+        
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .blue-gradient {
+            background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo-elegant {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.3);
+        }
+        
+        .decorative-line {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            margin: 0 auto 2rem;
+            border-radius: 1px;
+        }
+        
+        .decorative-dot {
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+        
+        .geometric-element {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            opacity: 0.8;
+        }
+        
+        .texture-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(147, 197, 253, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .button-elegant {
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #0f172a;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            margin-top: 2rem;
+        }
+        
+        .button-elegant:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.4);
+        }
+        
+        .ux-rating {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+        
+        .rating-item {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .rating-excellent { border-left: 4px solid #10b981; }
+        .rating-good { border-left: 4px solid #f59e0b; }
+        .rating-fair { border-left: 4px solid #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold mb-4 serif-elegant gold-gradient">Análise UX - Elemento Visual</h1>
+        <p class="text-lg text-gray-400 inter-light">Qual abordagem cria melhor conexão espiritual?</p>
+    </div>
+
+    <!-- OPÇÃO 1: SEM ÍCONE (Minimalismo Puro) -->
+    <div class="test-container">
+        <div class="text-center">
+            <h2 class="text-5xl mb-4 serif-elegant">
+                <span class="gold-gradient">Diário</span>
+                <span class="text-white"> com </span>
+                <span class="blue-gradient">Deus</span>
+            </h2>
+            <p class="text-xl text-gray-300 mb-6 inter-light">Devocional guiado em 7-10 minutos</p>
+            <p class="text-sm text-gray-400 italic mb-8 serif-elegant">"Lâmpada para os meus pés é a tua palavra e luz para o meu caminho"</p>
+            <button class="button-elegant">Começar Agora</button>
+        </div>
+        <div class="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
+            <p class="text-sm text-gray-300 inter-light"><strong>UX Focus:</strong> Minimalismo puro, foco total na tipografia</p>
+            <div class="ux-rating">
+                <div class="rating-item rating-excellent">
+                    <div class="font-bold text-green-400">Elegância</div>
+                    <div class="text-xs">10/10</div>
+                </div>
+                <div class="rating-item rating-excellent">
+                    <div class="font-bold text-green-400">Foco</div>
+                    <div class="text-xs">10/10</div>
+                </div>
+                <div class="rating-item rating-excellent">
+                    <div class="font-bold text-green-400">Sofisticação</div>
+                    <div class="text-xs">10/10</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OPÇÃO 2: LINHA DECORATIVA SUTIL -->
+    <div class="test-container">
+        <div class="decorative-line"></div>
+        <div class="text-center">
+            <h2 class="text-5xl mb-4 serif-elegant">
+                <span class="gold-gradient">Diário</span>
+                <span class="text-white"> com </span>
+                <span class="blue-gradient">Deus</span>
+            </h2>
+            <p class="text-xl text-gray-300 mb-6 inter-light">Devocional guiado em 7-10 minutos</p>
+            <p class="text-sm text-gray-400 italic mb-8 serif-elegant">"Lâmpada para os meus pés é a tua palavra e luz para o meu caminho"</p>
+            <button class="button-elegant">Começar Agora</button>
+        </div>
+        <div class="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
+            <p class="text-sm text-gray-300 inter-light"><strong>UX Focus:</strong> Elemento sutil que guia o olho</p>
+            <div class="ux-rating">
+                <div class="rating-item rating-excellent">
+                    <div class="font-bold text-green-400">Elegância</div>
+                    <div class="text-xs">9/10</div>
+                </div>
+                <div class="rating-item rating-good">
+                    <div class="font-bold text-yellow-400">Foco</div>
+                    <div class="text-xs">8/10</div>
+                </div>
+                <div class="rating-item rating-excellent">
+                    <div class="font-bold text-green-400">Sofisticação</div>
+                    <div class="text-xs">9/10</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OPÇÃO 3: PONTO MINIMALISTA -->
+    <div class="test-container">
+        <div class="decorative-dot"></div>
+        <div class="text-center">
+            <h2 class="text-5xl mb-4 serif-elegant">
+                <span class="gold-gradient">Diário</span>
+                <span class="text-white"> com </span>
+                <span class="blue-gradient">Deus</span>
+            </h2>
+            <p class="text-xl text-gray-300 mb-6 inter-light">Devocional guiado em 7-10 minutos</p>
+            <p class="text-sm text-gray-400 italic mb-8 serif-elegant">"Lâmpada para os meus pés é a tua palavra e luz para o meu caminho"</p>
+            <button class="button-elegant">Começar Agora</button>
+        </div>
+        <div class="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
+            <p class="text-sm text-gray-300 inter-light"><strong>UX Focus:</strong> Ponto de luz espiritual, minimalismo absoluto</p>
+            <div class="ux-rating">
+                <div class="rating-item rating-excellent">
+                    <div class="font-bold text-green-400">Elegância</div>
+                    <div class="text-xs">10/10</div>
+                </div>
+                <div class="rating-item rating-excellent">
+                    <div class="font-bold text-green-400">Foco</div>
+                    <div class="text-xs">9/10</div>
+                </div>
+                <div class="rating-item rating-excellent">
+                    <div class="font-bold text-green-400">Sofisticação</div>
+                    <div class="text-xs">10/10</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OPÇÃO 4: ELEMENTO GEOMÉTRICO -->
+    <div class="test-container">
+        <div class="geometric-element"></div>
+        <div class="text-center">
+            <h2 class="text-5xl mb-4 serif-elegant">
+                <span class="gold-gradient">Diário</span>
+                <span class="text-white"> com </span>
+                <span class="blue-gradient">Deus</span>
+            </h2>
+            <p class="text-xl text-gray-300 mb-6 inter-light">Devocional guiado em 7-10 minutos</p>
+            <p class="text-sm text-gray-400 italic mb-8 serif-elegant">"Lâmpada para os meus pés é a tua palavra e luz para o meu caminho"</p>
+            <button class="button-elegant">Começar Agora</button>
+        </div>
+        <div class="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
+            <p class="text-sm text-gray-300 inter-light"><strong>UX Focus:</strong> Símbolo abstrato, moderno e espiritual</p>
+            <div class="ux-rating">
+                <div class="rating-item rating-good">
+                    <div class="font-bold text-yellow-400">Elegância</div>
+                    <div class="text-xs">7/10</div>
+                </div>
+                <div class="rating-item rating-good">
+                    <div class="font-bold text-yellow-400">Foco</div>
+                    <div class="text-xs">7/10</div>
+                </div>
+                <div class="rating-item rating-good">
+                    <div class="font-bold text-yellow-400">Sofisticação</div>
+                    <div class="text-xs">8/10</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OPÇÃO 5: TEXTURA SUTIL DE FUNDO -->
+    <div class="test-container">
+        <div class="texture-background"></div>
+        <div class="text-center relative z-10">
+            <h2 class="text-5xl mb-4 serif-elegant">
+                <span class="gold-gradient">Diário</span>
+                <span class="text-white"> com </span>
+                <span class="blue-gradient">Deus</span>
+            </h2>
+            <p class="text-xl text-gray-300 mb-6 inter-light">Devocional guiado em 7-10 minutos</p>
+            <p class="text-sm text-gray-400 italic mb-8 serif-elegant">"Lâmpada para os meus pés é a tua palavra e luz para o meu caminho"</p>
+            <button class="button-elegant">Começar Agora</button>
+        </div>
+        <div class="mt-6 p-4 bg-white/5 rounded-lg border border-white/10 relative z-10">
+            <p class="text-sm text-gray-300 inter-light"><strong>UX Focus:</strong> Atmosfera sutil, profundidade visual</p>
+            <div class="ux-rating">
+                <div class="rating-item rating-excellent">
+                    <div class="font-bold text-green-400">Elegância</div>
+                    <div class="text-xs">9/10</div>
+                </div>
+                <div class="rating-item rating-excellent">
+                    <div class="font-bold text-green-400">Foco</div>
+                    <div class="text-xs">9/10</div>
+                </div>
+                <div class="rating-item rating-excellent">
+                    <div class="font-bold text-green-400">Sofisticação</div>
+                    <div class="text-xs">9/10</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RECOMENDAÇÃO FINAL -->
+    <div class="test-container border-2 border-green-500/50">
+        <div class="text-center">
+            <h3 class="text-2xl font-bold mb-4 serif-elegant text-green-400">🏆 RECOMENDAÇÃO UX SÊNIOR</h3>
+            <div class="bg-green-500/10 p-6 rounded-lg border border-green-500/30">
+                <p class="text-lg text-green-300 mb-4 serif-elegant">"REMOVER COMPLETAMENTE O ÍCONE"</p>
+                <p class="text-sm text-gray-300 inter-light mb-4">
+                    O nome "Diário com Deus" é auto-explicativo e poderoso. 
+                    A tipografia elegante deve ser o protagonista absoluto.
+                </p>
+                <div class="text-sm text-gray-400 inter-light">
+                    <p><strong>Justificativa:</strong></p>
+                    <p>• Minimalismo = Mais foco espiritual</p>
+                    <p>• Tipografia = Autoridade e elegância</p>
+                    <p>• Espaço em branco = Contemplação</p>
+                    <p>• Alinhamento com apps premium</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

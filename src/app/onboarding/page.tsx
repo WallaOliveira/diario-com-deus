@@ -153,7 +153,7 @@ export default function OnboardingPage() {
                   Trilha: 7 Dias de Recomeço
                 </h3>
                 <ul className="space-y-2 text-sm text-gray-700">
-                  <li>• Devocionais guiados de 7-10 min/dia</li>
+                  <li>• Devocionais guiados de poucos minutos/dia</li>
                   <li>• Sem culpa se perder um dia (é só voltar!)</li>
                   <li>• Progresso visual para você acompanhar</li>
                   <li>• Lembrete diário no horário que escolher</li>

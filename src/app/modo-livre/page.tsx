@@ -3,7 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
-import { FiArrowLeft, FiSearch } from 'react-icons/fi';
+import { FiArrowLeft, FiSearch, FiHeart } from 'react-icons/fi';
+import Container from '@/components/Container';
+import { colors, typography, spacing } from '@/lib/design-system';
 import Link from 'next/link';
 
 // Mock de temas
@@ -20,8 +22,14 @@ const TEMAS = [
 ];
 
 const ESTADOS_CORACAO = [
-  'Ansioso(a)', 'Triste', 'Grato(a)', 'Confuso(a)', 
-  'Esperançoso(a)', 'Cansado(a)', 'Alegre', 'Com medo'
+  { nome: 'Ansioso(a)', emoji: '😰', descricao: 'Preciso de paz' },
+  { nome: 'Triste', emoji: '😢', descricao: 'Preciso de consolo' },
+  { nome: 'Grato(a)', emoji: '🙏', descricao: 'Quero louvar' },
+  { nome: 'Confuso(a)', emoji: '🤔', descricao: 'Preciso de direção' },
+  { nome: 'Esperançoso(a)', emoji: '🌅', descricao: 'Quero renovar fé' },
+  { nome: 'Cansado(a)', emoji: '😴', descricao: 'Preciso de descanso' },
+  { nome: 'Alegre', emoji: '😊', descricao: 'Quero celebrar' },
+  { nome: 'Com medo', emoji: '😨', descricao: 'Preciso de coragem' }
 ];
 
 export default function ModoLivrePage() {
@@ -47,39 +55,107 @@ export default function ModoLivrePage() {
   );
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="border-b border-gray-200 sticky top-0 bg-white z-10">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
-            <FiArrowLeft size={24} />
-          </Link>
-          <div>
-            <h1 className="text-xl font-bold text-gray-900">Modo Livre</h1>
-            <p className="text-sm text-gray-600">Escolha por tema ou estado do coração</p>
+    <div 
+      className="min-h-screen"
+      style={{
+        background: colors.background.primary,
+        minHeight: '100vh'
+      }}
+    >
+      {/* Header com Nova Identidade */}
+      <header className="sticky top-0 z-10" style={{
+        background: colors.background.card,
+        borderBottom: `1px solid ${colors.border}`,
+        backdropFilter: 'blur(10px)'
+      }}>
+        <Container maxWidth="xl" className="py-4">
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard" className="transition-colors hover:opacity-80" style={{ color: colors.text.whiteMuted }}>
+              <FiArrowLeft size={24} />
+            </Link>
+            <div>
+              <h1 
+                className="font-bold"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: typography.heading.h2,
+                  fontWeight: typography.weights.semibold,
+                  color: colors.text.white
+                }}
+              >
+                Devocional Pessoal
+              </h1>
+              <p 
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.sm,
+                  color: colors.text.whiteMuted
+                }}
+              >
+                Conforme sua necessidade
+              </p>
+            </div>
           </div>
-        </div>
+        </Container>
       </header>
 
-      <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-        {/* Explicação */}
-        <div className="card bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
-          <h2 className="font-bold text-gray-900 mb-2">💜 Busque conforme sua necessidade</h2>
-          <p className="text-sm text-gray-700">
-            Escolha um tema específico ou diga como está seu coração hoje. 
-            Vamos te guiar com devocionais personalizados.
-          </p>
+      <Container maxWidth="xl" className="py-6 space-y-6">
+        {/* Explicação com Nova Identidade */}
+        <div style={{
+          background: colors.background.card,
+          borderRadius: '16px',
+          padding: spacing.fixed.cardPadding,
+          border: `1px solid ${colors.border}`,
+          backdropFilter: 'blur(10px)'
+        }}>
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
+              background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
+            }}>
+              <FiHeart size={24} className="text-white" />
+            </div>
+            <div>
+              <h2 
+                className="font-bold mb-2"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: typography.heading.h3,
+                  fontWeight: typography.weights.semibold,
+                  color: colors.text.white
+                }}
+              >
+                💜 Busque conforme sua necessidade
+              </h2>
+              <p 
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.md,
+                  color: colors.text.whiteMuted,
+                  lineHeight: '1.6'
+                }}
+              >
+                Escolha um tema específico ou diga como está seu coração hoje. 
+                Vamos te guiar com devocionais personalizados.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Abas */}
-        <div className="flex gap-2 border-b border-gray-200">
+        {/* Abas com Nova Identidade */}
+        <div className="flex gap-2" style={{ borderBottom: `1px solid ${colors.border}` }}>
           <button
             onClick={() => setAba('temas')}
             className={`px-6 py-3 font-medium transition-colors ${
               aba === 'temas'
-                ? 'text-primary-700 border-b-2 border-primary-700'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'border-b-2'
+                : 'hover:opacity-80'
             }`}
+            style={{
+              color: aba === 'temas' ? colors.text.gold : colors.text.whiteMuted,
+              borderBottomColor: aba === 'temas' ? colors.text.gold : 'transparent',
+              fontFamily: typography.sans,
+              fontSize: typography.body.md
+            }}
           >
             Por Tema
           </button>
@@ -87,9 +163,15 @@ export default function ModoLivrePage() {
             onClick={() => setAba('estado')}
             className={`px-6 py-3 font-medium transition-colors ${
               aba === 'estado'
-                ? 'text-primary-700 border-b-2 border-primary-700'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'border-b-2'
+                : 'hover:opacity-80'
             }`}
+            style={{
+              color: aba === 'estado' ? colors.text.gold : colors.text.whiteMuted,
+              borderBottomColor: aba === 'estado' ? colors.text.gold : 'transparent',
+              fontFamily: typography.sans,
+              fontSize: typography.body.md
+            }}
           >
             Estado do Coração
           </button>
@@ -98,28 +180,66 @@ export default function ModoLivrePage() {
         {/* Conteúdo: Por Tema */}
         {aba === 'temas' && (
           <div className="space-y-4">
-            {/* Busca */}
+            {/* Busca com Nova Identidade */}
             <div className="relative">
-              <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <FiSearch 
+                className="absolute left-4 top-1/2 transform -translate-y-1/2" 
+                size={20} 
+                style={{ color: colors.text.whiteMuted }}
+              />
               <input
                 type="text"
                 value={busca}
                 onChange={(e) => setBusca(e.target.value)}
-                className="input-field pl-12"
+                className="w-full pl-12 pr-4 py-3 rounded-xl border-2 transition-all focus:outline-none"
+                style={{
+                  background: colors.background.card,
+                  borderColor: colors.border,
+                  color: colors.text.white,
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.md,
+                  borderRadius: '12px',
+                  minHeight: '56px'
+                }}
                 placeholder="Buscar tema..."
+                onFocus={(e) => {
+                  e.target.style.borderColor = colors.text.gold;
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = colors.border;
+                }}
               />
             </div>
 
-            {/* Grid de temas */}
-            <div className="grid grid-cols-2 gap-3">
+            {/* Grid de temas com Nova Identidade */}
+            <div className="grid grid-cols-2 gap-4">
               {temasFiltrados.map((tema) => (
                 <Link
                   key={tema.id}
                   href={`/devocional/${tema.id}`}
-                  className={`${tema.cor} rounded-xl p-4 text-center hover:shadow-md transition-shadow cursor-pointer`}
+                  className="group transition-all hover:scale-105"
+                  style={{
+                    background: colors.background.card,
+                    borderRadius: '16px',
+                    padding: spacing.fixed.cardPadding,
+                    border: `1px solid ${colors.border}`,
+                    backdropFilter: 'blur(10px)'
+                  }}
                 >
-                  <div className="text-3xl mb-2">{tema.emoji}</div>
-                  <p className="font-medium">{tema.nome}</p>
+                  <div className="text-center">
+                    <div className="text-3xl mb-3">{tema.emoji}</div>
+                    <p 
+                      className="font-medium"
+                      style={{ 
+                        fontFamily: typography.serif,
+                        fontSize: typography.heading.h3,
+                        fontWeight: typography.weights.semibold,
+                        color: colors.text.white
+                      }}
+                    >
+                      {tema.nome}
+                    </p>
+                  </div>
                 </Link>
               ))}
             </div>
@@ -128,25 +248,64 @@ export default function ModoLivrePage() {
 
         {/* Conteúdo: Estado do Coração */}
         {aba === 'estado' && (
-          <div className="space-y-4">
-            <p className="text-center text-gray-700 font-medium">
+          <div className="space-y-6">
+            <p 
+              className="text-center font-medium"
+              style={{ 
+                fontFamily: typography.serif,
+                fontSize: typography.heading.h3,
+                fontWeight: typography.weights.semibold,
+                color: colors.text.white
+              }}
+            >
               Como está seu coração hoje?
             </p>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-4">
               {ESTADOS_CORACAO.map((estado) => (
                 <Link
-                  key={estado}
-                  href={`/devocional/estado/${estado.toLowerCase()}`}
-                  className="card hover:shadow-md transition-shadow cursor-pointer text-center py-4"
+                  key={estado.nome}
+                  href={`/devocional/estado/${estado.nome.toLowerCase()}`}
+                  className="group transition-all hover:scale-105"
+                  style={{
+                    background: colors.background.card,
+                    borderRadius: '16px',
+                    padding: spacing.fixed.cardPadding,
+                    border: `1px solid ${colors.border}`,
+                    backdropFilter: 'blur(10px)'
+                  }}
                 >
-                  <p className="font-medium text-gray-900">{estado}</p>
+                  <div className="flex items-center gap-4">
+                    <div className="text-3xl">{estado.emoji}</div>
+                    <div className="flex-1">
+                      <p 
+                        className="font-medium mb-1"
+                        style={{ 
+                          fontFamily: typography.serif,
+                          fontSize: typography.heading.h3,
+                          fontWeight: typography.weights.semibold,
+                          color: colors.text.white
+                        }}
+                      >
+                        {estado.nome}
+                      </p>
+                      <p 
+                        style={{ 
+                          fontFamily: typography.sans,
+                          fontSize: typography.body.sm,
+                          color: colors.text.whiteMuted
+                        }}
+                      >
+                        {estado.descricao}
+                      </p>
+                    </div>
+                  </div>
                 </Link>
               ))}
             </div>
           </div>
         )}
-      </div>
+      </Container>
     </div>
   );
 }
