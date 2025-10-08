@@ -4,16 +4,20 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useProgressStore } from '@/store/useProgressStore';
+import { useStatsStore } from '@/store/useStatsStore';
 import { FiArrowLeft, FiVolume2, FiCheck } from 'react-icons/fi';
 import Link from 'next/link';
 import Confetti from '@/components/Confetti';
+import AchievementModal from '@/components/AchievementModal';
 import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
 import { analytics } from '@/lib/analytics';
+import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements } from '@/lib/database';
 
 export default function SessaoExpressPage() {
   const router = useRouter();
   const { user, checkUser } = useAuthStore();
   const { markComplete } = useProgressStore();
+  const { refreshAll, newAchievements, clearNewAchievements } = useStatsStore();
   const [step, setStep] = useState(1);
   const [notes, setNotes] = useState('');
   const [completed, setCompleted] = useState(false);
@@ -53,8 +57,36 @@ export default function SessaoExpressPage() {
       analytics.devotionalCompleted(devocional.tema, duration);
       if (notes) analytics.notesAdded();
       
-      await markComplete(user.id, devocional.id, notes);
-      setCompleted(true);
+      try {
+        // Salvar progresso no Supabase
+        await saveDevotionalProgress({
+          userId: user.id,
+          devotionalId: devocional.id,
+          notes: notes,
+          prayer: '', // Pode ser expandido futuramente
+          duration: duration,
+          completedAt: new Date().toISOString()
+        });
+        
+        // Atualizar stats do usuário
+        await updateUserStats(user.id);
+        
+        // Verificar conquistas novas
+        await checkAndUnlockAchievements(user.id);
+        
+        // Atualizar store local
+        await markComplete(user.id, devocional.id, notes);
+        
+        // Atualizar stats no store
+        await refreshAll(user.id);
+        
+        setCompleted(true);
+      } catch (error) {
+        console.error('Erro ao salvar progresso:', error);
+        // Fallback para o sistema local
+        await markComplete(user.id, devocional.id, notes);
+        setCompleted(true);
+      }
     }
   };
 
@@ -100,6 +132,14 @@ export default function SessaoExpressPage() {
             Voltar ao Dashboard
           </Link>
         </div>
+        
+        {/* Modal de Conquistas */}
+        {newAchievements.length > 0 && (
+          <AchievementModal 
+            achievements={newAchievements}
+            onClose={clearNewAchievements}
+          />
+        )}
       </div>
     );
   }

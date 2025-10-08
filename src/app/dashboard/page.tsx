@@ -4,11 +4,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useProgressStore } from '@/store/useProgressStore';
+import { useStatsStore } from '@/store/useStatsStore';
 import Link from 'next/link';
 import { FiBook, FiMap, FiHeart, FiCalendar, FiLogOut, FiMenu, FiHelpCircle, FiGift, FiSmartphone } from 'react-icons/fi';
 import Tutorial, { useTutorial } from '@/components/Tutorial';
 import PWAInstallGuide, { usePWAInstallGuide } from '@/components/PWAInstallGuide';
 import PWAInstallBanner from '@/components/PWAInstallBanner';
+import AchievementModal from '@/components/AchievementModal';
 import HelpButton from '@/components/HelpButton';
 import Container from '@/components/Container';
 import { colors, typography, spacing } from '@/lib/design-system';
@@ -19,10 +21,23 @@ import {
   requestNotificationPermission 
 } from '@/lib/reengagement';
 
+// Função para obter ícone do nível espiritual
+function getLevelIcon(level: number): string {
+  switch (level) {
+    case 1: return '🌱'; // Semente
+    case 2: return '🌿'; // Broto
+    case 3: return '🌳'; // Árvore
+    case 4: return '🌲'; // Bosque
+    case 5: return '🏞️'; // Floresta
+    default: return '🌱';
+  }
+}
+
 export default function DashboardPage() {
   const router = useRouter();
   const { user, loading, signOut, checkUser } = useAuthStore();
   const { streak, completedToday, fetchProgress, showStreak, toggleStreak } = useProgressStore();
+  const { stats, achievements, newAchievements, loadStats, loadAchievements, checkNewAchievements, clearNewAchievements } = useStatsStore();
   const { showTutorial, openTutorial, closeTutorial } = useTutorial();
   const { showGuide, openGuide, closeGuide } = usePWAInstallGuide();
   const [inactivityStatus, setInactivityStatus] = useState<{
@@ -41,6 +56,13 @@ export default function DashboardPage() {
       router.push('/login');
     } else if (user) {
       fetchProgress(user.id);
+      
+      // Carregar stats e conquistas do Supabase
+      loadStats(user.id);
+      loadAchievements(user.id);
+      
+      // Verificar conquistas novas
+      checkNewAchievements(user.id);
       
       // Verificar inatividade
       const status = checkInactivityStatus();
@@ -242,8 +264,8 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        {/* Streak (opcional) */}
-        {showStreak && streak > 0 && (
+        {/* Stats do Supabase */}
+        {stats && (
           <div style={{
             background: 'rgba(212, 175, 55, 0.1)',
             borderRadius: '16px',
@@ -251,7 +273,7 @@ export default function DashboardPage() {
             border: `1px solid rgba(212, 175, 55, 0.3)`,
             backdropFilter: 'blur(10px)'
           }}>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-4">
               <div>
                 <p 
                   className="mb-1"
@@ -261,7 +283,7 @@ export default function DashboardPage() {
                     color: colors.text.whiteMuted
                   }}
                 >
-                  Sua sequência
+                  Sua jornada espiritual
                 </p>
                 <p 
                   style={{ 
@@ -271,20 +293,55 @@ export default function DashboardPage() {
                     color: colors.text.white
                   }}
                 >
-                  🔥 {streak} {streak === 1 ? 'dia' : 'dias'}
+                  🔥 {stats.streak} {stats.streak === 1 ? 'dia' : 'dias'} seguidos
                 </p>
               </div>
-              <button
-                onClick={toggleStreak}
-                className="transition-colors hover:opacity-80"
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
-                  color: colors.text.whiteSubtle
-                }}
-              >
-                Ocultar
-              </button>
+            </div>
+            
+            {/* Nível e Momentos */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center">
+                <p 
+                  style={{ 
+                    fontFamily: typography.sans,
+                    fontSize: typography.body.sm,
+                    color: colors.text.whiteMuted
+                  }}
+                >
+                  Nível
+                </p>
+                <p 
+                  style={{ 
+                    fontFamily: typography.serif,
+                    fontSize: typography.heading.h3,
+                    fontWeight: typography.weights.semibold,
+                    color: colors.text.gold
+                  }}
+                >
+                  {getLevelIcon(stats.spiritual_level)} {stats.spiritual_level}
+                </p>
+              </div>
+              <div className="text-center">
+                <p 
+                  style={{ 
+                    fontFamily: typography.sans,
+                    fontSize: typography.body.sm,
+                    color: colors.text.whiteMuted
+                  }}
+                >
+                  Momentos
+                </p>
+                <p 
+                  style={{ 
+                    fontFamily: typography.serif,
+                    fontSize: typography.heading.h3,
+                    fontWeight: typography.weights.semibold,
+                    color: colors.text.gold
+                  }}
+                >
+                  ⭐ {stats.moments_with_god}
+                </p>
+              </div>
             </div>
           </div>
         )}
@@ -558,6 +615,14 @@ export default function DashboardPage() {
 
       {/* Banner de Instalação Inteligente */}
       <PWAInstallBanner onOpenGuide={openGuide} />
+      
+      {/* Modal de Conquistas */}
+      {newAchievements.length > 0 && (
+        <AchievementModal 
+          achievements={newAchievements}
+          onClose={clearNewAchievements}
+        />
+      )}
     </div>
   );
 }
