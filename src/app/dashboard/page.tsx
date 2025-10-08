@@ -568,6 +568,43 @@ export default function DashboardPage() {
           </div>
         </Link>
 
+        {/* Favoritos */}
+        <Link href="/favoritos" className="favoritos-card block transition-all hover:scale-105" style={{
+          background: colors.background.card,
+          borderRadius: '16px',
+          padding: spacing.fixed.cardPadding,
+          border: `1px solid ${colors.border}`,
+          backdropFilter: 'blur(10px)'
+        }}>
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 
+                className="font-bold mb-1"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: typography.heading.h3,
+                  fontWeight: typography.weights.semibold,
+                  color: colors.text.white
+                }}
+              >
+                ❤️ Meus Favoritos
+              </h3>
+              <p 
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.sm,
+                  color: colors.text.whiteMuted
+                }}
+              >
+                Versículos e citações salvos
+              </p>
+            </div>
+            <div className="w-12 h-12 bg-red-600/30 rounded-full flex items-center justify-center flex-shrink-0">
+              <FiHeart size={24} className="text-red-400" />
+            </div>
+          </div>
+        </Link>
+
         {/* Bônus Gratuitos */}
         <Link href="/bonus" className="bonus-card block transition-all hover:scale-105" style={{
           background: colors.background.card,

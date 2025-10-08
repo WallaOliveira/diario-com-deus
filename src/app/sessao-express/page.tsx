@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useProgressStore } from '@/store/useProgressStore';
 import { useStatsStore } from '@/store/useStatsStore';
-import { FiArrowLeft, FiVolume2, FiCheck } from 'react-icons/fi';
+import { FiArrowLeft, FiVolume2, FiCheck, FiHeart } from 'react-icons/fi';
 import Link from 'next/link';
 import Confetti from '@/components/Confetti';
 import AchievementModal from '@/components/AchievementModal';
 import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
 import { analytics } from '@/lib/analytics';
-import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements } from '@/lib/database';
+import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
 
 export default function SessaoExpressPage() {
   const router = useRouter();
@@ -96,6 +96,25 @@ export default function SessaoExpressPage() {
       utterance.lang = 'pt-BR';
       speechSynthesis.speak(utterance);
       analytics.audioPlayed(contentType);
+    }
+  };
+
+  const handleSaveFavorite = async (content: string, type: 'verse' | 'quote' | 'prayer', reference?: string) => {
+    if (!user) return;
+    
+    try {
+      await addFavorite({
+        userId: user.id,
+        type,
+        content,
+        reference,
+        tags: [devocional?.tema || 'geral']
+      });
+      
+      // Aqui você pode adicionar um toast de sucesso
+      console.log('Favorito salvo com sucesso!');
+    } catch (error) {
+      console.error('Erro ao salvar favorito:', error);
     }
   };
 
@@ -259,14 +278,25 @@ export default function SessaoExpressPage() {
               >
                 {devocional.texto}
               </p>
-              <button
-                onClick={() => speak(devocional.texto, 'versículo')}
-                className="mt-4 flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                <FiVolume2 size={16} />
-                Ouvir
-              </button>
+              <div className="flex items-center gap-4 mt-4">
+                <button
+                  onClick={() => speak(devocional.texto, 'versículo')}
+                  className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  <FiVolume2 size={16} />
+                  Ouvir
+                </button>
+                <button
+                  onClick={() => handleSaveFavorite(devocional.texto, 'verse', devocional.referencia)}
+                  className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                  title="Salvar versículo nos favoritos"
+                >
+                  <FiHeart size={16} />
+                  Favoritar
+                </button>
+              </div>
             </div>
             <button
               onClick={handleNext}
