@@ -132,6 +132,60 @@ export default function AchievementModal({ achievements, onClose }: AchievementM
             {currentAchievement.description}
           </p>
 
+          {/* Benefício Espiritual */}
+          {currentAchievement.spiritual_benefit && (
+            <div className="bg-blue-900/30 rounded-xl p-4 border border-blue-500/30">
+              <h3 
+                className="font-semibold mb-2"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: typography.body.md,
+                  color: colors.text.gold,
+                }}
+              >
+                💎 Benefício Espiritual
+              </h3>
+              <p 
+                className="leading-relaxed"
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.sm,
+                  color: colors.text.whiteMuted,
+                  lineHeight: '1.6'
+                }}
+              >
+                {currentAchievement.spiritual_benefit}
+              </p>
+            </div>
+          )}
+
+          {/* Versículo Bíblico */}
+          {currentAchievement.bible_verse && (
+            <div className="bg-green-900/30 rounded-xl p-4 border border-green-500/30">
+              <h3 
+                className="font-semibold mb-2"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: typography.body.md,
+                  color: colors.text.gold,
+                }}
+              >
+                📖 Palavra de Deus
+              </h3>
+              <p 
+                className="leading-relaxed italic"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: typography.body.sm,
+                  color: colors.text.white,
+                  lineHeight: '1.6'
+                }}
+              >
+                {currentAchievement.bible_verse}
+              </p>
+            </div>
+          )}
+
           {/* Separador */}
           <div className="flex items-center gap-3 py-4">
             <div className="flex-1 h-px" style={{ background: colors.border }} />
@@ -157,7 +211,13 @@ export default function AchievementModal({ achievements, onClose }: AchievementM
 
           {/* Link "Ver todas" */}
           <button
-            onClick={onClose}
+            onClick={() => {
+              onClose();
+              // Navegar para a página de progresso na aba de conquistas
+              if (typeof window !== 'undefined') {
+                window.location.href = '/progresso#achievements';
+              }
+            }}
             className="text-sm underline hover:opacity-80 transition-opacity"
             style={{ color: colors.text.whiteMuted }}
           >

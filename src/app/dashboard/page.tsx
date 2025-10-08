@@ -24,11 +24,11 @@ import {
 // Função para obter ícone do nível espiritual
 function getLevelIcon(level: number): string {
   switch (level) {
-    case 1: return '🌱'; // Semente
-    case 2: return '🌿'; // Broto
-    case 3: return '🌳'; // Árvore
-    case 4: return '🌲'; // Bosque
-    case 5: return '🏞️'; // Floresta
+    case 1: return '🌱'; // Iniciante
+    case 2: return '🌿'; // Crescendo
+    case 3: return '🌳'; // Maduro
+    case 4: return '🌲'; // Sábio
+    case 5: return '🏞️'; // Guia
     default: return '🌱';
   }
 }
@@ -550,7 +550,7 @@ export default function DashboardPage() {
                   color: colors.text.white
                 }}
               >
-                📈 Meu Progresso
+                📈 Minha Evolução
               </h3>
               <p 
                 style={{ 

@@ -11,6 +11,10 @@ export interface Achievement {
   icon: string;
   requirement: number; // quantos para desbloquear
   points: number; // "momentos" que vale
+  // Novos campos educativos
+  spiritualBenefit?: string; // benefício espiritual
+  bibleVerse?: string; // versículo relacionado
+  educationalText?: string; // explicação sobre a prática
 }
 
 /**
@@ -29,6 +33,9 @@ export const ACHIEVEMENTS: Achievement[] = [
     icon: '🙏',
     requirement: 1,
     points: 10,
+    spiritualBenefit: 'Cada momento com Deus fortalece sua fé e aproxima você do Pai celestial',
+    bibleVerse: '"Cheguem perto de Deus, e ele chegará perto de vocês." Tiago 4:8',
+    educationalText: 'O devocional diário é como uma conversa íntima com Deus. É onde você ouve Sua voz, recebe Sua orientação e fortalece seu relacionamento com Ele.'
   },
   {
     key: '7_devotionals',
@@ -38,6 +45,9 @@ export const ACHIEVEMENTS: Achievement[] = [
     icon: '📖',
     requirement: 7,
     points: 50,
+    spiritualBenefit: 'A constância na oração cria raízes profundas e transforma sua vida interior',
+    bibleVerse: '"Seja como a árvore plantada junto aos ribeiros, que dá o seu fruto na estação própria." Salmo 1:3',
+    educationalText: 'Uma semana de devocionais mostra que você está criando um hábito sagrado. A constância é a chave para ver mudanças reais em sua vida espiritual.'
   },
   {
     key: '30_devotionals',
@@ -87,6 +97,9 @@ export const ACHIEVEMENTS: Achievement[] = [
     icon: '✨',
     requirement: 7,
     points: 50,
+    spiritualBenefit: 'A constância na oração fortalece sua disciplina espiritual e aprofunda sua intimidade com Deus',
+    bibleVerse: '"Orai sem cessar." 1 Tessalonicenses 5:17',
+    educationalText: 'Sete dias seguidos de oração mostram que você está priorizando Deus em sua vida. A constância é o que separa os seguidores ocasionais dos verdadeiros discípulos.'
   },
   {
     key: 'streak_14',
@@ -194,6 +207,9 @@ export const ACHIEVEMENTS: Achievement[] = [
     icon: '🌄',
     requirement: 1,
     points: 15,
+    spiritualBenefit: 'Buscar a Deus pela manhã organiza seu dia e te dá sabedoria para as decisões importantes',
+    bibleVerse: '"De manhã me ouves, SENHOR; de manhã te apresento a minha oração e aguardo com esperança." Salmo 5:3',
+    educationalText: 'O devocional matinal é como colocar o oxigênio antes de mergulhar. Quando você começa o dia com Deus, Ele te guia em todas as suas decisões e te dá paz para enfrentar os desafios.'
   },
   {
     key: 'early_bird_10',
@@ -312,45 +328,45 @@ export interface SpiritualLevel {
 
 export const SPIRITUAL_LEVELS: SpiritualLevel[] = [
   {
-    key: 'semente',
-    name: 'Semente',
-    description: 'Você está plantando sua fé. Toda grande árvore começa pequena!',
+    key: 'iniciante',
+    name: 'Iniciante',
+    description: 'Você está começando sua jornada com Deus. Toda grande caminhada tem um primeiro passo!',
     icon: '🌱',
     minMoments: 0,
     maxMoments: 49,
     color: '#86efac', // verde claro
   },
   {
-    key: 'broto',
-    name: 'Broto',
-    description: 'Sua fé está brotando! A constância faz você crescer.',
+    key: 'crescendo',
+    name: 'Crescendo',
+    description: 'Sua fé está crescendo! A constância está fazendo você evoluir.',
     icon: '🌿',
     minMoments: 50,
     maxMoments: 199,
     color: '#4ade80', // verde
   },
   {
-    key: 'arvore',
-    name: 'Árvore',
-    description: 'Você criou raízes profundas. Sua fé está firme!',
+    key: 'maduro',
+    name: 'Maduro',
+    description: 'Você criou raízes profundas na fé. Sua jornada está firme!',
     icon: '🌳',
     minMoments: 200,
     maxMoments: 499,
     color: '#22c55e', // verde forte
   },
   {
-    key: 'bosque',
-    name: 'Bosque',
-    description: 'Sua vida espiritual é um refúgio. Você inspira outros!',
+    key: 'sabio',
+    name: 'Sábio',
+    description: 'Sua vida espiritual é um refúgio para outros. Você inspira e ensina!',
     icon: '🌲',
     minMoments: 500,
     maxMoments: 999,
     color: '#16a34a', // verde escuro
   },
   {
-    key: 'floresta',
-    name: 'Floresta',
-    description: 'Você é uma floresta de fé! Sua jornada impacta muitos.',
+    key: 'guia',
+    name: 'Guia',
+    description: 'Você é um guia na fé! Sua jornada impacta e transforma muitas vidas.',
     icon: '🏞️',
     minMoments: 1000,
     maxMoments: Infinity,
@@ -367,7 +383,7 @@ export function calculateSpiritualLevel(totalMoments: number): SpiritualLevel {
       return level;
     }
   }
-  return SPIRITUAL_LEVELS[0]; // fallback: Semente
+  return SPIRITUAL_LEVELS[0]; // fallback: Iniciante
 }
 
 /**
