@@ -13,6 +13,7 @@ import PWAInstallBanner from '@/components/PWAInstallBanner';
 import AchievementModal from '@/components/AchievementModal';
 import HelpButton from '@/components/HelpButton';
 import Container from '@/components/Container';
+import CheckInEmocional from '@/components/CheckInEmocional';
 import { colors, typography, spacing, utils } from '@/lib/design-system';
 import { 
   checkInactivityStatus, 
@@ -57,6 +58,8 @@ export default function DashboardPage() {
     message: string | null;
   } | null>(null);
   const [showComebackReward, setShowComebackReward] = useState(false);
+  const [emocaoSelecionada, setEmocaoSelecionada] = useState<string>('');
+  const [showCheckIn, setShowCheckIn] = useState(false);
 
   // Em modo DEV, usar mockUser
   const currentUser = DEV_MODE ? mockUser : user;
@@ -153,13 +156,13 @@ export default function DashboardPage() {
       }}>
         <Container maxWidth="xl" className="py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg" style={{
+            <div className="flex items-center gap-3 flex-1">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg flex-shrink-0" style={{
                 background: colors.text.gold
               }}>
                 <span className="text-2xl text-white">📖</span>
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <div 
                   className="flex items-baseline flex-wrap mb-1"
                   style={{ 
@@ -168,7 +171,7 @@ export default function DashboardPage() {
                   }}
                 >
                   <span 
-                    className="font-bold"
+                    className="font-bold whitespace-nowrap"
                     style={{ 
                       fontFamily: typography.serif,
                       fontWeight: typography.weights.semibold,
@@ -180,7 +183,7 @@ export default function DashboardPage() {
                     Diário
                   </span>
                   <span 
-                    className="font-light"
+                    className="font-light whitespace-nowrap"
                     style={{ 
                       fontFamily: typography.serif,
                       fontWeight: typography.weights.light,
@@ -194,7 +197,7 @@ export default function DashboardPage() {
                     com
                   </span>
                   <span 
-                    className="font-bold"
+                    className="font-bold whitespace-nowrap"
                     style={{ 
                       fontFamily: typography.serif,
                       fontWeight: typography.weights.semibold,
@@ -217,30 +220,46 @@ export default function DashboardPage() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              <button
+                onClick={() => setShowCheckIn(true)}
+                className="p-1.5 transition-all hover:scale-110"
+                style={{ color: colors.text.whiteMuted }}
+                title="Como você está hoje?"
+              >
+                <FiHeart 
+                  size={20} 
+                  className="transition-all duration-300"
+                  style={{ 
+                    color: emocaoSelecionada ? colors.accent.gold : colors.text.whiteMuted,
+                    fill: emocaoSelecionada ? colors.accent.gold : 'none',
+                    animation: emocaoSelecionada ? 'none' : 'heartbeat 2s ease-in-out infinite'
+                  }}
+                />
+              </button>
               <button
                 onClick={openTutorial}
-                className="p-2 transition-colors hover:opacity-80"
+                className="p-1.5 transition-colors hover:opacity-80"
                 style={{ color: colors.text.whiteMuted }}
                 title="Ver tutorial"
               >
-                <FiHelpCircle size={20} />
+                <FiHelpCircle size={18} />
               </button>
               <button
                 onClick={openGuide}
-                className="p-2 transition-colors hover:opacity-80"
+                className="p-1.5 transition-colors hover:opacity-80"
                 style={{ color: colors.text.whiteMuted }}
                 title="Como instalar o app"
               >
-                <FiSmartphone size={20} />
+                <FiSmartphone size={18} />
               </button>
               <button
                 onClick={handleSignOut}
-                className="p-2 transition-colors hover:opacity-80"
+                className="p-1.5 transition-colors hover:opacity-80"
                 style={{ color: colors.text.whiteMuted }}
                 title="Sair"
               >
-                <FiLogOut size={20} />
+                <FiLogOut size={18} />
               </button>
             </div>
           </div>
@@ -410,7 +429,7 @@ export default function DashboardPage() {
         {/* Atalhos principais */}
         <div className="flex flex-col gap-4">
           {/* Devocional do Dia */}
-          <Link href="/sessao-express" className="sessao-express-card group transition-all hover:scale-105" style={{
+          <Link href="/devocional-do-dia" className="devocional-do-dia-card group transition-all hover:scale-105" style={{
             background: colors.background.card,
             borderRadius: '16px',
             padding: spacing.fixed.cardPadding,
@@ -437,7 +456,7 @@ export default function DashboardPage() {
                     color: colors.text.whiteMuted
                   }}
                 >
-                  Momento Preciso com Deus (7-10 min)
+                  Momento Preciso com Deus
                 </p>
               </div>
               <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform" style={{
@@ -657,6 +676,27 @@ export default function DashboardPage() {
           achievements={newAchievements}
           onClose={clearNewAchievements}
         />
+      )}
+
+      {/* Modal Check-in Emocional */}
+      {showCheckIn && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: 'rgba(0, 0, 0, 0.8)' }}
+          onClick={() => setShowCheckIn(false)}
+        >
+          <div 
+            className="max-w-md w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CheckInEmocional 
+              onSelect={(emocao) => {
+                setEmocaoSelecionada(emocao);
+                setShowCheckIn(false);
+              }} 
+            />
+          </div>
+        </div>
       )}
     </div>
   );

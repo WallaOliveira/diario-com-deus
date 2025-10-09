@@ -19,7 +19,7 @@ const TUTORIAL_STEPS: TutorialStep[] = [
   {
     title: '📖 Devocional Diário',
     description: 'Seu momento guiado com Deus em poucos minutos. 5 passos práticos: contexto, leitura bíblica, reflexão, ação e oração. Perfeito para começar o dia!',
-    targetSelector: '.sessao-express-card',
+    targetSelector: '.devocional-do-dia-card',
     position: 'bottom',
   },
   {

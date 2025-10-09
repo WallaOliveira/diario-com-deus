@@ -265,7 +265,7 @@ export default function ProgressoPage() {
               {/* Quick Actions */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Link 
-                  href="/sessao-express"
+                  href="/devocional-do-dia"
                   className="p-6 rounded-xl border-2 border-gold-500/50 bg-gradient-to-br from-gold-900/20 to-yellow-900/20 hover:from-gold-900/30 hover:to-yellow-900/30 transition-all group"
                 >
                   <div className="flex items-center gap-4">
@@ -742,7 +742,7 @@ export default function ProgressoPage() {
 
                 <div className="mt-4 text-center">
                   <Link 
-                    href="/sessao-express" 
+                    href="/devocional-do-dia" 
                     className="inline-block py-3 px-6 rounded-lg font-bold transition-all hover:scale-105"
                     style={{
                       background: `linear-gradient(135deg, ${colors.text.gold} 0%, #d4af37 100%)`,

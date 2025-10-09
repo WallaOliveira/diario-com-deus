@@ -70,7 +70,7 @@ export default function NotFound() {
             Voltar ao Início
           </Button>
           
-          <Button href="/sessao-express" variant="secondary" size="md">
+          <Button href="/devocional-do-dia" variant="secondary" size="md">
             Fazer um Devocional
           </Button>
         </div>

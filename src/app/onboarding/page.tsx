@@ -51,7 +51,7 @@ export default function OnboardingPage() {
     localStorage.setItem('quer_habito', queroHabito.toString());
     
     // Redirecionar para primeiro devocional
-    router.push('/sessao-express');
+    router.push('/devocional-do-dia');
   };
 
   if (!user) return null;

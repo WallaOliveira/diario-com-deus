@@ -170,7 +170,7 @@ export default function MinhaSemanePage() {
         </div>
 
         {/* CTA */}
-        <Link href="/sessao-express" className="block btn-primary text-center">
+        <Link href="/devocional-do-dia" className="block btn-primary text-center">
           Fazer Devocional de Hoje
         </Link>
       </div>

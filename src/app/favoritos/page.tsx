@@ -183,7 +183,7 @@ export default function FavoritosPage() {
               Quando você salvar versículos, citações ou orações, eles aparecerão aqui.
             </p>
             <Link 
-              href="/sessao-express"
+              href="/devocional-do-dia"
               className="inline-block bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
               style={{ fontFamily: typography.sans }}
             >

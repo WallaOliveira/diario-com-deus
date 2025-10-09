@@ -100,7 +100,7 @@ export default function VolteiHojePage() {
             </div>
           </div>
 
-          <Link href="/sessao-express" className="block btn-primary text-center">
+          <Link href="/devocional-do-dia" className="block btn-primary text-center">
             Começar Agora (7 min)
           </Link>
         </div>
