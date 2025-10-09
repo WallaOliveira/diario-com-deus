@@ -13,7 +13,7 @@ import PWAInstallBanner from '@/components/PWAInstallBanner';
 import AchievementModal from '@/components/AchievementModal';
 import HelpButton from '@/components/HelpButton';
 import Container from '@/components/Container';
-import { colors, typography, spacing } from '@/lib/design-system';
+import { colors, typography, spacing, utils } from '@/lib/design-system';
 import { 
   checkInactivityStatus, 
   updateLastAccessDate, 
@@ -33,6 +33,17 @@ function getLevelIcon(level: number): string {
   }
 }
 
+// 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
+// Para desativar: mude NEXT_PUBLIC_DEV_MODE=false no .env.local
+const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+const mockUser = {
+  id: 'dev-user-123',
+  email: 'dev@diariocomdeus.com',
+  user_metadata: {
+    name: 'Desenvolvedor'
+  }
+};
+
 export default function DashboardPage() {
   const router = useRouter();
   const { user, loading, signOut, checkUser } = useAuthStore();
@@ -47,11 +58,21 @@ export default function DashboardPage() {
   } | null>(null);
   const [showComebackReward, setShowComebackReward] = useState(false);
 
+  // Em modo DEV, usar mockUser
+  const currentUser = DEV_MODE ? mockUser : user;
+
   useEffect(() => {
-    checkUser();
+    if (!DEV_MODE) {
+      checkUser();
+    }
   }, [checkUser]);
 
   useEffect(() => {
+    if (DEV_MODE) {
+      // Em modo desenvolvimento, não fazer nada
+      return;
+    }
+    
     if (!loading && !user) {
       router.push('/login');
     } else if (user) {
@@ -92,11 +113,15 @@ export default function DashboardPage() {
   }, [user, loading, router, fetchProgress]);
 
   const handleSignOut = async () => {
+    if (DEV_MODE) {
+      router.push('/');
+      return;
+    }
     await signOut();
     router.push('/');
   };
 
-  if (loading) {
+  if (!DEV_MODE && loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
@@ -104,7 +129,7 @@ export default function DashboardPage() {
     );
   }
 
-  if (!user) return null;
+  if (!DEV_MODE && !user) return null;
 
   return (
     <div 
@@ -135,16 +160,52 @@ export default function DashboardPage() {
                 <span className="text-2xl text-white">📖</span>
               </div>
               <div>
-                <h1 
-                  className="font-bold text-white"
+                <div 
+                  className="flex items-baseline flex-wrap mb-1"
                   style={{ 
-                    fontFamily: typography.serif,
-                    fontSize: typography.heading.h3,
-                    fontWeight: typography.weights.semibold
+                    lineHeight: 1,
+                    gap: spacing.fixed.titleGap
                   }}
                 >
-                  Diário com Deus
-                </h1>
+                  <span 
+                    className="font-bold"
+                    style={{ 
+                      fontFamily: typography.serif,
+                      fontWeight: typography.weights.semibold,
+                      fontSize: typography.heading.h3,
+                      letterSpacing: typography.letterSpacing.tight,
+                      ...utils.textGradient(colors.text.gold)
+                    }}
+                  >
+                    Diário
+                  </span>
+                  <span 
+                    className="font-light"
+                    style={{ 
+                      fontFamily: typography.serif,
+                      fontWeight: typography.weights.light,
+                      fontSize: typography.body.sm,
+                      color: colors.text.whiteSubtle,
+                      letterSpacing: typography.letterSpacing.normal,
+                      margin: `0 ${spacing.fixed.titleMargin}`,
+                      transform: 'translateY(-0.1em)'
+                    }}
+                  >
+                    com
+                  </span>
+                  <span 
+                    className="font-bold"
+                    style={{ 
+                      fontFamily: typography.serif,
+                      fontWeight: typography.weights.semibold,
+                      fontSize: typography.heading.h3,
+                      letterSpacing: typography.letterSpacing.tight,
+                      ...utils.textGradient(colors.text.blue)
+                    }}
+                  >
+                    Deus
+                  </span>
+                </div>
                 <p 
                   style={{ 
                     fontFamily: typography.sans,
@@ -152,7 +213,7 @@ export default function DashboardPage() {
                     color: colors.text.whiteMuted
                   }}
                 >
-                  Olá, {user.user_metadata?.name || 'amigo(a)'}
+                  Olá, {currentUser.user_metadata?.name || 'amigo(a)'}
                 </p>
               </div>
             </div>
@@ -347,8 +408,8 @@ export default function DashboardPage() {
         )}
 
         {/* Atalhos principais */}
-        <div className="grid grid-cols-2 gap-4">
-          {/* Sessão Express */}
+        <div className="flex flex-col gap-4">
+          {/* Devocional do Dia */}
           <Link href="/sessao-express" className="sessao-express-card group transition-all hover:scale-105" style={{
             background: colors.background.card,
             borderRadius: '16px',
@@ -356,73 +417,39 @@ export default function DashboardPage() {
             border: `1px solid ${colors.border}`,
             backdropFilter: 'blur(10px)'
           }}>
-            <div className="flex flex-col items-center text-center">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center mb-3 group-hover:scale-105 transition-transform shadow-lg" style={{
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 
+                  className="font-bold mb-1"
+                  style={{ 
+                    fontFamily: typography.serif,
+                    fontSize: typography.heading.h3,
+                    fontWeight: typography.weights.semibold,
+                    color: colors.text.white
+                  }}
+                >
+                  📖 Devocional do Dia
+                </h3>
+                <p 
+                  style={{ 
+                    fontFamily: typography.sans,
+                    fontSize: typography.body.sm,
+                    color: colors.text.whiteMuted
+                  }}
+                >
+                  Momento Preciso com Deus (7-10 min)
+                </p>
+              </div>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform" style={{
                 background: colors.text.gold
               }}>
                 <FiBook size={24} className="text-white" />
               </div>
-              <h3 
-                className="font-bold mb-1"
-                style={{ 
-                  fontFamily: typography.serif,
-                  fontSize: typography.heading.h3,
-                  fontWeight: typography.weights.semibold,
-                  color: colors.text.white
-                }}
-              >
-                Devocional Diário
-              </h3>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
-                  color: colors.text.whiteMuted
-                }}
-              >
-                Momento Preciso com Deus
-              </p>
             </div>
           </Link>
 
-          {/* Devocional Pessoal */}
-          <Link href="/modo-livre" className="modo-livre-card group transition-all hover:scale-105" style={{
-            background: colors.background.card,
-            borderRadius: '16px',
-            padding: spacing.fixed.cardPadding,
-            border: `1px solid ${colors.border}`,
-            backdropFilter: 'blur(10px)'
-          }}>
-            <div className="flex flex-col items-center text-center">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center mb-3 group-hover:scale-105 transition-transform shadow-lg" style={{
-                background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
-              }}>
-                <FiHeart size={24} className="text-white" />
-              </div>
-              <h3 
-                className="font-bold mb-1"
-                style={{ 
-                  fontFamily: typography.serif,
-                  fontSize: typography.heading.h3,
-                  fontWeight: typography.weights.semibold,
-                  color: colors.text.white
-                }}
-              >
-                Devocional Pessoal
-              </h3>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
-                  color: colors.text.whiteMuted
-                }}
-              >
-                Conforme sua Necessidade
-              </p>
-            </div>
-          </Link>
 
-          {/* Trilhas */}
+          {/* Trilhas Guiadas */}
           <Link href="/trilhas" className="trilhas-card group transition-all hover:scale-105" style={{
             background: colors.background.card,
             borderRadius: '16px',
@@ -430,36 +457,38 @@ export default function DashboardPage() {
             border: `1px solid ${colors.border}`,
             backdropFilter: 'blur(10px)'
           }}>
-            <div className="flex flex-col items-center text-center">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center mb-3 group-hover:scale-105 transition-transform shadow-lg" style={{
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 
+                  className="font-bold mb-1"
+                  style={{ 
+                    fontFamily: typography.serif,
+                    fontSize: typography.heading.h3,
+                    fontWeight: typography.weights.semibold,
+                    color: colors.text.white
+                  }}
+                >
+                  🗺️ Trilhas Guiadas
+                </h3>
+                <p 
+                  style={{ 
+                    fontFamily: typography.sans,
+                    fontSize: typography.body.sm,
+                    color: colors.text.whiteMuted
+                  }}
+                >
+                  Jornadas Temáticas de 7, 14 e 30 dias
+                </p>
+              </div>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform" style={{
                 background: colors.text.blue
               }}>
                 <FiMap size={24} className="text-white" />
               </div>
-              <h3 
-                className="font-bold mb-1"
-                style={{ 
-                  fontFamily: typography.serif,
-                  fontSize: typography.heading.h3,
-                  fontWeight: typography.weights.semibold,
-                  color: colors.text.white
-                }}
-              >
-                Trilhas Devocionais
-              </h3>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
-                  color: colors.text.whiteMuted
-                }}
-              >
-                Jornadas Temáticas de 7, 14 e 30 dias
-              </p>
             </div>
           </Link>
 
-          {/* Conteúdo Extra */}
+          {/* Trilhas Especiais */}
           <Link href="/extras" className="trilhas-especiais-card group transition-all hover:scale-105" style={{
             background: colors.background.card,
             borderRadius: '16px',
@@ -467,69 +496,38 @@ export default function DashboardPage() {
             border: `1px solid ${colors.border}`,
             backdropFilter: 'blur(10px)'
           }}>
-            <div className="flex flex-col items-center text-center">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center mb-3 group-hover:scale-105 transition-transform shadow-lg" style={{
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 
+                  className="font-bold mb-1"
+                  style={{ 
+                    fontFamily: typography.serif,
+                    fontSize: typography.heading.h3,
+                    fontWeight: typography.weights.semibold,
+                    color: colors.text.white
+                  }}
+                >
+                  ✨ Trilhas Especiais
+                </h3>
+                <p 
+                  style={{ 
+                    fontFamily: typography.sans,
+                    fontSize: typography.body.sm,
+                    color: colors.text.whiteMuted
+                  }}
+                >
+                  Conteúdos e planos avançados (Premium)
+                </p>
+              </div>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform" style={{
                 background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
               }}>
                 <FiGift size={24} className="text-white" />
               </div>
-              <h3 
-                className="font-bold mb-1"
-                style={{ 
-                  fontFamily: typography.serif,
-                  fontSize: typography.heading.h3,
-                  fontWeight: typography.weights.semibold,
-                  color: colors.text.white
-                }}
-              >
-                Trilhas Especiais
-              </h3>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
-                  color: colors.text.whiteMuted
-                }}
-              >
-                Trilhas, conteúdos e planos avançados
-              </p>
             </div>
           </Link>
         </div>
 
-        {/* Voltei Hoje */}
-        {!completedToday && (
-          <Link href="/voltei-hoje" className="block text-white transition-all hover:scale-105" style={{
-            background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.8) 0%, rgba(236, 72, 153, 0.8) 100%)',
-            borderRadius: '16px',
-            padding: spacing.fixed.cardPadding,
-            border: `1px solid ${colors.border}`,
-            backdropFilter: 'blur(10px)'
-          }}>
-            <div className="text-center">
-              <h3 
-                className="mb-2"
-                style={{ 
-                  fontFamily: typography.serif,
-                  fontSize: typography.heading.h3,
-                  fontWeight: typography.weights.semibold,
-                  color: colors.text.white
-                }}
-              >
-                💙 Voltei Hoje
-              </h3>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
-                  color: colors.text.whiteMuted
-                }}
-              >
-                Recomeço sem culpa. Vamos juntos?
-              </p>
-            </div>
-          </Link>
-        )}
 
         {/* Progresso Avançado */}
         <Link href="/progresso" className="progresso-card block transition-all hover:scale-105" style={{
@@ -605,7 +603,7 @@ export default function DashboardPage() {
           </div>
         </Link>
 
-        {/* Bônus Gratuitos */}
+        {/* Presentes para Você */}
         <Link href="/bonus" className="bonus-card block transition-all hover:scale-105" style={{
           background: colors.background.card,
           borderRadius: '16px',
@@ -624,7 +622,7 @@ export default function DashboardPage() {
                   color: colors.text.white
                 }}
               >
-                🎁 Bônus Gratuitos
+                🎁 Presentes para Você
               </h3>
               <p 
                 style={{ 
