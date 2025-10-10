@@ -22,6 +22,84 @@ import {
   requestNotificationPermission 
 } from '@/lib/reengagement';
 
+// Sistema de mensagens dinâmicas
+const getDynamicMessage = (streak: number, lastLogin: string | null, completedToday: boolean) => {
+  const now = new Date();
+  const lastLoginDate = lastLogin ? new Date(lastLogin) : null;
+  const daysSinceLastLogin = lastLoginDate ? Math.floor((now.getTime() - lastLoginDate.getTime()) / (1000 * 60 * 60 * 24)) : 0;
+  
+  // Se completou hoje
+  if (completedToday) {
+    return {
+      title: '✨ Que lindo compromisso com Deus!',
+      message: 'Você já fez seu devocional hoje. Cada momento com Ele fortalece sua fé!',
+      emoji: '✨',
+      animation: 'celebrate',
+      color: 'gold'
+    };
+  }
+  
+  // Usuário ativo (0-1 dias)
+  if (daysSinceLastLogin <= 1) {
+    if (streak >= 7) {
+      return {
+        title: '🔥 Que constância incrível!',
+        message: `${streak} dias seguidos! Você está criando um hábito abençoado.`,
+        emoji: '🔥',
+        animation: 'fire',
+        color: 'orange'
+      };
+    } else if (streak >= 3) {
+      return {
+        title: '🌟 Sua fé está crescendo!',
+        message: `${streak} dias seguidos! Continue assim, cada dia conta.`,
+        emoji: '🌟',
+        animation: 'sparkle',
+        color: 'yellow'
+      };
+    } else {
+      return {
+        title: '☀️ Que bom ter você aqui hoje!',
+        message: 'Reserve poucos minutos para estar com Deus. Você não vai se arrepender.',
+        emoji: '☀️',
+        animation: 'sunshine',
+        color: 'yellow'
+      };
+    }
+  }
+  
+  // Usuário regular (2-3 dias)
+  if (daysSinceLastLogin <= 3) {
+    return {
+      title: '😊 Que bom te ver novamente!',
+      message: 'Deus está sempre aqui, te esperando com carinho. Que tal um momento especial hoje?',
+      emoji: '😊',
+      animation: 'gentle',
+      color: 'blue'
+    };
+  }
+  
+  // Usuário retorno (4-7 dias)
+  if (daysSinceLastLogin <= 7) {
+    return {
+      title: '💙 Sentimos sua falta!',
+      message: 'Deus te espera com amor. Não há condenação, só acolhimento. Vamos recomeçar?',
+      emoji: '💙',
+      animation: 'heartbeat',
+      color: 'purple'
+    };
+  }
+  
+  // Usuário longo retorno (8+ dias)
+  return {
+    title: '🤗 Que alegria te ver de volta!',
+    message: 'Recomeçar é um ato de coragem. Deus te acolhe com amor infinito. Bem-vindo!',
+    emoji: '🤗',
+    animation: 'aurora',
+    color: 'green'
+  };
+};
+
 // Função para obter ícone do nível espiritual
 function getLevelIcon(level: number): string {
   switch (level) {
@@ -60,6 +138,13 @@ export default function DashboardPage() {
   const [showComebackReward, setShowComebackReward] = useState(false);
   const [emocaoSelecionada, setEmocaoSelecionada] = useState<string>('');
   const [showCheckIn, setShowCheckIn] = useState(false);
+  
+  // Mensagem dinâmica baseada no comportamento
+  const dynamicMessage = getDynamicMessage(
+    streak || 0, 
+    currentUser?.last_login || null, 
+    completedToday
+  );
 
   // Em modo DEV, usar mockUser
   const currentUser = DEV_MODE ? mockUser : user;
@@ -306,42 +391,53 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Mensagem de boas-vindas */}
-        <div style={{
-          background: colors.background.card,
-          borderRadius: '16px',
-          padding: spacing.fixed.cardPadding,
-          border: `1px solid ${colors.border}`,
-          backdropFilter: 'blur(10px)'
-        }}>
-          <h2 
-            className="mb-2"
+        {/* Mensagem dinâmica de boas-vindas */}
+        <div 
+          className={`relative overflow-hidden ${dynamicMessage.animation}-container`}
+          style={{
+            background: colors.background.card,
+            borderRadius: '16px',
+            padding: spacing.fixed.cardPadding,
+            border: `1px solid ${colors.border}`,
+            backdropFilter: 'blur(10px)'
+          }}
+        >
+          {/* Animação de fundo */}
+          <div 
+            className={`absolute inset-0 ${dynamicMessage.animation}-bg`}
             style={{ 
-              fontFamily: typography.serif,
-              fontSize: typography.heading.h2,
-              fontWeight: typography.weights.semibold,
-              color: colors.text.white
+              opacity: 0.1,
+              background: dynamicMessage.color === 'gold' ? 'linear-gradient(45deg, #fbbf24, #f59e0b)' :
+                         dynamicMessage.color === 'orange' ? 'linear-gradient(45deg, #f97316, #ea580c)' :
+                         dynamicMessage.color === 'yellow' ? 'linear-gradient(45deg, #eab308, #ca8a04)' :
+                         dynamicMessage.color === 'blue' ? 'linear-gradient(45deg, #3b82f6, #2563eb)' :
+                         dynamicMessage.color === 'purple' ? 'linear-gradient(45deg, #8b5cf6, #7c3aed)' :
+                         'linear-gradient(45deg, #10b981, #059669)'
             }}
-          >
-            {completedToday 
-              ? '✨ Parabéns! Você já fez seu devocional hoje' 
-              : inactivityStatus?.message 
-                ? inactivityStatus.message 
-                : '☀️ Que bom ter você aqui hoje!'
-            }
-          </h2>
-          <p 
-            style={{ 
-              fontFamily: typography.sans,
-              fontSize: typography.body.md,
-              color: colors.text.whiteMuted
-            }}
-          >
-            {completedToday 
-              ? 'Continue assim! Cada dia com Deus fortalece sua fé.'
-              : 'Reserve poucos minutos para estar com Deus. Você não vai se arrepender.'
-            }
-          </p>
+          />
+          
+          <div className="relative z-10">
+            <h2 
+              className={`mb-2 ${dynamicMessage.animation}-text`}
+              style={{ 
+                fontFamily: typography.serif,
+                fontSize: typography.heading.h2,
+                fontWeight: typography.weights.semibold,
+                color: colors.text.white
+              }}
+            >
+              {dynamicMessage.title}
+            </h2>
+            <p 
+              style={{ 
+                fontFamily: typography.sans,
+                fontSize: typography.body.md,
+                color: colors.text.whiteMuted
+              }}
+            >
+              {dynamicMessage.message}
+            </p>
+          </div>
         </div>
 
 

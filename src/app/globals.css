@@ -628,6 +628,110 @@
   animation: particles-float 5s infinite linear;
 }
 
+/* Animações para mensagens dinâmicas */
+@keyframes celebrate {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.05) rotate(1deg); }
+  50% { transform: scale(1.1) rotate(0deg); }
+  75% { transform: scale(1.05) rotate(-1deg); }
+}
+
+@keyframes fire {
+  0%, 100% { transform: scale(1); filter: hue-rotate(0deg); }
+  25% { transform: scale(1.02); filter: hue-rotate(10deg); }
+  50% { transform: scale(1.05); filter: hue-rotate(0deg); }
+  75% { transform: scale(1.02); filter: hue-rotate(-10deg); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+@keyframes sunshine {
+  0%, 100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+  50% { opacity: 0.9; transform: scale(1.02); filter: brightness(1.2); }
+}
+
+@keyframes gentle {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.01); opacity: 0.95; }
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  10%, 30% { transform: scale(1.05); }
+  20%, 40% { transform: scale(1); }
+}
+
+@keyframes aurora {
+  0%, 100% { 
+    background-position: 0% 50%;
+    transform: scale(1);
+  }
+  50% { 
+    background-position: 100% 50%;
+    transform: scale(1.01);
+  }
+}
+
+.celebrate-container {
+  animation: celebrate 3s ease-in-out infinite;
+}
+
+.fire-container {
+  animation: fire 2s ease-in-out infinite;
+}
+
+.sparkle-container {
+  animation: sparkle 2.5s ease-in-out infinite;
+}
+
+.sunshine-container {
+  animation: sunshine 3s ease-in-out infinite;
+}
+
+.gentle-container {
+  animation: gentle 4s ease-in-out infinite;
+}
+
+.heartbeat-container {
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+.aurora-container {
+  animation: aurora 6s ease-in-out infinite;
+  background-size: 200% 200%;
+}
+
+.celebrate-text {
+  animation: celebrate 2s ease-in-out infinite;
+}
+
+.fire-text {
+  animation: fire 1.5s ease-in-out infinite;
+}
+
+.sparkle-text {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.sunshine-text {
+  animation: sunshine 2.5s ease-in-out infinite;
+}
+
+.gentle-text {
+  animation: gentle 3s ease-in-out infinite;
+}
+
+.heartbeat-text {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+.aurora-text {
+  animation: aurora 4s ease-in-out infinite;
+}
+
 /* Dark mode ready (futuro) */
 @media (prefers-color-scheme: dark) {
   /* Preparado para dark mode */
