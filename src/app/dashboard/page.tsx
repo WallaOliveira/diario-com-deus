@@ -85,15 +85,8 @@ export default function DashboardPage() {
       loadStats(user.id);
       loadAchievements(user.id);
       
-      // Verificar conquistas novas apenas se for um retorno após atividade
-      const lastActivity = localStorage.getItem('last_activity_timestamp');
-      const now = Date.now();
-      const timeSinceActivity = lastActivity ? now - parseInt(lastActivity) : Infinity;
-      
-      // Se passou mais de 5 minutos desde a última atividade, verificar conquistas
-      if (timeSinceActivity > 5 * 60 * 1000) {
-        checkNewAchievements(user.id);
-      }
+      // NÃO verificar conquistas automaticamente - apenas carregar as existentes
+      // As conquistas são verificadas apenas quando o devocional/trilha é completado
       
       // Verificar inatividade
       const status = checkInactivityStatus();

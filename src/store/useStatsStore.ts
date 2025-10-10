@@ -54,7 +54,14 @@ export const useStatsStore = create<StatsState>((set, get) => ({
       // Separar novas conquistas
       const newAchievements = achievements.filter(a => a.is_new);
       
-      set({ achievements, newAchievements });
+      // Verificar se essas conquistas já foram vistas nesta sessão
+      const sessionViewed = sessionStorage.getItem('achievements_viewed_this_session');
+      const viewedIds = sessionViewed ? JSON.parse(sessionViewed) : [];
+      
+      // Filtrar apenas conquistas que não foram vistas nesta sessão
+      const trulyNewAchievements = newAchievements.filter(a => !viewedIds.includes(a.id));
+      
+      set({ achievements, newAchievements: trulyNewAchievements });
     } catch (error: any) {
       console.error('Erro ao carregar conquistas:', error);
     }
@@ -80,13 +87,20 @@ export const useStatsStore = create<StatsState>((set, get) => ({
   clearNewAchievements: async (userId: string) => {
     const { newAchievements } = get();
     
-    // Marcar como "vistas" no banco
+    // Marcar como "vistas nesta sessão" no sessionStorage
     if (newAchievements.length > 0) {
       const achievementIds = newAchievements.map(a => a.id);
-      await markAchievementsAsSeen(userId, achievementIds);
       
-      // Recarregar conquistas para atualizar is_new
-      await get().loadAchievements(userId);
+      // Atualizar sessionStorage
+      const sessionViewed = sessionStorage.getItem('achievements_viewed_this_session');
+      const viewedIds = sessionViewed ? JSON.parse(sessionViewed) : [];
+      const updatedViewedIds = [...new Set([...viewedIds, ...achievementIds])];
+      sessionStorage.setItem('achievements_viewed_this_session', JSON.stringify(updatedViewedIds));
+      
+      // Marcar como "vistas" no banco (async, não bloqueia)
+      markAchievementsAsSeen(userId, achievementIds).catch(err => 
+        console.error('Erro ao marcar conquistas como vistas:', err)
+      );
     }
     
     set({ newAchievements: [] });
