@@ -23,7 +23,7 @@ import {
 } from '@/lib/reengagement';
 
 // Sistema de mensagens dinâmicas
-const getDynamicMessage = (streak: number, lastLogin: string | null, completedToday: boolean) => {
+const getDynamicMessage = (streak: number, lastLogin: string | null, completedToday: boolean, emotion?: string) => {
   const now = new Date();
   const lastLoginDate = lastLogin ? new Date(lastLogin) : null;
   const daysSinceLastLogin = lastLoginDate ? Math.floor((now.getTime() - lastLoginDate.getTime()) / (1000 * 60 * 60 * 24)) : 0;
@@ -37,6 +37,44 @@ const getDynamicMessage = (streak: number, lastLogin: string | null, completedTo
       animation: 'celebrate',
       color: 'gold'
     };
+  }
+
+  // Se tem check-in emocional, personalizar mensagem
+  if (emotion) {
+    switch (emotion) {
+      case 'ansioso':
+        return {
+          title: '💙 Deus está no controle',
+          message: 'Respire fundo. Mesmo na ansiedade, Deus te ama e tem cuidado de você. Que tal um momento de paz?',
+          emoji: '💙',
+          animation: 'gentle',
+          color: 'blue'
+        };
+      case 'grato':
+        return {
+          title: '🙏 Que lindo coração grato!',
+          message: 'A gratidão transforma tudo! Vamos celebrar as bênçãos de hoje com Deus?',
+          emoji: '🙏',
+          animation: 'sunshine',
+          color: 'yellow'
+        };
+      case 'cansado':
+        return {
+          title: '🌙 Vinde a mim, cansados',
+          message: 'Deus conhece seu cansaço. Ele oferece descanso para sua alma. Aceita esse convite?',
+          emoji: '🌙',
+          animation: 'gentle',
+          color: 'purple'
+        };
+      case 'esperançoso':
+        return {
+          title: '🌟 Sua esperança é linda!',
+          message: 'Que bom ter esperança! Deus tem planos de esperança para você. Vamos descobrir juntos?',
+          emoji: '🌟',
+          animation: 'sparkle',
+          color: 'gold'
+        };
+    }
   }
   
   // Usuário ativo (0-1 dias)
@@ -146,7 +184,8 @@ export default function DashboardPage() {
   const dynamicMessage = getDynamicMessage(
     streak || 0, 
     currentUser?.last_login || null, 
-    completedToday
+    completedToday,
+    emocaoSelecionada || undefined
   );
 
   useEffect(() => {
@@ -719,6 +758,8 @@ export default function DashboardPage() {
               onSelect={(emocao) => {
                 setEmocaoSelecionada(emocao);
                 setShowCheckIn(false);
+                // Salvar emoção no localStorage para uso em outras páginas
+                localStorage.setItem('emocao_selecionada', emocao);
               }} 
             />
           </div>

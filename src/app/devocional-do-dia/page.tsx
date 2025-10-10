@@ -14,6 +14,7 @@ import ModalRespira from '@/components/ModalRespira';
 import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
 import { analytics } from '@/lib/analytics';
 import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
+import { getEmotionalSuggestion, getEmotionalTrilhaSuggestion } from '@/lib/emotional-suggestions';
 
 // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
 const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
@@ -38,6 +39,8 @@ export default function SessaoExpressPage() {
   const [showContexto, setShowContexto] = useState(false);
   const [showSugestao, setShowSugestao] = useState(false);
   const [showOracaoLivre, setShowOracaoLivre] = useState(false);
+  const [emocaoAtual, setEmocaoAtual] = useState<string>('');
+  const [showEmotionalSuggestion, setShowEmotionalSuggestion] = useState(false);
   
   // Hook para controlar o modal RESPIRA
   const { showRespira, showRespiraModal, closeRespiraModal, continueRespiraModal } = useRespiraModal();
@@ -56,6 +59,12 @@ export default function SessaoExpressPage() {
     // Track devocional iniciado
     if (devotionalOfDay) {
       analytics.devotionalStarted(devotionalOfDay.tema);
+    }
+
+    // Carregar emoção do localStorage
+    const savedEmotion = localStorage.getItem('emocao_selecionada');
+    if (savedEmotion) {
+      setEmocaoAtual(savedEmotion);
     }
 
     // Mostrar modal RESPIRA apenas se não foi mostrado hoje
@@ -112,6 +121,11 @@ export default function SessaoExpressPage() {
         
         // Salvar timestamp de atividade para controle de conquistas
         localStorage.setItem('last_activity_timestamp', Date.now().toString());
+        
+        // Mostrar sugestão emocional se houver emoção selecionada
+        if (emocaoAtual) {
+          setShowEmotionalSuggestion(true);
+        }
         
         setCompleted(true);
       } catch (error) {
@@ -569,6 +583,92 @@ export default function SessaoExpressPage() {
         onContinue={continueRespiraModal}
         tema={devocional?.tema}
       />
+
+      {/* Modal de Sugestão Emocional */}
+      {showEmotionalSuggestion && emocaoAtual && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
+            {(() => {
+              const suggestion = getEmotionalSuggestion(emocaoAtual);
+              const trilhaSuggestion = getEmotionalTrilhaSuggestion(emocaoAtual);
+              
+              if (!suggestion) return null;
+              
+              return (
+                <div className="space-y-4">
+                  {/* Header */}
+                  <div className="text-center">
+                    <div className="text-4xl mb-2">{suggestion.emoji}</div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-1">
+                      {suggestion.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      {suggestion.description}
+                    </p>
+                  </div>
+
+                  {/* Versículo */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-gray-800 mb-2">
+                      📖 {suggestion.verse}
+                    </h4>
+                    <p className="text-gray-700 italic leading-relaxed">
+                      "{suggestion.verseText}"
+                    </p>
+                  </div>
+
+                  {/* Reflexão */}
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-blue-800 mb-2">
+                      💭 Reflexão
+                    </h4>
+                    <p className="text-blue-700 leading-relaxed">
+                      {suggestion.reflection}
+                    </p>
+                  </div>
+
+                  {/* Oração */}
+                  <div className="bg-purple-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-purple-800 mb-2">
+                      🙏 Oração
+                    </h4>
+                    <p className="text-purple-700 leading-relaxed italic">
+                      {suggestion.prayer}
+                    </p>
+                  </div>
+
+                  {/* Sugestão de Trilha */}
+                  <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <h4 className="font-semibold text-orange-800 mb-2">
+                      🗺️ Recomendação
+                    </h4>
+                    <p className="text-orange-700 text-sm">
+                      Que tal continuar sua jornada com a trilha <strong>"{trilhaSuggestion}"</strong>?
+                    </p>
+                  </div>
+
+                  {/* Botões */}
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      onClick={() => setShowEmotionalSuggestion(false)}
+                      className="flex-1 py-2.5 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                    >
+                      Fechar
+                    </button>
+                    <Link
+                      href="/trilhas"
+                      className="flex-1 py-2.5 px-4 bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 rounded-lg hover:from-yellow-500 hover:to-amber-600 transition-all font-medium text-center"
+                      onClick={() => setShowEmotionalSuggestion(false)}
+                    >
+                      Ver Trilhas
+                    </Link>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
