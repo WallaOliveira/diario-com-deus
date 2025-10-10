@@ -138,6 +138,9 @@ export default function DashboardPage() {
   const [showComebackReward, setShowComebackReward] = useState(false);
   const [emocaoSelecionada, setEmocaoSelecionada] = useState<string>('');
   const [showCheckIn, setShowCheckIn] = useState(false);
+
+  // Em modo DEV, usar mockUser
+  const currentUser = DEV_MODE ? mockUser : user;
   
   // Mensagem dinâmica baseada no comportamento
   const dynamicMessage = getDynamicMessage(
@@ -145,9 +148,6 @@ export default function DashboardPage() {
     currentUser?.last_login || null, 
     completedToday
   );
-
-  // Em modo DEV, usar mockUser
-  const currentUser = DEV_MODE ? mockUser : user;
 
   useEffect(() => {
     if (!DEV_MODE) {
