@@ -21,6 +21,7 @@ import {
   getComebackReward,
   requestNotificationPermission 
 } from '@/lib/reengagement';
+import { getEmotionalSuggestion } from '@/lib/emotional-suggestions';
 
 // Sistema de mensagens dinâmicas
 const getDynamicMessage = (streak: number, lastLogin: string | null, completedToday: boolean, emotion?: string) => {
@@ -176,6 +177,7 @@ export default function DashboardPage() {
   const [showComebackReward, setShowComebackReward] = useState(false);
   const [emocaoSelecionada, setEmocaoSelecionada] = useState<string>('');
   const [showCheckIn, setShowCheckIn] = useState(false);
+  const [showEmotionalDevotionalSuggestion, setShowEmotionalDevotionalSuggestion] = useState(false);
 
   // Em modo DEV, usar mockUser
   const currentUser = DEV_MODE ? mockUser : user;
@@ -760,8 +762,73 @@ export default function DashboardPage() {
                 setShowCheckIn(false);
                 // Salvar emoção no localStorage para uso em outras páginas
                 localStorage.setItem('emocao_selecionada', emocao);
+                // Mostrar sugestão de devocional emocional
+                setShowEmotionalDevotionalSuggestion(true);
               }} 
             />
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Sugestão de Devocional Emocional */}
+      {showEmotionalDevotionalSuggestion && emocaoSelecionada && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full">
+            {(() => {
+              const suggestion = getEmotionalSuggestion(emocaoSelecionada);
+              
+              if (!suggestion) return null;
+              
+              return (
+                <div className="space-y-4">
+                  {/* Header */}
+                  <div className="text-center">
+                    <div className="text-4xl mb-2">{suggestion.emoji}</div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-1">
+                      Devocional Especial para Você
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      {suggestion.description}
+                    </p>
+                  </div>
+
+                  {/* Versículo Preview */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-gray-800 mb-2">
+                      📖 {suggestion.verse}
+                    </h4>
+                    <p className="text-gray-700 italic leading-relaxed text-sm">
+                      "{suggestion.verseText.substring(0, 120)}..."
+                    </p>
+                  </div>
+
+                  {/* Explicação */}
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <p className="text-blue-700 text-sm leading-relaxed">
+                      Este devocional foi especialmente escolhido para te ajudar com o que você está sentindo hoje. 
+                      Que tal dedicar alguns minutos para esta palavra especial?
+                    </p>
+                  </div>
+
+                  {/* Botões */}
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      onClick={() => setShowEmotionalDevotionalSuggestion(false)}
+                      className="flex-1 py-2.5 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                    >
+                      Voltar ao Dashboard
+                    </button>
+                    <Link
+                      href="/devocional-emocional"
+                      className="flex-1 py-2.5 px-4 bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 rounded-lg hover:from-yellow-500 hover:to-amber-600 transition-all font-medium text-center"
+                      onClick={() => setShowEmotionalDevotionalSuggestion(false)}
+                    >
+                      Fazer Devocional Especial
+                    </Link>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </div>
       )}
