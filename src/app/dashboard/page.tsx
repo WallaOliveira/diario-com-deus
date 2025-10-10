@@ -501,7 +501,7 @@ export default function DashboardPage() {
                   color: colors.text.white
                 }}
               >
-                📈 Minha Evolução
+                📈 Minha Jornada
               </h3>
               <p 
                 style={{ 
@@ -521,12 +521,14 @@ export default function DashboardPage() {
 
 
         {/* Presentes para Você */}
-        <Link href="/bonus" className="bonus-card block transition-all hover:scale-105" style={{
+        <div className="relative" style={{
           background: colors.background.card,
           borderRadius: '16px',
           padding: spacing.fixed.cardPadding,
           border: `1px solid ${colors.border}`,
-          backdropFilter: 'blur(10px)'
+          backdropFilter: 'blur(10px)',
+          opacity: 0.6,
+          filter: 'blur(1px)'
         }}>
           <div className="flex items-center justify-between">
             <div>
@@ -552,10 +554,43 @@ export default function DashboardPage() {
               </p>
             </div>
             <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-              <FiGift size={24} className="text-white" />
+              <FiGift size={24} className="text-white" style={{ opacity: 0.5 }} />
             </div>
           </div>
-        </Link>
+          
+          {/* Cadeado central */}
+          <div 
+            className="absolute inset-0 flex items-center justify-center"
+            style={{ pointerEvents: 'none' }}
+          >
+            <div 
+              className="w-16 h-16 rounded-full flex items-center justify-center"
+              style={{
+                background: 'rgba(0, 0, 0, 0.8)',
+                border: '2px solid rgba(156, 163, 175, 0.5)',
+                boxShadow: '0 0 20px rgba(156, 163, 175, 0.3)'
+              }}
+            >
+              <FiLock size={32} style={{ color: '#9ca3af' }} />
+            </div>
+          </div>
+          
+          {/* Texto explicativo */}
+          <div 
+            className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center"
+            style={{ pointerEvents: 'none' }}
+          >
+            <p 
+              className="text-xs"
+              style={{ 
+                fontFamily: typography.sans,
+                color: colors.text.whiteMuted
+              }}
+            >
+              🔒 Em breve - Apenas para testadores beta
+            </p>
+          </div>
+        </div>
 
       </Container>
 

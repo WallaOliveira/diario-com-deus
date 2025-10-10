@@ -170,7 +170,7 @@ export default function ProgressoPage() {
                   color: colors.text.gold
                 }}
               >
-                Minha Evolução
+                Minha Jornada
               </h1>
               <p 
                 className="text-sm"
