@@ -291,12 +291,6 @@ export default function SessaoExpressPage() {
               }}
             >
               <p 
-                className="text-white leading-relaxed italic text-lg mb-4"
-                style={{ fontFamily: typography.serif }}
-              >
-                {devocional.referencia}
-              </p>
-              <p 
                 className="text-white leading-relaxed italic text-lg"
                 style={{ fontFamily: typography.serif }}
               >
@@ -364,10 +358,17 @@ export default function SessaoExpressPage() {
               </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
+            <div 
+              className="p-6 rounded-2xl"
+              style={{
+                background: colors.background.card,
+                border: `1px solid ${colors.border}`,
+                backdropFilter: 'blur(10px)'
+              }}
+            >
               <p 
-                className="text-white text-lg leading-relaxed"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                className="text-white leading-relaxed"
+                style={{ fontFamily: typography.sans }}
               >
                 {devocional.palavraViva}
               </p>
@@ -377,16 +378,16 @@ export default function SessaoExpressPage() {
               <button
                 onClick={handleBack}
                 className="flex-1 py-3.5 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors font-semibold"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                style={{ fontFamily: typography.sans }}
               >
                 ← Voltar
               </button>
               <button
                 onClick={handleNext}
-                className="flex-1 bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                className="flex-[2] bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                style={{ fontFamily: typography.sans }}
               >
-                Continuar
+                Continuar →
               </button>
             </div>
           </div>
@@ -410,71 +411,66 @@ export default function SessaoExpressPage() {
               </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
-              {/* Campo de anotações opcional */}
-              <div className="mb-6">
-                <label 
-                  htmlFor="notes"
-                  className="block text-sm font-medium text-blue-100 mb-2"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  Seu compromisso pessoal (opcional)
-                </label>
-                <textarea
-                  id="notes"
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Hoje eu vou... O que mais me tocou foi... Minha ação será..."
-                  className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
-                  rows={4}
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                />
-              </div>
-
-              {/* Botão de sugestão prática opcional */}
-              <div className="text-center">
-                <button
-                  onClick={() => setShowSugestao(!showSugestao)}
-                  className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
-                  style={{ fontFamily: typography.sans }}
-                >
-                  {showSugestao ? 'Ocultar sugestão' : 'Ver sugestão prática'}
-                </button>
-              </div>
-
-              {/* Sugestão prática (se ativada) */}
-              {showSugestao && (
-                <div 
-                  className="p-4 rounded-xl border border-green-400/50"
-                  style={{
-                    background: 'rgba(34, 197, 94, 0.1)',
-                    backdropFilter: 'blur(10px)'
-                  }}
-                >
-                  <h4 className="font-semibold text-green-300 mb-2">
-                    💡 Sugestão Prática
-                  </h4>
-                  <p className="text-green-100 text-sm leading-relaxed">
-                    {devocional.acao}
-                  </p>
-                </div>
-              )}
+            <div 
+              className="p-6 rounded-2xl space-y-4"
+              style={{
+                background: colors.background.card,
+                border: `1px solid ${colors.border}`,
+                backdropFilter: 'blur(10px)'
+              }}
+            >
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Como você pode aplicar esta palavra em sua vida hoje? Que ação prática você pode tomar?"
+                className="w-full h-32 p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                style={{ fontFamily: typography.sans }}
+              />
             </div>
+
+            {/* Botão de sugestão prática opcional */}
+            <div className="text-center">
+              <button
+                onClick={() => setShowSugestao(!showSugestao)}
+                className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
+                style={{ fontFamily: typography.sans }}
+              >
+                {showSugestao ? 'Ocultar sugestão' : 'Ver sugestão prática'}
+              </button>
+            </div>
+
+            {/* Sugestão prática (se ativada) */}
+            {showSugestao && (
+              <div 
+                className="p-4 rounded-xl border border-green-400/50"
+                style={{
+                  background: 'rgba(34, 197, 94, 0.1)',
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <h4 className="font-semibold text-green-300 mb-2">
+                  💡 Sugestão Prática
+                </h4>
+                <p className="text-green-100 text-sm leading-relaxed">
+                  {devocional.acao}
+                </p>
+              </div>
+            )}
 
             <div className="flex gap-3">
               <button
                 onClick={handleBack}
                 className="flex-1 py-3.5 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors font-semibold"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                style={{ fontFamily: typography.sans }}
               >
                 ← Voltar
               </button>
               <button
                 onClick={handleNext}
-                className="flex-1 bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                className="flex-[2] bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                style={{ fontFamily: typography.sans }}
               >
-                Continuar
+                Continuar →
               </button>
             </div>
           </div>
@@ -491,61 +487,51 @@ export default function SessaoExpressPage() {
                 🙏 Ora
               </h2>
               
-              <div className="space-y-6">
-                {/* Oração sugerida */}
-                <div className="bg-blue-500/20 rounded-lg p-4 border border-blue-400/30">
-                  <h3 
-                    className="text-blue-100 font-semibold mb-3"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    💬 Oração Sugerida:
-                  </h3>
-                  <p 
-                    className="text-blue-100 leading-relaxed text-lg italic"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  >
-                    {devocional.oracao}
-                  </p>
-                  <button
-                    onClick={() => speak(devocional.oracao, 'oração')}
-                    className="mt-4 flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    <FiVolume2 size={16} />
-                    Ouvir Oração
-                  </button>
-                </div>
-
-                {/* Botão de oração livre opcional */}
-                <div className="text-center">
-                  <button
-                    onClick={() => setShowOracaoLivre(!showOracaoLivre)}
-                    className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
-                    style={{ fontFamily: typography.sans }}
-                  >
-                    {showOracaoLivre ? 'Ocultar oração livre' : 'Ou ore livremente'}
-                  </button>
-                </div>
-
-                {/* Oração livre (se ativada) */}
-                {showOracaoLivre && (
-                  <div 
-                    className="p-4 rounded-xl border border-purple-400/50"
-                    style={{
-                      background: 'rgba(147, 51, 234, 0.1)',
-                      backdropFilter: 'blur(10px)'
-                    }}
-                  >
-                    <h4 className="font-semibold text-purple-300 mb-2">
-                      💭 Sua Oração
-                    </h4>
-                    <p className="text-purple-100 text-sm leading-relaxed">
-                      Feche os olhos por um momento e converse com Deus do seu coração. 
-                      Agradeça, peça orientação, ou simplesmente esteja em Sua presença.
-                    </p>
-                  </div>
-                )}
+              <div 
+                className="p-6 rounded-2xl"
+                style={{
+                  background: colors.background.card,
+                  border: `1px solid ${colors.border}`,
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <p 
+                  className="text-white leading-relaxed italic"
+                  style={{ fontFamily: typography.serif }}
+                >
+                  {devocional.oracao}
+                </p>
               </div>
+
+              {/* Botão de oração livre opcional */}
+              <div className="text-center">
+                <button
+                  onClick={() => setShowOracaoLivre(!showOracaoLivre)}
+                  className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
+                  style={{ fontFamily: typography.sans }}
+                >
+                  {showOracaoLivre ? 'Ocultar oração livre' : 'Ou ore livremente'}
+                </button>
+              </div>
+
+              {/* Oração livre (se ativada) */}
+              {showOracaoLivre && (
+                <div 
+                  className="p-4 rounded-xl border border-purple-400/50"
+                  style={{
+                    background: 'rgba(147, 51, 234, 0.1)',
+                    backdropFilter: 'blur(10px)'
+                  }}
+                >
+                  <h4 className="font-semibold text-purple-300 mb-2">
+                    💭 Sua Oração
+                  </h4>
+                  <p className="text-purple-100 text-sm leading-relaxed">
+                    Feche os olhos por um momento e converse com Deus do seu coração. 
+                    Agradeça, peça orientação, ou simplesmente esteja em Sua presença.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-3">
@@ -553,25 +539,24 @@ export default function SessaoExpressPage() {
               <button
                 onClick={() => handleSaveFavorite(devocional.texto, 'verse', devocional.referencia)}
                 className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                style={{ fontFamily: typography.sans }}
               >
                 <FiHeart size={18} />
                 <span>Favoritar este devocional</span>
               </button>
 
-              {/* Botões de navegação */}
               <div className="flex gap-3">
                 <button
                   onClick={handleBack}
                   className="flex-1 py-3.5 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors font-semibold"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
+                  style={{ fontFamily: typography.sans }}
                 >
                   ← Voltar
                 </button>
                 <button
                   onClick={handleComplete}
                   className="flex-[2] bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
+                  style={{ fontFamily: typography.sans }}
                 >
                   ✨ Finalizar Devocional
                 </button>
