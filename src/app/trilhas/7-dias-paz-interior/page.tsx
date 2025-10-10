@@ -322,18 +322,12 @@ export default function TrilhaPazInteriorPage() {
         {/* Step 1: SABEDORIA - Leitura Bíblica */}
         {step === 1 && (
           <div className="animate-fadeIn space-y-6">
-            <div className="text-center mb-8">
-              <h1 
-                className="text-3xl font-bold text-white mb-4"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-white mb-2">
                 📖 Sabedoria
-              </h1>
-              <p 
-                className="text-lg text-blue-100 leading-relaxed"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Leia com atenção. Deus tem uma palavra especial para você hoje.
+              </h2>
+              <p className="text-white/80">
+                {diaData.referencia}
               </p>
             </div>
 
@@ -397,19 +391,10 @@ export default function TrilhaPazInteriorPage() {
         {/* Step 2: PALAVRA VIVA - Reflexão Guiada */}
         {step === 2 && (
           <div className="animate-fadeIn space-y-6">
-            <div className="text-center mb-8">
-              <h1 
-                className="text-3xl font-bold text-white mb-4"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-white mb-2">
                 💡 Palavra Viva
-              </h1>
-              <p 
-                className="text-lg text-blue-100 leading-relaxed"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                O que Deus está dizendo para você através desta palavra
-              </p>
+              </h2>
             </div>
 
             <div 
@@ -450,19 +435,10 @@ export default function TrilhaPazInteriorPage() {
         {/* Step 3: AÇÃO DO DIA - Aplicação Prática */}
         {step === 3 && (
           <div className="animate-fadeIn space-y-6">
-            <div className="text-center mb-8">
-              <h1 
-                className="text-3xl font-bold text-white mb-4"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-white mb-2">
                 🎯 Ação do Dia
-              </h1>
-              <p 
-                className="text-lg text-blue-100 leading-relaxed"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Como você vai viver essa palavra hoje?
-              </p>
+              </h2>
             </div>
 
             <div 

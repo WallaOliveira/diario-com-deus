@@ -267,18 +267,12 @@ export default function SessaoExpressPage() {
         {/* Step 1: LÊ - Leitura Bíblica (RESPIRA agora é modal) */}
         {step === 1 && (
           <div className="animate-fadeIn space-y-6">
-            <div className="text-center mb-8">
-              <h1 
-                className="text-3xl font-bold text-white mb-4"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-white mb-2">
                 📖 Sabedoria
-              </h1>
-              <p 
-                className="text-lg text-blue-100 leading-relaxed"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Leia com atenção. Deus tem uma palavra especial para você hoje.
+              </h2>
+              <p className="text-white/80">
+                {devocional.referencia}
               </p>
             </div>
 
@@ -332,9 +326,9 @@ export default function SessaoExpressPage() {
             <button
               onClick={handleNext}
               className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-              style={{ fontFamily: "'Inter', sans-serif" }}
+              style={{ fontFamily: typography.sans }}
             >
-              Continuar
+              Continuar →
             </button>
           </div>
         )}
@@ -343,19 +337,10 @@ export default function SessaoExpressPage() {
         {/* Step 2: PALAVRA VIVA - Reflexão Guiada */}
         {step === 2 && (
           <div className="animate-fadeIn space-y-6">
-            <div className="text-center mb-8">
-              <h1 
-                className="text-3xl font-bold text-white mb-4"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-white mb-2">
                 💡 Palavra Viva
-              </h1>
-              <p 
-                className="text-lg text-blue-100 leading-relaxed"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                O que Deus está dizendo para você através desta palavra
-              </p>
+              </h2>
             </div>
 
             <div 
@@ -396,19 +381,10 @@ export default function SessaoExpressPage() {
         {/* Step 3: AÇÃO DO DIA - Aplicação Prática */}
         {step === 3 && (
           <div className="animate-fadeIn space-y-6">
-            <div className="text-center mb-8">
-              <h1 
-                className="text-3xl font-bold text-white mb-4"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-white mb-2">
                 🎯 Ação do Dia
-              </h1>
-              <p 
-                className="text-lg text-blue-100 leading-relaxed"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Como você vai viver essa palavra hoje?
-              </p>
+              </h2>
             </div>
 
             <div 
@@ -479,22 +455,20 @@ export default function SessaoExpressPage() {
         {/* Step 4: ORA - Momento de Oração */}
         {step === 4 && (
           <div className="animate-fadeIn space-y-6">
-            <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
-              <h2 
-                className="text-2xl font-bold text-white mb-6"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-white mb-2">
                 🙏 Ora
               </h2>
-              
-              <div 
-                className="p-6 rounded-2xl"
-                style={{
-                  background: colors.background.card,
-                  border: `1px solid ${colors.border}`,
-                  backdropFilter: 'blur(10px)'
-                }}
-              >
+            </div>
+            
+            <div 
+              className="p-6 rounded-2xl"
+              style={{
+                background: colors.background.card,
+                border: `1px solid ${colors.border}`,
+                backdropFilter: 'blur(10px)'
+              }}
+            >
                 <p 
                   className="text-white leading-relaxed italic"
                   style={{ fontFamily: typography.serif }}
@@ -532,7 +506,6 @@ export default function SessaoExpressPage() {
                   </p>
                 </div>
               )}
-            </div>
 
             <div className="flex flex-col gap-3">
               {/* Opção de favoritar */}
