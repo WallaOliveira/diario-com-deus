@@ -560,18 +560,16 @@ export default function DashboardPage() {
           
           {/* Cadeado central */}
           <div 
-            className="absolute inset-0 flex items-center justify-center"
+            className="absolute inset-0 flex items-center justify-center z-10"
             style={{ pointerEvents: 'none' }}
           >
             <div 
-              className="w-16 h-16 rounded-full flex items-center justify-center"
+              className="bg-black/80 backdrop-blur rounded-full p-3 border-2 border-gray-400/50"
               style={{
-                background: 'rgba(0, 0, 0, 0.8)',
-                border: '2px solid rgba(156, 163, 175, 0.5)',
-                boxShadow: '0 0 20px rgba(156, 163, 175, 0.3)'
+                boxShadow: '0 0 15px rgba(156, 163, 175, 0.3)'
               }}
             >
-              <FiLock size={32} style={{ color: '#9ca3af' }} />
+              <FiLock size={24} className="text-gray-400" />
             </div>
           </div>
           
