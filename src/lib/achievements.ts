@@ -310,6 +310,36 @@ export const ACHIEVEMENTS: Achievement[] = [
     requirement: 3,
     points: 300,
   },
+  {
+    key: 'paz_interior_complete',
+    type: 'special',
+    title: '🕊️ Encontrou a Paz',
+    description: 'Completou a trilha "7 Dias de Paz Interior". Que Deus te guarde em paz!',
+    icon: '🕊️',
+    requirement: 1,
+    points: 75,
+    spiritualBenefit: 'A paz interior é um dos maiores presentes que Deus pode nos dar. Quando você encontra essa paz, ela se torna um refúgio permanente para sua alma.',
+    bibleVerse: '"Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá. Não se turbe o vosso coração, nem se atemorize." João 14:27',
+    educationalText: 'A paz interior não é ausência de problemas, mas presença de Deus no meio deles. Esta conquista representa uma jornada profunda de transformação e confiança em Deus.'
+  },
+  {
+    key: 'first_trail_day',
+    type: 'special',
+    title: '🗺️ Primeiro Passo na Trilha',
+    description: 'Completou seu primeiro dia de trilha! A jornada está começando.',
+    icon: '🗺️',
+    requirement: 1,
+    points: 15,
+  },
+  {
+    key: 'trail_consistency',
+    type: 'special',
+    title: '📅 Consistência na Trilha',
+    description: 'Completou 3 dias seguidos de uma trilha! Você está comprometido com o crescimento.',
+    icon: '📅',
+    requirement: 3,
+    points: 40,
+  },
 ];
 
 /**
@@ -434,6 +464,7 @@ export function checkNewAchievements(
     favoritesCount: number;
     trailsStarted: number;
     trailsCompleted: number;
+    trailStreakDays: number;
   },
   alreadyUnlocked: string[]
 ): Achievement[] {
@@ -487,6 +518,12 @@ export function checkNewAchievements(
           shouldUnlock = stats.trailsCompleted >= 1;
         } else if (achievement.key === 'trail_master') {
           shouldUnlock = stats.trailsCompleted >= 3;
+        } else if (achievement.key === 'paz_interior_complete') {
+          shouldUnlock = (stats.themeCompletions['paz_interior'] || 0) >= 1;
+        } else if (achievement.key === 'first_trail_day') {
+          shouldUnlock = stats.trailsStarted >= 1;
+        } else if (achievement.key === 'trail_consistency') {
+          shouldUnlock = stats.trailStreakDays >= 3;
         }
         break;
     }

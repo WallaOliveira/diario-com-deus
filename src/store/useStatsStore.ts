@@ -4,7 +4,7 @@
  */
 
 import { create } from 'zustand';
-import { getUserStats, getUserAchievements, checkAndUnlockAchievements } from '@/lib/database';
+import { getUserStats, getUserAchievements, checkAndUnlockAchievements, markAchievementsAsSeen } from '@/lib/database';
 import type { UserStats, UserAchievement } from '@/lib/database';
 
 interface StatsState {
@@ -19,7 +19,7 @@ interface StatsState {
   loadStats: (userId: string) => Promise<void>;
   loadAchievements: (userId: string) => Promise<void>;
   checkNewAchievements: (userId: string) => Promise<void>;
-  clearNewAchievements: () => void;
+  clearNewAchievements: (userId: string) => Promise<void>;
   refreshAll: (userId: string) => Promise<void>;
 }
 
@@ -77,7 +77,18 @@ export const useStatsStore = create<StatsState>((set, get) => ({
   /**
    * Limpar lista de novas conquistas (após mostrar modal)
    */
-  clearNewAchievements: () => {
+  clearNewAchievements: async (userId: string) => {
+    const { newAchievements } = get();
+    
+    // Marcar como "vistas" no banco
+    if (newAchievements.length > 0) {
+      const achievementIds = newAchievements.map(a => a.id);
+      await markAchievementsAsSeen(userId, achievementIds);
+      
+      // Recarregar conquistas para atualizar is_new
+      await get().loadAchievements(userId);
+    }
+    
     set({ newAchievements: [] });
   },
 

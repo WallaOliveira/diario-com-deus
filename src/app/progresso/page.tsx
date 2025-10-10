@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useStatsStore } from '@/store/useStatsStore';
-import { FiArrowLeft, FiTrendingUp, FiHeart, FiSmile, FiCheckCircle, FiLock, FiEye, FiStar } from 'react-icons/fi';
+import { FiArrowLeft, FiTrendingUp, FiHeart, FiSmile, FiCheckCircle, FiLock, FiEye, FiStar, FiBookmark } from 'react-icons/fi';
 import { FiAward as FiTrophy } from 'react-icons/fi';
 import Link from 'next/link';
 import { format, subDays, startOfWeek, addDays } from 'date-fns';
@@ -27,12 +27,15 @@ export default function ProgressoPage() {
   
   const [mostrarCheckin, setMostrarCheckin] = useState(false);
   const [checkinsAnteriores, setCheckinsAnteriores] = useState<CheckInEmocional[]>([]);
-  const [activeTab, setActiveTab] = useState<'overview' | 'achievements' | 'emotional'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'achievements' | 'emotional' | 'favorites'>('overview');
   
   // Check-in do dia
   const [paz, setPaz] = useState(5);
   const [proximidade, setProximidade] = useState(5);
   const [ansiedade, setAnsiedade] = useState(5);
+  
+  // Favoritos
+  const [favoritos, setFavoritos] = useState<any[]>([]);
 
   useEffect(() => {
     checkUser();
@@ -45,6 +48,7 @@ export default function ProgressoPage() {
       loadStats(user.id);
       loadAchievements(user.id);
       carregarCheckins();
+      carregarFavoritos();
     }
   }, [loading, user, router, loadStats, loadAchievements]);
 
@@ -61,6 +65,14 @@ export default function ProgressoPage() {
     const saved = localStorage.getItem('checkins_emocionais');
     if (saved) {
       setCheckinsAnteriores(JSON.parse(saved));
+    }
+  };
+
+  const carregarFavoritos = () => {
+    // Carregar do localStorage (em produção viria do Supabase)
+    const saved = localStorage.getItem('favoritos');
+    if (saved) {
+      setFavoritos(JSON.parse(saved));
     }
   };
 
@@ -177,7 +189,8 @@ export default function ProgressoPage() {
             {[
               { id: 'overview', label: '📊 Visão Geral', icon: FiTrendingUp },
               { id: 'achievements', label: '🏆 Conquistas', icon: FiTrophy },
-              { id: 'emotional', label: '💜 Emocional', icon: FiHeart }
+              { id: 'emotional', label: '💜 Emocional', icon: FiHeart },
+              { id: 'favorites', label: '❤️ Favoritos', icon: FiBookmark }
             ].map((tab) => {
               const Icon = tab.icon;
               return (
@@ -808,6 +821,161 @@ export default function ProgressoPage() {
                   >
                     Fazer Primeiro Check-in
                   </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Tab: Favoritos */}
+          {activeTab === 'favorites' && (
+            <div className="space-y-6">
+              {/* Header */}
+              <div className="text-center">
+                <h2 
+                  className="text-2xl font-bold mb-2"
+                  style={{ 
+                    fontFamily: typography.serif,
+                    color: colors.text.white
+                  }}
+                >
+                  ❤️ Meus Favoritos
+                </h2>
+                <p 
+                  className="text-lg"
+                  style={{ 
+                    fontFamily: typography.sans,
+                    color: colors.text.whiteMuted
+                  }}
+                >
+                  Versículos e devocionais que tocaram seu coração
+                </p>
+              </div>
+
+              {/* Favoritos Grid */}
+              {favoritos.length > 0 ? (
+                <div className="space-y-4">
+                  {favoritos.map((favorito, index) => (
+                    <div
+                      key={index}
+                      className="p-6 rounded-xl border-2 border-red-500/50 bg-gradient-to-br from-red-900/20 to-pink-900/20"
+                    >
+                      {/* Header do favorito */}
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className="text-3xl">❤️</div>
+                        <div className="flex-1">
+                          <h3 
+                            className="text-lg font-semibold mb-1 text-white"
+                            style={{ fontFamily: typography.serif }}
+                          >
+                            {favorito.type === 'verse' ? '📖 Versículo' : 
+                             favorito.type === 'quote' ? '💭 Citação' : 
+                             '🙏 Oração'}
+                          </h3>
+                          {favorito.reference && (
+                            <p 
+                              className="text-sm text-red-300 mb-2"
+                              style={{ fontFamily: typography.sans }}
+                            >
+                              {favorito.reference}
+                            </p>
+                          )}
+                        </div>
+                        <div className="text-red-400">
+                          <FiHeart size={20} />
+                        </div>
+                      </div>
+
+                      {/* Conteúdo */}
+                      <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                        <p 
+                          className="text-white leading-relaxed italic"
+                          style={{ fontFamily: typography.serif }}
+                        >
+                          "{favorito.content}"
+                        </p>
+                      </div>
+
+                      {/* Tags */}
+                      {favorito.tags && favorito.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {favorito.tags.map((tag: string, tagIndex: number) => (
+                            <span
+                              key={tagIndex}
+                              className="px-3 py-1 bg-red-500/20 text-red-300 rounded-full text-xs"
+                              style={{ fontFamily: typography.sans }}
+                            >
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Data */}
+                      <div className="text-xs text-gray-400 mt-3 pt-2 border-t border-gray-700/50">
+                        Salvo em: {favorito.created_at ? new Date(favorito.created_at).toLocaleDateString('pt-BR') : 'Data não disponível'}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                /* Empty State */
+                <div className="text-center py-12">
+                  <div className="text-6xl mb-4">❤️</div>
+                  <h3 
+                    className="text-xl font-semibold mb-2"
+                    style={{ 
+                      fontFamily: typography.serif,
+                      color: colors.text.white
+                    }}
+                  >
+                    Nenhum favorito ainda
+                  </h3>
+                  <p 
+                    className="text-lg mb-6"
+                    style={{ 
+                      fontFamily: typography.sans,
+                      color: colors.text.whiteMuted
+                    }}
+                  >
+                    Quando você favoritar versículos ou devocionais, eles aparecerão aqui!
+                  </p>
+                  <Link 
+                    href="/devocional-do-dia"
+                    className="inline-block py-3 px-6 rounded-lg font-bold transition-all hover:scale-105"
+                    style={{
+                      background: `linear-gradient(135deg, ${colors.text.gold} 0%, #d4af37 100%)`,
+                      color: '#0f172a',
+                      fontFamily: typography.sans
+                    }}
+                  >
+                    Fazer Devocional de Hoje
+                  </Link>
+                </div>
+              )}
+
+              {/* Stats dos favoritos */}
+              {favoritos.length > 0 && (
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="p-4 rounded-xl border-2 border-red-500/50 bg-red-900/20 text-center">
+                    <div className="text-3xl font-bold text-red-400 mb-1">
+                      {favoritos.length}
+                    </div>
+                    <p className="text-sm text-red-300">Total</p>
+                  </div>
+
+                  <div className="p-4 rounded-xl border-2 border-blue-500/50 bg-blue-900/20 text-center">
+                    <div className="text-3xl font-bold text-blue-400 mb-1">
+                      {favoritos.filter(f => f.type === 'verse').length}
+                    </div>
+                    <p className="text-sm text-blue-300">Versículos</p>
+                  </div>
+
+                  <div className="p-4 rounded-xl border-2 border-green-500/50 bg-green-900/20 text-center">
+                    <div className="text-3xl font-bold text-green-400 mb-1">
+                      {favoritos.filter(f => f.type === 'quote').length}
+                    </div>
+                    <p className="text-sm text-green-300">Citações</p>
+                  </div>
                 </div>
               )}
             </div>

@@ -6,12 +6,12 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useProgressStore } from '@/store/useProgressStore';
 import { useStatsStore } from '@/store/useStatsStore';
 import { useRespiraModal } from '@/hooks/useRespiraModal';
-import { FiArrowLeft, FiVolume2, FiCheck, FiHeart } from 'react-icons/fi';
+import { FiArrowLeft, FiCheck, FiHeart, FiLock } from 'react-icons/fi';
 import Link from 'next/link';
 import Confetti from '@/components/Confetti';
 import AchievementModal from '@/components/AchievementModal';
 import ModalRespira from '@/components/ModalRespira';
-import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
+import { getTrilhaById, getTrilhaDia, type TrilhaDia } from '@/lib/trilhas';
 import { analytics } from '@/lib/analytics';
 import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
 
@@ -25,22 +25,31 @@ const mockUser = {
   }
 };
 
-export default function SessaoExpressPage() {
+export default function TrilhaPazInteriorPage() {
   const router = useRouter();
   const { user, checkUser } = useAuthStore();
   const { markComplete } = useProgressStore();
   const { refreshAll, newAchievements, clearNewAchievements } = useStatsStore();
+  
+  // Estados principais
+  const [diaAtual, setDiaAtual] = useState(1);
   const [step, setStep] = useState(1);
   const [notes, setNotes] = useState('');
   const [completed, setCompleted] = useState(false);
-  const [devocional, setDevocional] = useState<Devotional | null>(null);
+  const [diasConcluidos, setDiasConcluidos] = useState<number[]>([]);
   const [startTime] = useState(Date.now());
+  
+  // Estados de visibilidade
   const [showContexto, setShowContexto] = useState(false);
   const [showSugestao, setShowSugestao] = useState(false);
   const [showOracaoLivre, setShowOracaoLivre] = useState(false);
   
   // Hook para controlar o modal RESPIRA
   const { showRespira, showRespiraModal, closeRespiraModal, continueRespiraModal } = useRespiraModal();
+
+  // Dados da trilha
+  const trilha = getTrilhaById('7-dias-paz-interior');
+  const diaData = getTrilhaDia('7-dias-paz-interior', diaAtual);
 
   useEffect(() => {
     if (!DEV_MODE) {
@@ -49,24 +58,28 @@ export default function SessaoExpressPage() {
   }, [checkUser]);
 
   useEffect(() => {
-    // Carrega devocional do dia
-    const devotionalOfDay = getDevotionalOfTheDay();
-    setDevocional(devotionalOfDay);
-    
-    // Track devocional iniciado
-    if (devotionalOfDay) {
-      analytics.devotionalStarted(devotionalOfDay.tema);
-    }
-
-    // Mostrar modal RESPIRA apenas se não foi mostrado hoje
-    showRespiraModal();
-  }, []);
-
-  useEffect(() => {
     if (!DEV_MODE && user === null) {
       router.push('/login');
     }
   }, [user, router]);
+
+  useEffect(() => {
+    // Carregar progresso do localStorage (temporário - depois virá do Supabase)
+    const savedProgress = localStorage.getItem('trilha-7-dias-paz-interior-progress');
+    if (savedProgress) {
+      const progress = JSON.parse(savedProgress);
+      setDiasConcluidos(progress.diasConcluidos || []);
+      setDiaAtual(progress.diaAtual || 1);
+    }
+
+    // Mostrar modal RESPIRA apenas se não foi mostrado hoje
+    showRespiraModal();
+
+    // Track início da trilha
+    if (diaData) {
+      analytics.devotionalStarted(`Trilha: ${trilha?.titulo} - Dia ${diaAtual}`);
+    }
+  }, []);
 
   const handleNext = () => {
     if (step < 4) {
@@ -82,18 +95,18 @@ export default function SessaoExpressPage() {
 
   const handleComplete = async () => {
     const currentUser = DEV_MODE ? mockUser : user;
-    if (currentUser && devocional) {
-      const duration = Math.floor((Date.now() - startTime) / 1000); // seconds
-      analytics.devotionalCompleted(devocional.tema, duration);
+    if (currentUser && diaData && trilha) {
+      const duration = Math.floor((Date.now() - startTime) / 1000);
+      analytics.devotionalCompleted(`Trilha: ${trilha.titulo} - Dia ${diaAtual}`, duration);
       if (notes) analytics.notesAdded();
       
       try {
         // Salvar progresso no Supabase
         await saveDevotionalProgress({
           userId: currentUser.id,
-          devotionalId: devocional.id,
+          devotionalId: `trilha-paz-${diaAtual}`,
           notes: notes,
-          prayer: '', // Pode ser expandido futuramente
+          prayer: '',
           duration: duration,
           completedAt: new Date().toISOString()
         });
@@ -104,8 +117,20 @@ export default function SessaoExpressPage() {
         // Verificar conquistas novas
         await checkAndUnlockAchievements(currentUser.id);
         
+        // Atualizar progresso local
+        const novosDiasConcluidos = [...diasConcluidos, diaAtual];
+        setDiasConcluidos(novosDiasConcluidos);
+        
+        // Salvar no localStorage
+        const progressData = {
+          diasConcluidos: novosDiasConcluidos,
+          diaAtual: diaAtual < 7 ? diaAtual + 1 : diaAtual,
+          dataUltimaAtualizacao: new Date().toISOString()
+        };
+        localStorage.setItem('trilha-7-dias-paz-interior-progress', JSON.stringify(progressData));
+        
         // Atualizar store local
-        await markComplete(currentUser.id, devocional.id, notes);
+        await markComplete(currentUser.id, `trilha-paz-${diaAtual}`, notes);
         
         // Atualizar stats no store
         await refreshAll(currentUser.id);
@@ -116,19 +141,22 @@ export default function SessaoExpressPage() {
         setCompleted(true);
       } catch (error) {
         console.error('Erro ao salvar progresso:', error);
-        // Fallback para o sistema local
-        await markComplete(currentUser.id, devocional.id, notes);
         setCompleted(true);
       }
     }
   };
 
-  const speak = (text: string, contentType: string = 'texto') => {
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'pt-BR';
-      speechSynthesis.speak(utterance);
-      analytics.audioPlayed(contentType);
+  const handleProximoDia = () => {
+    if (diaAtual < 7) {
+      setDiaAtual(diaAtual + 1);
+      setStep(1);
+      setNotes('');
+      setCompleted(false);
+      setShowContexto(false);
+      setShowSugestao(false);
+      setShowOracaoLivre(false);
+    } else {
+      router.push('/trilhas');
     }
   };
 
@@ -142,17 +170,19 @@ export default function SessaoExpressPage() {
         type,
         content,
         reference,
-        tags: [devocional?.tema || 'geral']
+        tags: [trilha?.tema || 'trilha']
       });
       
-      // Aqui você pode adicionar um toast de sucesso
       console.log('Favorito salvo com sucesso!');
     } catch (error) {
       console.error('Erro ao salvar favorito:', error);
     }
   };
 
+  // Tela de conclusão do dia
   if (completed) {
+    const isUltimoDia = diaAtual === 7;
+    
     return (
       <div 
         className="min-h-screen flex items-center justify-center p-4"
@@ -161,29 +191,67 @@ export default function SessaoExpressPage() {
         }}
       >
         <Confetti />
-        <div className="text-center space-y-6 animate-fadeIn">
-          <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full mx-auto flex items-center justify-center">
+        <div className="text-center space-y-6 animate-fadeIn max-w-md">
+          <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto flex items-center justify-center">
             <FiCheck size={40} className="text-white" />
           </div>
+          
           <h1 
             className="text-4xl font-bold text-white"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            ✨ Parabéns!
+            {isUltimoDia ? '🎉 Parabéns!' : '✨ Dia Completo!'}
           </h1>
+          
           <p 
-            className="text-xl text-blue-100 max-w-md"
+            className="text-xl text-blue-100"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            Você completou seu devocional de hoje. Que Deus abençoe seu dia!
+            {isUltimoDia 
+              ? 'Você completou a trilha "7 Dias de Paz Interior"! Que Deus continue te abençoando com Sua paz.'
+              : `Você completou o Dia ${diaAtual}! Continue sua jornada amanhã.`
+            }
           </p>
-          <Link
-            href="/dashboard"
-            className="inline-block bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            Voltar ao Dashboard
-          </Link>
+
+          {!isUltimoDia && (
+            <div className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
+              <p className="text-blue-100 text-sm mb-2">Progresso da Trilha:</p>
+              <div className="flex items-center gap-2">
+                {[1, 2, 3, 4, 5, 6, 7].map((dia) => (
+                  <div
+                    key={dia}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                      diasConcluidos.includes(dia) || dia === diaAtual
+                        ? 'bg-green-500 text-white'
+                        : 'bg-white/20 text-white/50'
+                    }`}
+                  >
+                    {diasConcluidos.includes(dia) || dia === diaAtual ? '✓' : dia}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-3">
+            {!isUltimoDia && (
+              <button
+                onClick={handleProximoDia}
+                className="bg-gradient-to-r from-green-400 to-emerald-500 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                Ir para Dia {diaAtual + 1}
+              </button>
+            )}
+            
+            <Link
+              href="/trilhas"
+              className="inline-block bg-white/10 text-white border border-white/20 font-semibold py-3.5 px-8 rounded-xl transition-all hover:bg-white/20"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              {isUltimoDia ? 'Ver Outras Trilhas' : 'Voltar às Trilhas'}
+            </Link>
+          </div>
         </div>
         
         {/* Modal de Conquistas */}
@@ -199,7 +267,7 @@ export default function SessaoExpressPage() {
 
   const currentUser = DEV_MODE ? mockUser : user;
   
-  if (!currentUser || !devocional) {
+  if (!currentUser || !trilha || !diaData) {
     return (
       <div 
         className="min-h-screen flex items-center justify-center"
@@ -209,7 +277,7 @@ export default function SessaoExpressPage() {
       >
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
-          <p className="mt-4 text-white">Carregando devocional...</p>
+          <p className="mt-4 text-white">Carregando trilha...</p>
         </div>
       </div>
     );
@@ -222,34 +290,35 @@ export default function SessaoExpressPage() {
         background: 'linear-gradient(180deg, #1e3a8a 0%, #1e40af 50%, #1e3a8a 100%)'
       }}
     >
-      {/* Confetti quando completar */}
-      {completed && <Confetti />}
-
-      {/* Header com Nova Identidade */}
+      {/* Header com progresso */}
       <header className="bg-white/10 backdrop-blur border-b border-white/20 sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/dashboard" className="text-blue-100 hover:text-white transition-colors">
-            <FiArrowLeft size={24} />
-          </Link>
-          <div className="flex-1 mx-4">
-            <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-yellow-400 to-amber-500 transition-all duration-300"
-                style={{ width: `${(step / 4) * 100}%` }}
-              />
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between mb-3">
+            <Link href="/trilhas" className="text-blue-100 hover:text-white transition-colors">
+              <FiArrowLeft size={24} />
+            </Link>
+            <div className="text-center flex-1 mx-4">
+              <p className="text-xs text-blue-200 mb-1">{trilha.icone} {trilha.titulo}</p>
+              <p className="text-sm font-bold text-white">Dia {diaAtual} de {trilha.duracao} - {diaData.titulo}</p>
             </div>
+            <span 
+              className="text-sm text-blue-100"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              {step}/4
+            </span>
           </div>
-          <span 
-            className="text-sm text-blue-100"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            {step}/4
-          </span>
+          <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-300"
+              style={{ width: `${(step / 4) * 100}%` }}
+            />
+          </div>
         </div>
       </header>
 
       <div className="max-w-2xl mx-auto px-4 py-8">
-        {/* Step 1: LÊ - Leitura Bíblica (RESPIRA agora é modal) */}
+        {/* Step 1: SABEDORIA - Leitura Bíblica */}
         {step === 1 && (
           <div className="animate-fadeIn space-y-6">
             <div className="text-center mb-8">
@@ -272,18 +341,18 @@ export default function SessaoExpressPage() {
                 className="text-yellow-200 mb-4 font-semibold"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
-                {devocional.referencia}
+                {diaData.referencia}
               </p>
               <p 
                 className="text-blue-100 leading-relaxed text-lg italic"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                {devocional.texto}
+                {diaData.texto}
               </p>
             </div>
 
             {/* Botão de contexto */}
-            {devocional.versiculo_contexto && (
+            {diaData.versiculo_contexto && (
               <div className="text-center">
                 <button
                   onClick={() => setShowContexto(!showContexto)}
@@ -299,27 +368,26 @@ export default function SessaoExpressPage() {
             )}
 
             {/* Contexto (condicional) */}
-            {showContexto && devocional.versiculo_contexto && (
+            {showContexto && diaData.versiculo_contexto && (
               <div className="bg-blue-500/20 rounded-lg p-4 border border-blue-400/30 animate-fadeIn">
                 <p 
                   className="text-blue-100 text-sm leading-relaxed"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
-                  <strong>Contexto:</strong> {devocional.versiculo_contexto}
+                  <strong>Contexto:</strong> {diaData.versiculo_contexto}
                 </p>
               </div>
             )}
 
             <button
               onClick={handleNext}
-              className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+              className="w-full bg-gradient-to-r from-green-400 to-emerald-500 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Continuar
             </button>
           </div>
         )}
-
 
         {/* Step 2: PALAVRA VIVA - Reflexão Guiada */}
         {step === 2 && (
@@ -344,7 +412,7 @@ export default function SessaoExpressPage() {
                 className="text-white text-lg leading-relaxed"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
-                {devocional.palavraViva}
+                {diaData.palavraViva}
               </p>
             </div>
 
@@ -358,7 +426,7 @@ export default function SessaoExpressPage() {
               </button>
               <button
                 onClick={handleNext}
-                className="flex-1 bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                className="flex-1 bg-gradient-to-r from-green-400 to-emerald-500 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Continuar
@@ -386,7 +454,6 @@ export default function SessaoExpressPage() {
             </div>
 
             <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
-              {/* Campo de anotações opcional */}
               <div className="mb-6">
                 <label 
                   htmlFor="notes"
@@ -400,13 +467,12 @@ export default function SessaoExpressPage() {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Hoje eu vou... O que mais me tocou foi... Minha ação será..."
-                  className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all"
                   rows={4}
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 />
               </div>
 
-              {/* Botão para mostrar sugestão */}
               <div className="text-center mb-4">
                 <button
                   onClick={() => setShowSugestao(!showSugestao)}
@@ -420,7 +486,6 @@ export default function SessaoExpressPage() {
                 </button>
               </div>
 
-              {/* Sugestão prática (condicional) */}
               {showSugestao && (
                 <div className="bg-green-500/20 rounded-lg p-4 border border-green-400/30 animate-fadeIn">
                   <h3 
@@ -433,7 +498,7 @@ export default function SessaoExpressPage() {
                     className="text-green-200"
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   >
-                    {devocional.acao}
+                    {diaData.acao}
                   </p>
                 </div>
               )}
@@ -449,7 +514,7 @@ export default function SessaoExpressPage() {
               </button>
               <button
                 onClick={handleNext}
-                className="flex-1 bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                className="flex-1 bg-gradient-to-r from-green-400 to-emerald-500 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Continuar
@@ -470,7 +535,6 @@ export default function SessaoExpressPage() {
               </h2>
               
               <div className="space-y-6">
-                {/* Oração sugerida */}
                 <div className="bg-blue-500/20 rounded-lg p-4 border border-blue-400/30">
                   <h3 
                     className="text-blue-100 font-semibold mb-3"
@@ -482,19 +546,10 @@ export default function SessaoExpressPage() {
                     className="text-blue-100 leading-relaxed text-lg italic"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
-                    {devocional.oracao}
+                    {diaData.oracao}
                   </p>
-                  <button
-                    onClick={() => speak(devocional.oracao, 'oração')}
-                    className="mt-4 flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    <FiVolume2 size={16} />
-                    Ouvir Oração
-                  </button>
                 </div>
 
-                {/* Botão para mostrar oração livre */}
                 <div className="text-center">
                   <button
                     onClick={() => setShowOracaoLivre(!showOracaoLivre)}
@@ -508,7 +563,6 @@ export default function SessaoExpressPage() {
                   </button>
                 </div>
 
-                {/* Opção de oração livre (condicional) */}
                 {showOracaoLivre && (
                   <div className="bg-purple-500/20 rounded-lg p-4 border border-purple-400/30 animate-fadeIn">
                     <h3 
@@ -530,17 +584,15 @@ export default function SessaoExpressPage() {
             </div>
 
             <div className="flex flex-col gap-3">
-              {/* Opção de favoritar */}
               <button
-                onClick={() => handleSaveFavorite(devocional.texto, 'verse', devocional.referencia)}
+                onClick={() => handleSaveFavorite(diaData.texto, 'verse', diaData.referencia)}
                 className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 <FiHeart size={18} />
-                <span>Favoritar este devocional</span>
+                <span>Favoritar este dia</span>
               </button>
 
-              {/* Botões de navegação */}
               <div className="flex gap-3">
                 <button
                   onClick={handleBack}
@@ -551,10 +603,10 @@ export default function SessaoExpressPage() {
                 </button>
                 <button
                   onClick={handleComplete}
-                  className="flex-[2] bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                  className="flex-[2] bg-gradient-to-r from-green-400 to-emerald-500 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
-                  ✨ Finalizar Devocional
+                  ✨ Finalizar Dia {diaAtual}
                 </button>
               </div>
             </div>
@@ -567,8 +619,9 @@ export default function SessaoExpressPage() {
         isOpen={showRespira}
         onClose={closeRespiraModal}
         onContinue={continueRespiraModal}
-        tema={devocional?.tema}
+        tema={`${trilha.icone} Dia ${diaAtual}: ${diaData.titulo}`}
       />
     </div>
   );
 }
+

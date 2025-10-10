@@ -6,7 +6,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useProgressStore } from '@/store/useProgressStore';
 import { useStatsStore } from '@/store/useStatsStore';
 import Link from 'next/link';
-import { FiBook, FiMap, FiHeart, FiCalendar, FiLogOut, FiMenu, FiHelpCircle, FiGift, FiSmartphone } from 'react-icons/fi';
+import { FiBook, FiMap, FiHeart, FiCalendar, FiLogOut, FiMenu, FiHelpCircle, FiGift, FiSmartphone, FiLock } from 'react-icons/fi';
 import Tutorial, { useTutorial } from '@/components/Tutorial';
 import PWAInstallGuide, { usePWAInstallGuide } from '@/components/PWAInstallGuide';
 import PWAInstallBanner from '@/components/PWAInstallBanner';
@@ -85,8 +85,15 @@ export default function DashboardPage() {
       loadStats(user.id);
       loadAchievements(user.id);
       
-      // Verificar conquistas novas
-      checkNewAchievements(user.id);
+      // Verificar conquistas novas apenas se for um retorno após atividade
+      const lastActivity = localStorage.getItem('last_activity_timestamp');
+      const now = Date.now();
+      const timeSinceActivity = lastActivity ? now - parseInt(lastActivity) : Infinity;
+      
+      // Se passou mais de 5 minutos desde a última atividade, verificar conquistas
+      if (timeSinceActivity > 5 * 60 * 1000) {
+        checkNewAchievements(user.id);
+      }
       
       // Verificar inatividade
       const status = checkInactivityStatus();
@@ -507,14 +514,28 @@ export default function DashboardPage() {
             </div>
           </Link>
 
-          {/* Trilhas Especiais */}
-          <Link href="/extras" className="trilhas-especiais-card group transition-all hover:scale-105" style={{
+          {/* Trilhas Especiais - Bloqueado para testes */}
+          <div className="trilhas-especiais-card relative" style={{
             background: colors.background.card,
             borderRadius: '16px',
             padding: spacing.fixed.cardPadding,
             border: `1px solid ${colors.border}`,
-            backdropFilter: 'blur(10px)'
+            backdropFilter: 'blur(10px)',
+            opacity: 0.6,
+            filter: 'blur(1px)'
           }}>
+            {/* Cadeado de bloqueio */}
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+              <div 
+                className="bg-black/80 backdrop-blur rounded-full p-3 border-2 border-gray-400/50"
+                style={{
+                  boxShadow: '0 0 15px rgba(156, 163, 175, 0.3)'
+                }}
+              >
+                <FiLock size={24} className="text-gray-400" />
+              </div>
+            </div>
+
             <div className="flex items-center justify-between">
               <div>
                 <h3 
@@ -535,16 +556,17 @@ export default function DashboardPage() {
                     color: colors.text.whiteMuted
                   }}
                 >
-                  Conteúdos e planos avançados (Premium)
+                  Conteúdos e planos avançados
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform" style={{
-                background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
+              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-transform" style={{
+                background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+                opacity: 0.5
               }}>
                 <FiGift size={24} className="text-white" />
               </div>
             </div>
-          </Link>
+          </div>
         </div>
 
 
@@ -576,7 +598,7 @@ export default function DashboardPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Veja suas estatísticas e conquistas
+                Veja suas estatísticas, conquistas e favoritos
               </p>
             </div>
             <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
@@ -585,42 +607,6 @@ export default function DashboardPage() {
           </div>
         </Link>
 
-        {/* Favoritos */}
-        <Link href="/favoritos" className="favoritos-card block transition-all hover:scale-105" style={{
-          background: colors.background.card,
-          borderRadius: '16px',
-          padding: spacing.fixed.cardPadding,
-          border: `1px solid ${colors.border}`,
-          backdropFilter: 'blur(10px)'
-        }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 
-                className="font-bold mb-1"
-                style={{ 
-                  fontFamily: typography.serif,
-                  fontSize: typography.heading.h3,
-                  fontWeight: typography.weights.semibold,
-                  color: colors.text.white
-                }}
-              >
-                ❤️ Meus Favoritos
-              </h3>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
-                  color: colors.text.whiteMuted
-                }}
-              >
-                Versículos e citações salvos
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-red-600/30 rounded-full flex items-center justify-center flex-shrink-0">
-              <FiHeart size={24} className="text-red-400" />
-            </div>
-          </div>
-        </Link>
 
         {/* Presentes para Você */}
         <Link href="/bonus" className="bonus-card block transition-all hover:scale-105" style={{
@@ -671,10 +657,10 @@ export default function DashboardPage() {
       <PWAInstallBanner onOpenGuide={openGuide} />
       
       {/* Modal de Conquistas */}
-      {newAchievements.length > 0 && (
+      {newAchievements.length > 0 && currentUser && (
         <AchievementModal 
           achievements={newAchievements}
-          onClose={clearNewAchievements}
+          onClose={() => clearNewAchievements(currentUser.id)}
         />
       )}
 
