@@ -15,6 +15,7 @@ import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
 import { analytics } from '@/lib/analytics';
 import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
 import { getEmotionalSuggestion, getEmotionalTrilhaSuggestion } from '@/lib/emotional-suggestions';
+import { colors, typography, spacing } from '@/lib/design-system';
 
 // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
 const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
