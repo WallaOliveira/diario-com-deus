@@ -72,10 +72,24 @@ export const useStatsStore = create<StatsState>((set, get) => ({
    */
   checkNewAchievements: async (userId: string) => {
     try {
+      // Verificar e desbloquear novas conquistas
       await checkAndUnlockAchievements(userId);
       
-      // Recarregar conquistas
-      await get().loadAchievements(userId);
+      // Recarregar conquistas para pegar as novas
+      const achievements = await getUserAchievements(userId);
+      
+      // Separar conquistas novas (recém-desbloqueadas)
+      const newAchievements = achievements.filter(a => a.is_new);
+      
+      // Verificar se essas conquistas já foram vistas nesta sessão
+      const sessionViewed = sessionStorage.getItem('achievements_viewed_this_session');
+      const viewedIds = sessionViewed ? JSON.parse(sessionViewed) : [];
+      
+      // Filtrar apenas conquistas que não foram vistas nesta sessão
+      const trulyNewAchievements = newAchievements.filter(a => !viewedIds.includes(a.id));
+      
+      // Atualizar estado
+      set({ achievements, newAchievements: trulyNewAchievements });
     } catch (error: any) {
       console.error('Erro ao verificar conquistas:', error);
     }
