@@ -337,55 +337,59 @@ export default function TrilhaPazInteriorPage() {
               </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
+            <div 
+              className="p-6 rounded-2xl"
+              style={{
+                background: colors.background.card,
+                border: `1px solid ${colors.border}`,
+                backdropFilter: 'blur(10px)'
+              }}
+            >
               <p 
-                className="text-yellow-200 mb-4 font-semibold"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                className="text-white leading-relaxed italic text-lg"
+                style={{ fontFamily: typography.serif }}
               >
-                {diaData.referencia}
-              </p>
-              <p 
-                className="text-blue-100 leading-relaxed text-lg italic"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                {diaData.texto}
+                "{diaData.texto}"
               </p>
             </div>
 
-            {/* Botão de contexto */}
+            {/* Botão de contexto opcional */}
             {diaData.versiculo_contexto && (
               <div className="text-center">
                 <button
                   onClick={() => setShowContexto(!showContexto)}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/20 text-blue-200 rounded-lg border border-blue-400/30 hover:bg-blue-500/30 transition-colors"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
+                  className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
+                  style={{ fontFamily: typography.sans }}
                 >
-                  <span>{showContexto ? 'Ocultar' : 'Ver'} contexto</span>
-                  <span className={`transition-transform ${showContexto ? 'rotate-180' : ''}`}>
-                    ▼
-                  </span>
+                  {showContexto ? 'Ocultar contexto' : 'Ver contexto'}
                 </button>
               </div>
             )}
 
-            {/* Contexto (condicional) */}
+            {/* Contexto (se ativado) */}
             {showContexto && diaData.versiculo_contexto && (
-              <div className="bg-blue-500/20 rounded-lg p-4 border border-blue-400/30 animate-fadeIn">
-                <p 
-                  className="text-blue-100 text-sm leading-relaxed"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  <strong>Contexto:</strong> {diaData.versiculo_contexto}
+              <div 
+                className="p-4 rounded-xl border border-blue-400/50"
+                style={{
+                  background: 'rgba(59, 130, 246, 0.1)',
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <h4 className="font-semibold text-blue-300 mb-2">
+                  📚 Contexto do Versículo
+                </h4>
+                <p className="text-blue-100 text-sm leading-relaxed">
+                  {diaData.versiculo_contexto}
                 </p>
               </div>
             )}
 
             <button
               onClick={handleNext}
-              className="w-full bg-gradient-to-r from-green-400 to-emerald-500 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-              style={{ fontFamily: "'Inter', sans-serif" }}
+              className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+              style={{ fontFamily: typography.sans }}
             >
-              Continuar
+              Continuar →
             </button>
           </div>
         )}
@@ -408,10 +412,17 @@ export default function TrilhaPazInteriorPage() {
               </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
+            <div 
+              className="p-6 rounded-2xl"
+              style={{
+                background: colors.background.card,
+                border: `1px solid ${colors.border}`,
+                backdropFilter: 'blur(10px)'
+              }}
+            >
               <p 
-                className="text-white text-lg leading-relaxed"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                className="text-white leading-relaxed"
+                style={{ fontFamily: typography.sans }}
               >
                 {diaData.palavraViva}
               </p>
@@ -421,16 +432,16 @@ export default function TrilhaPazInteriorPage() {
               <button
                 onClick={handleBack}
                 className="flex-1 py-3.5 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors font-semibold"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                style={{ fontFamily: typography.sans }}
               >
                 ← Voltar
               </button>
               <button
                 onClick={handleNext}
-                className="flex-1 bg-gradient-to-r from-green-400 to-emerald-500 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                className="flex-[2] bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                style={{ fontFamily: typography.sans }}
               >
-                Continuar
+                Continuar →
               </button>
             </div>
           </div>
@@ -454,71 +465,66 @@ export default function TrilhaPazInteriorPage() {
               </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
-              <div className="mb-6">
-                <label 
-                  htmlFor="notes"
-                  className="block text-sm font-medium text-blue-100 mb-2"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  Seu compromisso pessoal (opcional)
-                </label>
-                <textarea
-                  id="notes"
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Hoje eu vou... O que mais me tocou foi... Minha ação será..."
-                  className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all"
-                  rows={4}
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                />
-              </div>
-
-              <div className="text-center mb-4">
-                <button
-                  onClick={() => setShowSugestao(!showSugestao)}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 text-green-200 rounded-lg border border-green-400/30 hover:bg-green-500/30 transition-colors"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  <span>{showSugestao ? 'Ocultar' : 'Ver'} sugestão</span>
-                  <span className={`transition-transform ${showSugestao ? 'rotate-180' : ''}`}>
-                    ▼
-                  </span>
-                </button>
-              </div>
-
-              {showSugestao && (
-                <div className="bg-green-500/20 rounded-lg p-4 border border-green-400/30 animate-fadeIn">
-                  <h3 
-                    className="text-green-100 font-semibold mb-2"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    💡 Sugestão prática:
-                  </h3>
-                  <p 
-                    className="text-green-200"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    {diaData.acao}
-                  </p>
-                </div>
-              )}
+            <div 
+              className="p-6 rounded-2xl space-y-4"
+              style={{
+                background: colors.background.card,
+                border: `1px solid ${colors.border}`,
+                backdropFilter: 'blur(10px)'
+              }}
+            >
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Como você pode aplicar esta palavra em sua vida hoje? Que ação prática você pode tomar?"
+                className="w-full h-32 p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                style={{ fontFamily: typography.sans }}
+              />
             </div>
+
+            {/* Botão de sugestão prática opcional */}
+            <div className="text-center">
+              <button
+                onClick={() => setShowSugestao(!showSugestao)}
+                className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
+                style={{ fontFamily: typography.sans }}
+              >
+                {showSugestao ? 'Ocultar sugestão' : 'Ver sugestão prática'}
+              </button>
+            </div>
+
+            {/* Sugestão prática (se ativada) */}
+            {showSugestao && (
+              <div 
+                className="p-4 rounded-xl border border-green-400/50"
+                style={{
+                  background: 'rgba(34, 197, 94, 0.1)',
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <h4 className="font-semibold text-green-300 mb-2">
+                  💡 Sugestão Prática
+                </h4>
+                <p className="text-green-100 text-sm leading-relaxed">
+                  {diaData.acao}
+                </p>
+              </div>
+            )}
 
             <div className="flex gap-3">
               <button
                 onClick={handleBack}
                 className="flex-1 py-3.5 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors font-semibold"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                style={{ fontFamily: typography.sans }}
               >
                 ← Voltar
               </button>
               <button
                 onClick={handleNext}
-                className="flex-1 bg-gradient-to-r from-green-400 to-emerald-500 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                className="flex-[2] bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                style={{ fontFamily: typography.sans }}
               >
-                Continuar
+                Continuar →
               </button>
             </div>
           </div>
@@ -527,89 +533,82 @@ export default function TrilhaPazInteriorPage() {
         {/* Step 4: ORA - Momento de Oração */}
         {step === 4 && (
           <div className="animate-fadeIn space-y-6">
-            <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
-              <h2 
-                className="text-2xl font-bold text-white mb-6"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-white mb-2">
                 🙏 Ora
               </h2>
-              
-              <div className="space-y-6">
-                <div className="bg-blue-500/20 rounded-lg p-4 border border-blue-400/30">
-                  <h3 
-                    className="text-blue-100 font-semibold mb-3"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    💬 Oração Sugerida:
-                  </h3>
-                  <p 
-                    className="text-blue-100 leading-relaxed text-lg italic"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  >
-                    {diaData.oracao}
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  <button
-                    onClick={() => setShowOracaoLivre(!showOracaoLivre)}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/20 text-purple-200 rounded-lg border border-purple-400/30 hover:bg-purple-500/30 transition-colors"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    <span>{showOracaoLivre ? 'Ocultar' : 'Ver'} oração livre</span>
-                    <span className={`transition-transform ${showOracaoLivre ? 'rotate-180' : ''}`}>
-                      ▼
-                    </span>
-                  </button>
-                </div>
-
-                {showOracaoLivre && (
-                  <div className="bg-purple-500/20 rounded-lg p-4 border border-purple-400/30 animate-fadeIn">
-                    <h3 
-                      className="text-purple-100 font-semibold mb-2"
-                      style={{ fontFamily: "'Inter', sans-serif" }}
-                    >
-                      💭 Ou ore livremente:
-                    </h3>
-                    <p 
-                      className="text-purple-200 text-sm"
-                      style={{ fontFamily: "'Inter', sans-serif" }}
-                    >
-                      Feche os olhos por um momento e converse com Deus do seu coração. 
-                      Agradeça, peça orientação, ou simplesmente esteja em Sua presença.
-                    </p>
-                  </div>
-                )}
-              </div>
+            </div>
+            
+            <div 
+              className="p-6 rounded-2xl"
+              style={{
+                background: colors.background.card,
+                border: `1px solid ${colors.border}`,
+                backdropFilter: 'blur(10px)'
+              }}
+            >
+              <p 
+                className="text-white leading-relaxed italic"
+                style={{ fontFamily: typography.serif }}
+              >
+                {diaData.oracao}
+              </p>
             </div>
 
-            <div className="flex flex-col gap-3">
+            {/* Botão de oração livre opcional */}
+            <div className="text-center">
               <button
-                onClick={() => handleSaveFavorite(diaData.texto, 'verse', diaData.referencia)}
-                className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                onClick={() => setShowOracaoLivre(!showOracaoLivre)}
+                className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
+                style={{ fontFamily: typography.sans }}
               >
-                <FiHeart size={18} />
-                <span>Favoritar este dia</span>
+                {showOracaoLivre ? 'Ocultar oração livre' : 'Ou ore livremente'}
               </button>
+            </div>
 
-              <div className="flex gap-3">
-                <button
-                  onClick={handleBack}
-                  className="flex-1 py-3.5 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors font-semibold"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  ← Voltar
-                </button>
-                <button
-                  onClick={handleComplete}
-                  className="flex-[2] bg-gradient-to-r from-green-400 to-emerald-500 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  ✨ Finalizar Dia {diaAtual}
-                </button>
+            {/* Oração livre (se ativada) */}
+            {showOracaoLivre && (
+              <div 
+                className="p-4 rounded-xl border border-purple-400/50"
+                style={{
+                  background: 'rgba(147, 51, 234, 0.1)',
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <h4 className="font-semibold text-purple-300 mb-2">
+                  💭 Sua Oração
+                </h4>
+                <p className="text-purple-100 text-sm leading-relaxed">
+                  Feche os olhos por um momento e converse com Deus do seu coração. 
+                  Agradeça, peça orientação, ou simplesmente esteja em Sua presença.
+                </p>
               </div>
+            )}
+
+            <button
+              onClick={() => handleSaveFavorite(diaData.texto, 'verse', diaData.referencia)}
+              className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors"
+              style={{ fontFamily: typography.sans }}
+            >
+              <FiHeart size={18} />
+              <span>Favoritar este dia</span>
+            </button>
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleBack}
+                className="flex-1 py-3.5 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors font-semibold"
+                style={{ fontFamily: typography.sans }}
+              >
+                ← Voltar
+              </button>
+              <button
+                onClick={handleComplete}
+                className="flex-[2] bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                style={{ fontFamily: typography.sans }}
+              >
+                ✨ Finalizar Dia {diaAtual}
+              </button>
             </div>
           </div>
         )}
