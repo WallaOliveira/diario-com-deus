@@ -36,6 +36,9 @@ export default function DevocionalEmocionalPage() {
   const [emocaoAtual, setEmocaoAtual] = useState<string>('');
   const [suggestion, setSuggestion] = useState<any>(null);
   const [startTime] = useState(Date.now());
+  const [showContexto, setShowContexto] = useState(false);
+  const [showSugestao, setShowSugestao] = useState(false);
+  const [showOracaoLivre, setShowOracaoLivre] = useState(false);
   
   // Hook para controlar o modal RESPIRA
   const { showRespira, showRespiraModal, closeRespiraModal, continueRespiraModal } = useRespiraModal();
@@ -248,6 +251,36 @@ export default function DevocionalEmocionalPage() {
                   </p>
                 </div>
 
+                {/* Botão de contexto opcional */}
+                <div className="text-center">
+                  <button
+                    onClick={() => setShowContexto(!showContexto)}
+                    className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
+                    style={{ fontFamily: typography.sans }}
+                  >
+                    {showContexto ? 'Ocultar contexto' : 'Ver contexto'}
+                  </button>
+                </div>
+
+                {/* Contexto (se ativado) */}
+                {showContexto && (
+                  <div 
+                    className="p-4 rounded-xl border border-blue-400/50"
+                    style={{
+                      background: 'rgba(59, 130, 246, 0.1)',
+                      backdropFilter: 'blur(10px)'
+                    }}
+                  >
+                    <h4 className="font-semibold text-blue-300 mb-2">
+                      📚 Contexto do Versículo
+                    </h4>
+                    <p className="text-blue-100 text-sm leading-relaxed">
+                      Este versículo foi especialmente escolhido para te ajudar com {emocaoAtual === 'ansioso' ? 'a ansiedade' : emocaoAtual === 'grato' ? 'a gratidão' : emocaoAtual === 'cansado' ? 'o cansaço' : 'a esperança'}. 
+                      A Palavra de Deus tem poder para transformar nossa perspectiva e nos dar a força que precisamos para cada momento.
+                    </p>
+                  </div>
+                )}
+
                 <button
                   onClick={handleNext}
                   className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
@@ -328,6 +361,38 @@ export default function DevocionalEmocionalPage() {
                   />
                 </div>
 
+                {/* Botão de sugestão prática opcional */}
+                <div className="text-center">
+                  <button
+                    onClick={() => setShowSugestao(!showSugestao)}
+                    className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
+                    style={{ fontFamily: typography.sans }}
+                  >
+                    {showSugestao ? 'Ocultar sugestão' : 'Ver sugestão prática'}
+                  </button>
+                </div>
+
+                {/* Sugestão prática (se ativada) */}
+                {showSugestao && (
+                  <div 
+                    className="p-4 rounded-xl border border-green-400/50"
+                    style={{
+                      background: 'rgba(34, 197, 94, 0.1)',
+                      backdropFilter: 'blur(10px)'
+                    }}
+                  >
+                    <h4 className="font-semibold text-green-300 mb-2">
+                      💡 Sugestão Prática
+                    </h4>
+                    <p className="text-green-100 text-sm leading-relaxed">
+                      {emocaoAtual === 'ansioso' && 'Que tal praticar uma respiração profunda sempre que se sentir ansioso? Ou escrever suas preocupações em um papel e simbolicamente entregar a Deus?'}
+                      {emocaoAtual === 'grato' && 'Que tal fazer uma lista de 3 coisas pelas quais você é grato hoje? Ou enviar uma mensagem de agradecimento para alguém especial?'}
+                      {emocaoAtual === 'cansado' && 'Que tal reservar 10 minutos para descansar em silêncio? Ou fazer algo que te renove, como uma caminhada ou música que você ama?'}
+                      {emocaoAtual === 'esperançoso' && 'Que tal compartilhar sua esperança com alguém que precisa? Ou escrever sobre os sonhos que Deus colocou no seu coração?'}
+                    </p>
+                  </div>
+                )}
+
                 <div className="flex gap-3">
                   <button
                     onClick={handleBack}
@@ -371,6 +436,35 @@ export default function DevocionalEmocionalPage() {
                     {suggestion.prayer}
                   </p>
                 </div>
+
+                {/* Botão de oração livre opcional */}
+                <div className="text-center">
+                  <button
+                    onClick={() => setShowOracaoLivre(!showOracaoLivre)}
+                    className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
+                    style={{ fontFamily: typography.sans }}
+                  >
+                    {showOracaoLivre ? 'Ocultar oração livre' : 'Ou ore livremente'}
+                  </button>
+                </div>
+
+                {/* Oração livre (se ativada) */}
+                {showOracaoLivre && (
+                  <div 
+                    className="p-4 rounded-xl border border-purple-400/50"
+                    style={{
+                      background: 'rgba(147, 51, 234, 0.1)',
+                      backdropFilter: 'blur(10px)'
+                    }}
+                  >
+                    <h4 className="font-semibold text-purple-300 mb-2">
+                      💭 Sua Oração
+                    </h4>
+                    <p className="text-purple-100 text-sm leading-relaxed">
+                      Use este espaço para falar com Deus do seu coração. Não há regras - apenas um momento íntimo entre você e Ele.
+                    </p>
+                  </div>
+                )}
 
                 <button
                   onClick={() => handleSaveFavorite(suggestion.verseText, 'verse', suggestion.verse)}
