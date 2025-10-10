@@ -219,7 +219,8 @@ export default function SessaoExpressPage() {
       <div 
         className="min-h-screen flex items-center justify-center"
         style={{
-          background: 'linear-gradient(180deg, #1e3a8a 0%, #1e40af 50%, #1e3a8a 100%)'
+          background: colors.background.primary,
+          minHeight: '100vh'
         }}
       >
         <div className="text-center">
