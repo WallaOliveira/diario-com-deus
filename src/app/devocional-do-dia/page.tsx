@@ -129,12 +129,14 @@ export default function SessaoExpressPage() {
         localStorage.setItem('last_activity_timestamp', Date.now().toString());
         
         // Mostrar toast de celebração
+        console.log('🎯 Mostrando toast de celebração!');
         setToastData({
           titulo: '🌿 Um passo na jornada',
           descricao: 'Devocional completado! Que esta palavra permaneça em seu coração.',
           icone: '✨'
         });
         setShowToast(true);
+        console.log('✅ Toast ativado:', { showToast: true });
         
         // Mostrar sugestão emocional se houver emoção selecionada
         if (emocaoAtual) {
