@@ -27,7 +27,7 @@ export default function ProgressoPage() {
   
   const [mostrarCheckin, setMostrarCheckin] = useState(false);
   const [checkinsAnteriores, setCheckinsAnteriores] = useState<CheckInEmocional[]>([]);
-  const [activeTab, setActiveTab] = useState<'overview' | 'achievements' | 'emotional' | 'favorites'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'emotional' | 'favorites'>('overview');
   
   // Check-in do dia
   const [paz, setPaz] = useState(5);
@@ -188,7 +188,6 @@ export default function ProgressoPage() {
           <div className="flex gap-2 pb-4">
             {[
               { id: 'overview', label: '📊 Visão Geral', icon: FiTrendingUp },
-              { id: 'achievements', label: '🏆 Conquistas', icon: FiTrophy },
               { id: 'emotional', label: '💜 Emocional', icon: FiHeart },
               { id: 'favorites', label: '❤️ Favoritos', icon: FiBookmark }
             ].map((tab) => {
@@ -307,186 +306,6 @@ export default function ProgressoPage() {
                   </div>
                 </button>
               </div>
-            </div>
-          )}
-
-          {/* Tab: Conquistas */}
-          {activeTab === 'achievements' && (
-            <div className="space-y-6">
-              {/* Header */}
-              <div className="text-center">
-                <h2 
-                  className="text-2xl font-bold mb-2"
-                  style={{ 
-                    fontFamily: typography.serif,
-                    color: colors.text.white
-                  }}
-                >
-                  🏆 Suas Conquistas
-                </h2>
-                <p 
-                  className="text-lg"
-                  style={{ 
-                    fontFamily: typography.sans,
-                    color: colors.text.whiteMuted
-                  }}
-                >
-                  Cada conquista é um marco na sua caminhada com Deus
-                </p>
-              </div>
-
-              {/* Achievements Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {achievements.map((achievement) => (
-                  <div
-                    key={achievement.id}
-                    className={`p-6 rounded-xl border-2 transition-all duration-300 ${
-                      achievement.unlocked_at 
-                        ? 'border-green-500/50 bg-green-900/20' 
-                        : 'border-gray-600/50 bg-gray-900/20'
-                    }`}
-                  >
-                    {/* Achievement Header */}
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className={`text-3xl ${achievement.unlocked_at ? '' : 'grayscale opacity-50'}`}>
-                        {achievement.icon}
-                      </div>
-                      <div className="flex-1">
-                        <h3 
-                          className={`text-lg font-semibold mb-1 ${
-                            achievement.unlocked_at ? 'text-white' : 'text-gray-400'
-                          }`}
-                          style={{ fontFamily: typography.serif }}
-                        >
-                          {achievement.title}
-                        </h3>
-                        <p 
-                          className={`text-sm ${
-                            achievement.unlocked_at ? 'text-whiteMuted' : 'text-gray-500'
-                          }`}
-                          style={{ fontFamily: typography.sans }}
-                        >
-                          {achievement.description}
-                        </p>
-                      </div>
-                      <div className="text-2xl">
-                        {achievement.unlocked_at ? (
-                          <FiCheckCircle className="text-green-500" />
-                        ) : (
-                          <FiLock className="text-gray-500" />
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Achievement Content */}
-                    {achievement.unlocked_at && (
-                      <div className="space-y-3">
-                        {/* Spiritual Benefit */}
-                        {achievement.spiritual_benefit && (
-                          <div className="bg-blue-900/30 rounded-lg p-3 border border-blue-500/30">
-                            <h4 
-                              className="font-semibold mb-1 text-sm"
-                              style={{ 
-                                fontFamily: typography.serif,
-                                color: colors.text.gold
-                              }}
-                            >
-                              💎 Benefício Espiritual
-                            </h4>
-                            <p 
-                              className="text-sm leading-relaxed"
-                              style={{ 
-                                fontFamily: typography.sans,
-                                color: colors.text.whiteMuted
-                              }}
-                            >
-                              {achievement.spiritual_benefit}
-                            </p>
-                          </div>
-                        )}
-
-                        {/* Bible Verse */}
-                        {achievement.bible_verse && (
-                          <div className="bg-green-900/30 rounded-lg p-3 border border-green-500/30">
-                            <h4 
-                              className="font-semibold mb-1 text-sm"
-                              style={{ 
-                                fontFamily: typography.serif,
-                                color: colors.text.gold
-                              }}
-                            >
-                              📖 Palavra de Deus
-                            </h4>
-                            <p 
-                              className="text-sm leading-relaxed italic"
-                              style={{ 
-                                fontFamily: typography.serif,
-                                color: colors.text.white
-                              }}
-                            >
-                              {achievement.bible_verse}
-                            </p>
-                          </div>
-                        )}
-
-                        {/* Educational Text */}
-                        {achievement.educational_text && (
-                          <div className="bg-purple-900/30 rounded-lg p-3 border border-purple-500/30">
-                            <h4 
-                              className="font-semibold mb-1 text-sm"
-                              style={{ 
-                                fontFamily: typography.serif,
-                                color: colors.text.gold
-                              }}
-                            >
-                              📚 Sobre Esta Prática
-                            </h4>
-                            <p 
-                              className="text-sm leading-relaxed"
-                              style={{ 
-                                fontFamily: typography.sans,
-                                color: colors.text.whiteMuted
-                              }}
-                            >
-                              {achievement.educational_text}
-                            </p>
-                          </div>
-                        )}
-
-                        {/* Unlock Date */}
-                        <div className="text-xs text-gray-400 pt-2 border-t border-gray-700/50">
-                          Desbloqueada em: {new Date(achievement.unlocked_at).toLocaleDateString('pt-BR')}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              {/* Empty State */}
-              {achievements.length === 0 && (
-                <div className="text-center py-12">
-                  <div className="text-6xl mb-4">🏆</div>
-                  <h3 
-                    className="text-xl font-semibold mb-2"
-                    style={{ 
-                      fontFamily: typography.serif,
-                      color: colors.text.white
-                    }}
-                  >
-                    Nenhuma conquista ainda
-                  </h3>
-                  <p 
-                    className="text-lg"
-                    style={{ 
-                      fontFamily: typography.sans,
-                      color: colors.text.whiteMuted
-                    }}
-                  >
-                    Complete devocionais para desbloquear suas primeiras conquistas!
-                  </p>
-                </div>
-              )}
             </div>
           )}
 
