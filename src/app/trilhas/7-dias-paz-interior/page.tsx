@@ -11,6 +11,7 @@ import Link from 'next/link';
 import Confetti from '@/components/Confetti';
 import AchievementModal from '@/components/AchievementModal';
 import ModalRespira from '@/components/ModalRespira';
+import ToastCelebracao from '@/components/ToastCelebracao';
 import { getTrilhaById, getTrilhaDia, type TrilhaDia } from '@/lib/trilhas';
 import { analytics } from '@/lib/analytics';
 import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
@@ -44,6 +45,10 @@ export default function TrilhaPazInteriorPage() {
   const [showContexto, setShowContexto] = useState(false);
   const [showSugestao, setShowSugestao] = useState(false);
   const [showOracaoLivre, setShowOracaoLivre] = useState(false);
+  
+  // Toast de celebração
+  const [showToast, setShowToast] = useState(false);
+  const [toastData, setToastData] = useState({ titulo: '', descricao: '', icone: '' });
   
   // Hook para controlar o modal RESPIRA
   const { showRespira, showRespiraModal, closeRespiraModal, continueRespiraModal } = useRespiraModal();
@@ -138,6 +143,17 @@ export default function TrilhaPazInteriorPage() {
         
         // Salvar timestamp de atividade para controle de conquistas
         localStorage.setItem('last_activity_timestamp', Date.now().toString());
+        
+        // Mostrar toast de celebração
+        const isUltimoDia = diaAtual === 7;
+        setToastData({
+          titulo: isUltimoDia ? '🎉 Trilha completa!' : `🌿 Dia ${diaAtual} concluído`,
+          descricao: isUltimoDia 
+            ? 'Parabéns! Você completou toda a trilha de Paz Interior.' 
+            : 'Continue sua jornada! Cada dia é uma nova graça.',
+          icone: isUltimoDia ? '🏆' : '✨'
+        });
+        setShowToast(true);
         
         setCompleted(true);
       } catch (error) {
@@ -599,6 +615,15 @@ export default function TrilhaPazInteriorPage() {
         onClose={closeRespiraModal}
         onContinue={continueRespiraModal}
         tema={`${trilha.icone} Dia ${diaAtual}: ${diaData.titulo}`}
+      />
+
+      {/* Toast de Celebração */}
+      <ToastCelebracao
+        isOpen={showToast}
+        onClose={() => setShowToast(false)}
+        titulo={toastData.titulo}
+        descricao={toastData.descricao}
+        icone={toastData.icone}
       />
     </div>
   );

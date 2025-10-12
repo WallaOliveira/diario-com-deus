@@ -9,6 +9,7 @@ import { useRespiraModal } from '@/hooks/useRespiraModal';
 import { FiArrowLeft, FiHeart } from 'react-icons/fi';
 import Link from 'next/link';
 import ModalRespira from '@/components/ModalRespira';
+import ToastCelebracao from '@/components/ToastCelebracao';
 import { analytics } from '@/lib/analytics';
 import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
 import { getEmotionalSuggestion } from '@/lib/emotional-suggestions';
@@ -39,6 +40,10 @@ export default function DevocionalEmocionalPage() {
   const [showContexto, setShowContexto] = useState(false);
   const [showSugestao, setShowSugestao] = useState(false);
   const [showOracaoLivre, setShowOracaoLivre] = useState(false);
+  
+  // Toast de celebração
+  const [showToast, setShowToast] = useState(false);
+  const [toastData, setToastData] = useState({ titulo: '', descricao: '', icone: '' });
   
   // Hook para controlar o modal RESPIRA
   const { showRespira, showRespiraModal, closeRespiraModal, continueRespiraModal } = useRespiraModal();
@@ -121,6 +126,14 @@ export default function DevocionalEmocionalPage() {
         
         // Salvar timestamp de atividade para controle de conquistas
         localStorage.setItem('last_activity_timestamp', Date.now().toString());
+        
+        // Mostrar toast de celebração
+        setToastData({
+          titulo: '💙 Devocional especial completo',
+          descricao: 'Que a paz de Deus guarde seu coração hoje.',
+          icone: suggestion.emoji
+        });
+        setShowToast(true);
         
         setCompleted(true);
       } catch (error) {
@@ -521,6 +534,15 @@ export default function DevocionalEmocionalPage() {
         onClose={closeRespiraModal}
         onContinue={continueRespiraModal}
         tema={suggestion?.title || 'Devocional Especial'}
+      />
+
+      {/* Toast de Celebração */}
+      <ToastCelebracao
+        isOpen={showToast}
+        onClose={() => setShowToast(false)}
+        titulo={toastData.titulo}
+        descricao={toastData.descricao}
+        icone={toastData.icone}
       />
     </div>
   );
