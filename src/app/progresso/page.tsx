@@ -160,7 +160,7 @@ export default function ProgressoPage() {
 
       <Container maxWidth="xl" className="py-6 space-y-6">
 
-        {/* Estatísticas */}
+        {/* Devocionais Feitos */}
         <div 
           className="p-6 rounded-2xl"
           style={{
@@ -171,9 +171,9 @@ export default function ProgressoPage() {
         >
           <div className="flex items-center gap-4 mb-6">
             <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
-              background: colors.accent.blue
+              background: colors.text.gold
             }}>
-              <FiTrendingUp size={24} className="text-white" />
+              <span className="text-2xl">📖</span>
             </div>
             <div>
               <h3 
@@ -184,7 +184,7 @@ export default function ProgressoPage() {
                   color: colors.text.white
                 }}
               >
-                Sua Jornada
+                Devocionais Feitos
               </h3>
               <p 
                 style={{ 
@@ -193,15 +193,16 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Seus momentos com Deus em números
+                Seu histórico de momentos com Deus
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {/* Estatísticas rápidas */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="text-center">
               <div 
-                className="text-3xl font-bold mb-2"
+                className="text-2xl font-bold mb-1"
                 style={{ color: colors.accent.orange }}
               >
                 {stats?.streak || 0}
@@ -219,7 +220,7 @@ export default function ProgressoPage() {
             
             <div className="text-center">
               <div 
-                className="text-3xl font-bold mb-2"
+                className="text-2xl font-bold mb-1"
                 style={{ color: colors.accent.green }}
               >
                 {calcularProgressoSemanal()}/7
@@ -237,26 +238,8 @@ export default function ProgressoPage() {
             
             <div className="text-center">
               <div 
-                className="text-3xl font-bold mb-2"
+                className="text-2xl font-bold mb-1"
                 style={{ color: colors.accent.blue }}
-              >
-                {calcularProgressoMensal()}
-              </div>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
-                  color: colors.text.whiteMuted
-                }}
-              >
-                Este Mês
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div 
-                className="text-3xl font-bold mb-2"
-                style={{ color: colors.accent.gold }}
               >
                 {stats?.devotionals_completed || 0}
               </div>
@@ -267,19 +250,79 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Total Completos
+                Total
               </p>
             </div>
           </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-6 pt-6" style={{ borderTop: `1px solid ${colors.border}` }}>
-            <div className="text-center">
-              <div 
-                className="text-3xl font-bold mb-2"
-                style={{ color: colors.accent.red }}
+
+          {/* Histórico dos últimos dias */}
+          <div className="bg-white/5 rounded-xl p-4">
+            <h4 
+              className="font-semibold mb-3"
+              style={{ 
+                fontFamily: typography.sans,
+                color: colors.text.white,
+                fontSize: typography.body.md
+              }}
+            >
+              Últimos 7 dias
+            </h4>
+            <div className="grid grid-cols-7 gap-2">
+              {Array.from({ length: 7 }, (_, i) => {
+                const day = new Date();
+                day.setDate(day.getDate() - (6 - i));
+                const isCompleted = i < 4; // Mock: últimos 4 dias completados
+                
+                return (
+                  <div key={i} className="text-center">
+                    <div 
+                      className="text-xs mb-1"
+                      style={{ color: colors.text.whiteMuted }}
+                    >
+                      {day.toLocaleDateString('pt-BR', { weekday: 'short' })}
+                    </div>
+                    <div 
+                      className="w-8 h-8 rounded-full flex items-center justify-center mx-auto"
+                      style={{
+                        background: isCompleted ? colors.accent.green : 'rgba(255, 255, 255, 0.1)',
+                        border: `1px solid ${isCompleted ? colors.accent.green : colors.border}`
+                      }}
+                    >
+                      <span className="text-sm">{isCompleted ? '✓' : '○'}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Trilhas Feitas */}
+        <div 
+          className="p-6 rounded-2xl"
+          style={{
+            background: colors.background.card,
+            border: `1px solid ${colors.border}`,
+            backdropFilter: 'blur(10px)'
+          }}
+        >
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
+              background: colors.text.blue
+            }}>
+              <span className="text-2xl">🗺️</span>
+            </div>
+            <div>
+              <h3 
+                className="font-bold mb-1"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: typography.heading.h3,
+                  color: colors.text.white
+                }}
               >
-                {favoritos.length}
-              </div>
+                Trilhas Feitas
+              </h3>
               <p 
                 style={{ 
                   fontFamily: typography.sans,
@@ -287,13 +330,126 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Favoritos
+                Suas jornadas temáticas
               </p>
             </div>
-            
+          </div>
+
+          {/* Trilhas em andamento */}
+          <div className="space-y-3">
+            <div 
+              className="p-4 rounded-xl flex items-center justify-between"
+              style={{
+                background: 'rgba(59, 130, 246, 0.1)',
+                border: '1px solid rgba(59, 130, 246, 0.3)'
+              }}
+            >
+              <div>
+                <h4 
+                  className="font-semibold mb-1"
+                  style={{ 
+                    fontFamily: typography.sans,
+                    color: colors.text.white,
+                    fontSize: typography.body.md
+                  }}
+                >
+                  🌿 7 Dias de Paz Interior
+                </h4>
+                <p 
+                  style={{ 
+                    fontFamily: typography.sans,
+                    fontSize: typography.body.sm,
+                    color: colors.text.whiteMuted
+                  }}
+                >
+                  Dia 3 de 7
+                </p>
+              </div>
+              <div 
+                className="text-2xl font-bold"
+                style={{ color: colors.accent.blue }}
+              >
+                3/7
+              </div>
+            </div>
+
+            {/* Trilhas completadas */}
+            <div 
+              className="p-4 rounded-xl flex items-center justify-between"
+              style={{
+                background: 'rgba(34, 197, 94, 0.1)',
+                border: '1px solid rgba(34, 197, 94, 0.3)'
+              }}
+            >
+              <div>
+                <h4 
+                  className="font-semibold mb-1"
+                  style={{ 
+                    fontFamily: typography.sans,
+                    color: colors.text.white,
+                    fontSize: typography.body.md
+                  }}
+                >
+                  ✨ Jornada de Gratidão
+                </h4>
+                <p 
+                  style={{ 
+                    fontFamily: typography.sans,
+                    fontSize: typography.body.sm,
+                    color: colors.text.whiteMuted
+                  }}
+                >
+                  Completada há 2 dias
+                </p>
+              </div>
+              <div className="text-2xl">🎉</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Anotações */}
+        <div 
+          className="p-6 rounded-2xl"
+          style={{
+            background: colors.background.card,
+            border: `1px solid ${colors.border}`,
+            backdropFilter: 'blur(10px)'
+          }}
+        >
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
+              background: colors.accent.purple
+            }}>
+              <span className="text-2xl">📝</span>
+            </div>
+            <div>
+              <h3 
+                className="font-bold mb-1"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: typography.heading.h3,
+                  color: colors.text.white
+                }}
+              >
+                Anotações
+              </h3>
+              <p 
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.sm,
+                  color: colors.text.whiteMuted
+                }}
+              >
+                Suas reflexões e insights pessoais
+              </p>
+            </div>
+          </div>
+
+          {/* Estatísticas */}
+          <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="text-center">
               <div 
-                className="text-3xl font-bold mb-2"
+                className="text-2xl font-bold mb-1"
                 style={{ color: colors.accent.purple }}
               >
                 {stats?.notes_added || 0}
@@ -305,16 +461,16 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Anotações
+                Reflexões Escritas
               </p>
             </div>
             
             <div className="text-center">
               <div 
-                className="text-3xl font-bold mb-2"
-                style={{ color: colors.accent.cyan }}
+                className="text-2xl font-bold mb-1"
+                style={{ color: colors.accent.red }}
               >
-                {stats?.moments_with_god || 0}
+                {favoritos.length}
               </div>
               <p 
                 style={{ 
@@ -323,7 +479,66 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Momentos com Deus
+                Versículos Favoritos
+              </p>
+            </div>
+          </div>
+
+          {/* Anotações recentes (mock) */}
+          <div className="space-y-3">
+            <div 
+              className="p-4 rounded-xl"
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
+              }}
+            >
+              <p 
+                className="text-sm mb-2"
+                style={{ 
+                  fontFamily: typography.serif,
+                  color: colors.text.white,
+                  fontStyle: 'italic'
+                }}
+              >
+                "Deus me deu uma paz que excede todo entendimento hoje..."
+              </p>
+              <p 
+                className="text-xs"
+                style={{ 
+                  fontFamily: typography.sans,
+                  color: colors.text.whiteMuted
+                }}
+              >
+                Hoje • Devocional da Manhã
+              </p>
+            </div>
+            
+            <div 
+              className="p-4 rounded-xl"
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
+              }}
+            >
+              <p 
+                className="text-sm mb-2"
+                style={{ 
+                  fontFamily: typography.serif,
+                  color: colors.text.white,
+                  fontStyle: 'italic'
+                }}
+              >
+                "A gratidão transforma tudo. Preciso praticar mais isso..."
+              </p>
+              <p 
+                className="text-xs"
+                style={{ 
+                  fontFamily: typography.sans,
+                  color: colors.text.whiteMuted
+                }}
+              >
+                Ontem • Trilha de Gratidão
               </p>
             </div>
           </div>
