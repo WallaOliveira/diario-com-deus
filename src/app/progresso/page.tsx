@@ -74,26 +74,14 @@ export default function ProgressoPage() {
     }
   };
 
-  const getLevelIcon = (level: number): string => {
-    switch (level) {
-      case 1: return '🌱';
-      case 2: return '🌿';
-      case 3: return '🌳';
-      case 4: return '🌲';
-      case 5: return '🏞️';
-      default: return '🌱';
-    }
+  const calcularProgressoSemanal = () => {
+    // Mock: calcular quantos dias da semana atual foram completados
+    return 4; // 4 de 7 dias
   };
 
-  const getLevelName = (level: number): string => {
-    switch (level) {
-      case 1: return 'Iniciante';
-      case 2: return 'Crescendo';
-      case 3: return 'Maduro';
-      case 4: return 'Sábio';
-      case 5: return 'Guia';
-      default: return 'Iniciante';
-    }
+  const calcularProgressoMensal = () => {
+    // Mock: calcular quantos dias do mês atual foram completados
+    return 12; // 12 de 30 dias
   };
 
   const getEmocaoInfo = (emocao: string) => {
@@ -218,7 +206,7 @@ export default function ProgressoPage() {
             </div>
           </div>
 
-          {/* Nível Espiritual */}
+          {/* Progresso da Semana */}
           <div 
             className="p-6 rounded-2xl transition-all hover:scale-105"
             style={{
@@ -231,7 +219,7 @@ export default function ProgressoPage() {
               <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
                 background: colors.accent.green
               }}>
-                <span className="text-2xl">{getLevelIcon(stats?.spiritual_level || 1)}</span>
+                <span className="text-2xl">📅</span>
               </div>
               <div>
                 <h3 
@@ -242,7 +230,7 @@ export default function ProgressoPage() {
                     color: colors.text.white
                   }}
                 >
-                  Nível Espiritual
+                  Esta Semana
                 </h3>
                 <p 
                   style={{ 
@@ -251,15 +239,28 @@ export default function ProgressoPage() {
                     color: colors.text.whiteMuted
                   }}
                 >
-                  Sua jornada
+                  Dias completados
                 </p>
               </div>
             </div>
-            <div 
-              className="text-lg font-bold mt-4"
-              style={{ color: colors.accent.green }}
-            >
-              {getLevelName(stats?.spiritual_level || 1)}
+            <div className="mt-4">
+              <div 
+                className="text-2xl font-bold mb-1"
+                style={{ color: colors.accent.green }}
+              >
+                {calcularProgressoSemanal()}/7
+              </div>
+              <div 
+                className="w-full bg-gray-700 rounded-full h-2"
+              >
+                <div 
+                  className="h-2 rounded-full transition-all duration-500"
+                  style={{
+                    background: colors.accent.green,
+                    width: `${(calcularProgressoSemanal() / 7) * 100}%`
+                  }}
+                />
+              </div>
             </div>
           </div>
 
@@ -356,7 +357,7 @@ export default function ProgressoPage() {
                 className="text-2xl font-bold mb-1"
                 style={{ color: colors.accent.blue }}
               >
-                {stats?.moments_with_god || 0}
+                {calcularProgressoMensal()}
               </div>
               <p 
                 style={{ 
@@ -365,7 +366,7 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Momentos com Deus
+                Este Mês
               </p>
             </div>
             
@@ -373,6 +374,24 @@ export default function ProgressoPage() {
               <div 
                 className="text-2xl font-bold mb-1"
                 style={{ color: colors.accent.gold }}
+              >
+                {stats?.devotionals_completed || 0}
+              </div>
+              <p 
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.sm,
+                  color: colors.text.whiteMuted
+                }}
+              >
+                Total Completos
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div 
+                className="text-2xl font-bold mb-1"
+                style={{ color: colors.accent.green }}
               >
                 {favoritos.length}
               </div>
@@ -384,24 +403,6 @@ export default function ProgressoPage() {
                 }}
               >
                 Favoritos
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div 
-                className="text-2xl font-bold mb-1"
-                style={{ color: colors.accent.green }}
-              >
-                {stats?.devotionals_completed || 0}
-              </div>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
-                  color: colors.text.whiteMuted
-                }}
-              >
-                Devocionais Completos
               </p>
             </div>
             
