@@ -159,161 +159,8 @@ export default function ProgressoPage() {
       </header>
 
       <Container maxWidth="xl" className="py-6 space-y-6">
-        {/* Cards Principais */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Sequência */}
-          <div 
-            className="p-6 rounded-2xl transition-all hover:scale-105"
-            style={{
-              background: colors.background.card,
-              border: `1px solid ${colors.border}`,
-              backdropFilter: 'blur(10px)'
-            }}
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
-                background: colors.accent.orange
-              }}>
-                <span className="text-2xl">🔥</span>
-              </div>
-              <div>
-                <h3 
-                  className="font-bold mb-1"
-                  style={{ 
-                    fontFamily: typography.serif,
-                    fontSize: typography.heading.h3,
-                    color: colors.text.white
-                  }}
-                >
-                  Sequência
-                </h3>
-                <p 
-                  style={{ 
-                    fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
-                    color: colors.text.whiteMuted
-                  }}
-                >
-                  Dias seguidos
-                </p>
-              </div>
-            </div>
-            <div 
-              className="text-3xl font-bold mt-4"
-              style={{ color: colors.accent.orange }}
-            >
-              {stats?.streak || 0}
-            </div>
-          </div>
 
-          {/* Progresso da Semana */}
-          <div 
-            className="p-6 rounded-2xl transition-all hover:scale-105"
-            style={{
-              background: colors.background.card,
-              border: `1px solid ${colors.border}`,
-              backdropFilter: 'blur(10px)'
-            }}
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
-                background: colors.accent.green
-              }}>
-                <span className="text-2xl">📅</span>
-              </div>
-              <div>
-                <h3 
-                  className="font-bold mb-1"
-                  style={{ 
-                    fontFamily: typography.serif,
-                    fontSize: typography.heading.h3,
-                    color: colors.text.white
-                  }}
-                >
-                  Esta Semana
-                </h3>
-                <p 
-                  style={{ 
-                    fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
-                    color: colors.text.whiteMuted
-                  }}
-                >
-                  Dias completados
-                </p>
-              </div>
-            </div>
-            <div className="mt-4">
-              <div 
-                className="text-2xl font-bold mb-1"
-                style={{ color: colors.accent.green }}
-              >
-                {calcularProgressoSemanal()}/7
-              </div>
-              <div 
-                className="w-full bg-gray-700 rounded-full h-2"
-              >
-                <div 
-                  className="h-2 rounded-full transition-all duration-500"
-                  style={{
-                    background: colors.accent.green,
-                    width: `${(calcularProgressoSemanal() / 7) * 100}%`
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Como você está */}
-          <div 
-            className="p-6 rounded-2xl transition-all hover:scale-105"
-            style={{
-              background: colors.background.card,
-              border: `1px solid ${colors.border}`,
-              backdropFilter: 'blur(10px)'
-            }}
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
-                background: emocaoInfo?.cor || colors.accent.blue
-              }}>
-                <FiHeart size={24} className="text-white" />
-              </div>
-              <div>
-                <h3 
-                  className="font-bold mb-1"
-                  style={{ 
-                    fontFamily: typography.serif,
-                    fontSize: typography.heading.h3,
-                    color: colors.text.white
-                  }}
-                >
-                  Como você está
-                </h3>
-                <p 
-                  style={{ 
-                    fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
-                    color: colors.text.whiteMuted
-                  }}
-                >
-                  Seu estado emocional
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 mt-4">
-              <span className="text-2xl">{emocaoInfo?.emoji || '😊'}</span>
-              <span 
-                className="font-bold"
-                style={{ color: emocaoInfo?.cor || colors.text.white }}
-              >
-                {emocaoInfo?.nome || 'Não definido'}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Estatísticas Adicionais */}
+        {/* Estatísticas */}
         <div 
           className="p-6 rounded-2xl"
           style={{
@@ -337,7 +184,7 @@ export default function ProgressoPage() {
                   color: colors.text.white
                 }}
               >
-                Estatísticas
+                Sua Jornada
               </h3>
               <p 
                 style={{ 
@@ -346,15 +193,51 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Sua jornada em números
+                Seus momentos com Deus em números
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
               <div 
-                className="text-2xl font-bold mb-1"
+                className="text-3xl font-bold mb-2"
+                style={{ color: colors.accent.orange }}
+              >
+                {stats?.streak || 0}
+              </div>
+              <p 
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.sm,
+                  color: colors.text.whiteMuted
+                }}
+              >
+                Dias Seguidos
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div 
+                className="text-3xl font-bold mb-2"
+                style={{ color: colors.accent.green }}
+              >
+                {calcularProgressoSemanal()}/7
+              </div>
+              <p 
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.sm,
+                  color: colors.text.whiteMuted
+                }}
+              >
+                Esta Semana
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div 
+                className="text-3xl font-bold mb-2"
                 style={{ color: colors.accent.blue }}
               >
                 {calcularProgressoMensal()}
@@ -372,7 +255,7 @@ export default function ProgressoPage() {
             
             <div className="text-center">
               <div 
-                className="text-2xl font-bold mb-1"
+                className="text-3xl font-bold mb-2"
                 style={{ color: colors.accent.gold }}
               >
                 {stats?.devotionals_completed || 0}
@@ -387,11 +270,13 @@ export default function ProgressoPage() {
                 Total Completos
               </p>
             </div>
-            
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-6 pt-6" style={{ borderTop: `1px solid ${colors.border}` }}>
             <div className="text-center">
               <div 
-                className="text-2xl font-bold mb-1"
-                style={{ color: colors.accent.green }}
+                className="text-3xl font-bold mb-2"
+                style={{ color: colors.accent.red }}
               >
                 {favoritos.length}
               </div>
@@ -408,7 +293,7 @@ export default function ProgressoPage() {
             
             <div className="text-center">
               <div 
-                className="text-2xl font-bold mb-1"
+                className="text-3xl font-bold mb-2"
                 style={{ color: colors.accent.purple }}
               >
                 {stats?.notes_added || 0}
@@ -421,6 +306,24 @@ export default function ProgressoPage() {
                 }}
               >
                 Anotações
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div 
+                className="text-3xl font-bold mb-2"
+                style={{ color: colors.accent.cyan }}
+              >
+                {stats?.moments_with_god || 0}
+              </div>
+              <p 
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.sm,
+                  color: colors.text.whiteMuted
+                }}
+              >
+                Momentos com Deus
               </p>
             </div>
           </div>
