@@ -10,7 +10,6 @@ import { FiBook, FiMap, FiHeart, FiCalendar, FiLogOut, FiMenu, FiGift, FiLock } 
 import Tutorial, { useTutorial } from '@/components/Tutorial';
 import PWAInstallGuide, { usePWAInstallGuide } from '@/components/PWAInstallGuide';
 import PWAInstallBanner from '@/components/PWAInstallBanner';
-import AchievementModal from '@/components/AchievementModal';
 import HelpButton from '@/components/HelpButton';
 import Container from '@/components/Container';
 import CheckInEmocional from '@/components/CheckInEmocional';
@@ -166,7 +165,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const { user, loading, signOut, checkUser } = useAuthStore();
   const { streak, completedToday, fetchProgress, showStreak, toggleStreak } = useProgressStore();
-  const { stats, achievements, newAchievements, loadStats, loadAchievements, checkNewAchievements, clearNewAchievements } = useStatsStore();
+  const { stats, achievements, loadStats, loadAchievements } = useStatsStore();
   const { showTutorial, openTutorial, closeTutorial } = useTutorial();
   const { showGuide, openGuide, closeGuide } = usePWAInstallGuide();
   const [inactivityStatus, setInactivityStatus] = useState<{
@@ -207,9 +206,17 @@ export default function DashboardPage() {
     } else if (user) {
       fetchProgress(user.id);
       
-      // Carregar stats e conquistas do Supabase
+      // Carregar stats do Supabase
       loadStats(user.id);
-      loadAchievements(user.id);
+      
+      // Carregar conquistas APENAS se ainda não foram carregadas
+      // Isso evita recarregar toda vez que navegamos de volta
+      if (achievements.length === 0) {
+        console.log('🔍 Carregando conquistas pela primeira vez...');
+        loadAchievements(user.id);
+      } else {
+        console.log('✅ Conquistas já carregadas, pulando recarregamento');
+      }
       
       // NÃO verificar conquistas automaticamente - apenas carregar as existentes
       // As conquistas são verificadas apenas quando o devocional/trilha é completado
@@ -239,7 +246,7 @@ export default function DashboardPage() {
         }, 5000); // Espera 5s para não ser intrusivo
       }
     }
-  }, [user, loading, router, fetchProgress]);
+  }, [user, loading, router, fetchProgress, achievements.length]);
 
   const handleSignOut = async () => {
     if (DEV_MODE) {
