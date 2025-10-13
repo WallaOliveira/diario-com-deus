@@ -363,6 +363,14 @@ export default function DashboardPage() {
                   }}
                 />
               </button>
+              <Link
+                href="/progresso"
+                className="p-1.5 transition-all hover:scale-110"
+                style={{ color: colors.text.whiteMuted }}
+                title="Minha Jornada - Estatísticas e conquistas"
+              >
+                <FiCalendar size={18} />
+              </Link>
               <button
                 onClick={handleSignOut}
                 className="p-1.5 transition-colors hover:opacity-80"
@@ -547,42 +555,6 @@ export default function DashboardPage() {
             </div>
           </Link>
 
-          {/* Minha Jornada */}
-          <Link href="/progresso" className="progresso-card block transition-all hover:scale-105" style={{
-            background: colors.background.card,
-            borderRadius: '16px',
-            padding: spacing.fixed.cardPadding,
-            border: `1px solid ${colors.border}`,
-            backdropFilter: 'blur(10px)'
-          }}>
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 
-                  className="font-bold mb-1"
-                  style={{ 
-                    fontFamily: typography.serif,
-                    fontSize: typography.heading.h3,
-                    fontWeight: typography.weights.semibold,
-                    color: colors.text.white
-                  }}
-                >
-                  📈 Minha Jornada
-                </h3>
-                <p 
-                  style={{ 
-                    fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
-                    color: colors.text.whiteMuted
-                  }}
-                >
-                  Veja suas estatísticas, conquistas e favoritos
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                <FiCalendar size={24} className="text-white" />
-              </div>
-            </div>
-          </Link>
 
           {/* Trilhas Especiais - Bloqueado para testes */}
           <div className="trilhas-especiais-card relative" style={{
