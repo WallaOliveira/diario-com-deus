@@ -28,6 +28,7 @@ export default function ProgressoPage() {
   const [emocaoSelecionada, setEmocaoSelecionada] = useState<string>('');
   const [favoritos, setFavoritos] = useState<any[]>([]);
   const [calendarioExpandido, setCalendarioExpandido] = useState(false);
+  const [mesAtual, setMesAtual] = useState(new Date());
 
   // Em modo DEV, usar mockUser
   const currentUser = DEV_MODE ? mockUser : user;
@@ -101,6 +102,53 @@ export default function ProgressoPage() {
         month: day.toLocaleDateString('pt-BR', { month: 'short' })
       };
     });
+  };
+
+  const navegarMes = (direcao: 'anterior' | 'proximo') => {
+    const novoMes = new Date(mesAtual);
+    if (direcao === 'anterior') {
+      novoMes.setMonth(novoMes.getMonth() - 1);
+    } else {
+      novoMes.setMonth(novoMes.getMonth() + 1);
+    }
+    setMesAtual(novoMes);
+  };
+
+  const gerarCalendarioCompleto = () => {
+    const primeiroDiaMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), 1);
+    const ultimoDiaMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 0);
+    const primeiroDiaSemana = primeiroDiaMes.getDay(); // 0 = domingo, 1 = segunda, etc.
+    
+    // Ajustar para segunda-feira começar na posição 0
+    const primeiroDiaSemanaAjustado = primeiroDiaSemana === 0 ? 6 : primeiroDiaSemana - 1;
+    
+    const dias: any[] = [];
+    
+    // Adicionar dias vazios do mês anterior
+    for (let i = 0; i < primeiroDiaSemanaAjustado; i++) {
+      dias.push({ isEmpty: true });
+    }
+    
+    // Adicionar dias do mês atual
+    for (let dia = 1; dia <= ultimoDiaMes.getDate(); dia++) {
+      const dataAtual = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), dia);
+      const hoje = new Date();
+      const isHoje = dataAtual.toDateString() === hoje.toDateString();
+      const isPassado = dataAtual < hoje;
+      
+      // Mock: simular dias completados (dias pares + alguns aleatórios)
+      const isCompleted = (dia % 2 === 0) || (dia % 7 === 0);
+      
+      dias.push({
+        day: dia,
+        date: dataAtual,
+        isCompleted,
+        isHoje,
+        isPassado
+      });
+    }
+    
+    return dias;
   };
 
   const getEmocaoInfo = (emocao: string) => {
@@ -274,12 +322,12 @@ export default function ProgressoPage() {
             </div>
           </div>
 
-          {/* Histórico dos últimos dias */}
+          {/* Calendário de Progresso */}
           <div 
             className="bg-white/5 rounded-xl p-4 cursor-pointer transition-all hover:bg-white/10"
             onClick={() => setCalendarioExpandido(!calendarioExpandido)}
           >
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-4">
               <h4 
                 className="font-semibold"
                 style={{ 
@@ -288,7 +336,7 @@ export default function ProgressoPage() {
                   fontSize: typography.body.md
                 }}
               >
-                {calendarioExpandido ? 'Últimos 30 dias' : 'Últimos 7 dias'}
+                {calendarioExpandido ? 'Calendário Completo' : 'Últimos 7 dias'}
               </h4>
               <div 
                 className="text-sm transition-transform"
@@ -301,65 +349,162 @@ export default function ProgressoPage() {
               </div>
             </div>
             
-            <div className={`grid gap-2 transition-all duration-300 ${
-              calendarioExpandido ? 'grid-cols-7' : 'grid-cols-7'
-            }`}>
-              {gerarHistoricoDias(calendarioExpandido ? 30 : 7).map((day, i) => (
-                <div key={i} className="text-center">
-                  {calendarioExpandido ? (
-                    <>
-                      <div 
-                        className="text-xs mb-1"
-                        style={{ color: colors.text.whiteMuted }}
-                      >
-                        {day.weekday}
-                      </div>
-                      <div 
-                        className="text-xs mb-1"
-                        style={{ color: colors.text.whiteMuted }}
-                      >
-                        {day.month}
-                      </div>
-                      <div 
-                        className="w-6 h-6 rounded-full flex items-center justify-center mx-auto text-xs"
-                        style={{
-                          background: day.isCompleted ? colors.accent.green : 'rgba(255, 255, 255, 0.1)',
-                          border: `1px solid ${day.isCompleted ? colors.accent.green : colors.border}`,
-                          color: colors.text.white
-                        }}
-                      >
-                        {day.dayNumber}
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div 
-                        className="text-xs mb-1"
-                        style={{ color: colors.text.whiteMuted }}
-                      >
-                        {day.weekday}
-                      </div>
-                      <div 
-                        className="w-8 h-8 rounded-full flex items-center justify-center mx-auto"
-                        style={{
-                          background: day.isCompleted ? colors.accent.green : 'rgba(255, 255, 255, 0.1)',
-                          border: `1px solid ${day.isCompleted ? colors.accent.green : colors.border}`
-                        }}
-                      >
-                        <span className="text-sm">{day.isCompleted ? '✓' : '○'}</span>
-                      </div>
-                    </>
-                  )}
+            {!calendarioExpandido ? (
+              // Visual compacto - últimos 7 dias
+              <div className="grid grid-cols-7 gap-2">
+                {gerarHistoricoDias(7).map((day, i) => (
+                  <div key={i} className="text-center">
+                    <div 
+                      className="text-xs mb-1"
+                      style={{ color: colors.text.whiteMuted }}
+                    >
+                      {day.weekday}
+                    </div>
+                    <div 
+                      className="w-8 h-8 rounded-full flex items-center justify-center mx-auto"
+                      style={{
+                        background: day.isCompleted ? colors.accent.green : 'rgba(255, 255, 255, 0.1)',
+                        border: `2px solid ${day.isCompleted ? colors.accent.green : colors.border}`
+                      }}
+                    >
+                      <span className="text-sm">{day.isCompleted ? '✓' : '○'}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              // Calendário completo
+              <div className="space-y-4">
+                {/* Cabeçalho com navegação */}
+                <div className="flex items-center justify-between">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navegarMes('anterior');
+                    }}
+                    className="p-2 rounded-lg transition-colors hover:bg-white/10"
+                    style={{ color: colors.text.whiteMuted }}
+                  >
+                    ←
+                  </button>
+                  
+                  <h5 
+                    className="font-semibold"
+                    style={{ 
+                      fontFamily: typography.sans,
+                      color: colors.text.white,
+                      fontSize: typography.body.md
+                    }}
+                  >
+                    {mesAtual.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
+                  </h5>
+                  
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navegarMes('proximo');
+                    }}
+                    className="p-2 rounded-lg transition-colors hover:bg-white/10"
+                    style={{ color: colors.text.whiteMuted }}
+                  >
+                    →
+                  </button>
                 </div>
-              ))}
-            </div>
+                
+                {/* Dias da semana */}
+                <div className="grid grid-cols-7 gap-1">
+                  {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((dia) => (
+                    <div 
+                      key={dia}
+                      className="text-center py-2"
+                      style={{ 
+                        color: colors.text.whiteMuted,
+                        fontSize: typography.body.sm,
+                        fontFamily: typography.sans
+                      }}
+                    >
+                      {dia}
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Dias do calendário */}
+                <div className="grid grid-cols-7 gap-1">
+                  {gerarCalendarioCompleto().map((dia, i) => (
+                    <div key={i} className="text-center">
+                      {dia.isEmpty ? (
+                        <div className="w-8 h-8" />
+                      ) : (
+                        <div 
+                          className={`
+                            w-8 h-8 rounded-full flex items-center justify-center mx-auto text-xs font-medium
+                            transition-all duration-200
+                            ${dia.isHoje ? 'ring-2 ring-blue-400' : ''}
+                          `}
+                          style={{
+                            background: dia.isCompleted 
+                              ? colors.accent.green 
+                              : dia.isHoje 
+                                ? colors.accent.blue 
+                                : dia.isPassado 
+                                  ? 'rgba(255, 255, 255, 0.1)' 
+                                  : 'rgba(255, 255, 255, 0.05)',
+                            border: dia.isCompleted 
+                              ? `2px solid ${colors.accent.green}` 
+                              : dia.isHoje 
+                                ? `2px solid ${colors.accent.blue}` 
+                                : `1px solid ${colors.border}`,
+                            color: dia.isCompleted || dia.isHoje 
+                              ? colors.text.white 
+                              : colors.text.whiteMuted
+                          }}
+                        >
+                          {dia.day}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Legenda */}
+                <div className="flex items-center justify-center gap-4 pt-2 border-t border-white/10">
+                  <div className="flex items-center gap-2">
+                    <div 
+                      className="w-3 h-3 rounded-full"
+                      style={{ background: colors.accent.green }}
+                    />
+                    <span 
+                      className="text-xs"
+                      style={{ color: colors.text.whiteMuted }}
+                    >
+                      Completo
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div 
+                      className="w-3 h-3 rounded-full ring-2"
+                      style={{ 
+                        background: colors.accent.blue,
+                        ringColor: colors.accent.blue
+                      }}
+                    />
+                    <span 
+                      className="text-xs"
+                      style={{ color: colors.text.whiteMuted }}
+                    >
+                      Hoje
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
             
             {!calendarioExpandido && (
               <p 
                 className="text-xs text-center mt-3"
                 style={{ color: colors.text.whiteMuted }}
               >
-                Toque para ver mais dias
+                Toque para ver o calendário completo
               </p>
             )}
           </div>
