@@ -6,7 +6,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useProgressStore } from '@/store/useProgressStore';
 import { useStatsStore } from '@/store/useStatsStore';
 import Link from 'next/link';
-import { FiBook, FiMap, FiHeart, FiCalendar, FiLogOut, FiMenu, FiHelpCircle, FiGift, FiSmartphone, FiLock } from 'react-icons/fi';
+import { FiBook, FiMap, FiHeart, FiCalendar, FiLogOut, FiMenu, FiGift, FiLock } from 'react-icons/fi';
 import Tutorial, { useTutorial } from '@/components/Tutorial';
 import PWAInstallGuide, { usePWAInstallGuide } from '@/components/PWAInstallGuide';
 import PWAInstallBanner from '@/components/PWAInstallBanner';
@@ -272,7 +272,7 @@ export default function DashboardPage() {
       <Tutorial show={showTutorial} onClose={closeTutorial} />
 
       {/* Botão de ajuda discreto com menu */}
-      <HelpButton onOpenTutorial={openTutorial} />
+      <HelpButton onOpenTutorial={openTutorial} onOpenPWAInstall={openGuide} />
 
       {/* Header com Nova Identidade */}
       <header className="sticky top-0 z-10" style={{
@@ -362,22 +362,6 @@ export default function DashboardPage() {
                     animation: emocaoSelecionada ? 'none' : 'heartbeat 2s ease-in-out infinite'
                   }}
                 />
-              </button>
-              <button
-                onClick={openTutorial}
-                className="p-1.5 transition-colors hover:opacity-80"
-                style={{ color: colors.text.whiteMuted }}
-                title="Ver tutorial"
-              >
-                <FiHelpCircle size={18} />
-              </button>
-              <button
-                onClick={openGuide}
-                className="p-1.5 transition-colors hover:opacity-80"
-                style={{ color: colors.text.whiteMuted }}
-                title="Como instalar o app"
-              >
-                <FiSmartphone size={18} />
               </button>
               <button
                 onClick={handleSignOut}

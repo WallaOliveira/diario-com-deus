@@ -1,13 +1,14 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { FiHelpCircle, FiBook, FiMail, FiMessageCircle } from 'react-icons/fi';
+import { FiHelpCircle, FiBook, FiMail, FiMessageCircle, FiSmartphone } from 'react-icons/fi';
 
 interface HelpButtonProps {
   onOpenTutorial: () => void;
+  onOpenPWAInstall: () => void;
 }
 
-export default function HelpButton({ onOpenTutorial }: HelpButtonProps) {
+export default function HelpButton({ onOpenTutorial, onOpenPWAInstall }: HelpButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -31,6 +32,11 @@ export default function HelpButton({ onOpenTutorial }: HelpButtonProps) {
   const handleTutorialClick = () => {
     setIsOpen(false);
     onOpenTutorial();
+  };
+
+  const handlePWAInstallClick = () => {
+    setIsOpen(false);
+    onOpenPWAInstall();
   };
 
   const handleSupportClick = () => {
@@ -61,6 +67,19 @@ export default function HelpButton({ onOpenTutorial }: HelpButtonProps) {
               <div>
                 <p className="text-sm font-medium text-slate-900">Ver Tutorial</p>
                 <p className="text-xs text-slate-500">Revisar funcionalidades</p>
+              </div>
+            </button>
+
+            <button
+              onClick={handlePWAInstallClick}
+              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors text-left"
+            >
+              <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                <FiSmartphone size={16} className="text-green-600" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-900">Instalar App</p>
+                <p className="text-xs text-slate-500">Use como app nativo</p>
               </div>
             </button>
 
