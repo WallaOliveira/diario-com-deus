@@ -62,6 +62,18 @@ export default function SessaoExpressPage() {
     const devotionalOfDay = getDevotionalOfTheDay();
     setDevocional(devotionalOfDay);
     
+    // TESTE: Forçar toast para debug
+    console.log('🧪 TESTE: Forçando toast em 2 segundos...');
+    setTimeout(() => {
+      setToastData({
+        titulo: '🧪 Teste Toast',
+        descricao: 'Este é um teste do toast!',
+        icone: '🔧'
+      });
+      setShowToast(true);
+      console.log('🧪 Toast de teste ativado!');
+    }, 2000);
+    
     // Track devocional iniciado
     if (devotionalOfDay) {
       analytics.devotionalStarted(devotionalOfDay.tema);
@@ -652,6 +664,7 @@ export default function SessaoExpressPage() {
       )}
 
       {/* Toast de Celebração */}
+      {console.log('🔍 Renderizando Toast:', { showToast, toastData })}
       <ToastCelebracao
         isOpen={showToast}
         onClose={() => setShowToast(false)}
