@@ -63,16 +63,6 @@ export default function SessaoExpressPage() {
     setDevocional(devotionalOfDay);
     
     // TESTE: Forçar toast para debug
-    console.log('🧪 TESTE: Forçando toast em 2 segundos...');
-    setTimeout(() => {
-      setToastData({
-        titulo: '🧪 Teste Toast',
-        descricao: 'Este é um teste do toast!',
-        icone: '🔧'
-      });
-      setShowToast(true);
-      console.log('🧪 Toast de teste ativado!');
-    }, 2000);
     
     // Track devocional iniciado
     if (devotionalOfDay) {
@@ -141,14 +131,12 @@ export default function SessaoExpressPage() {
         localStorage.setItem('last_activity_timestamp', Date.now().toString());
         
         // Mostrar toast de celebração
-        console.log('🎯 Mostrando toast de celebração!');
         setToastData({
           titulo: '🌿 Um passo na jornada',
           descricao: 'Devocional completado! Que esta palavra permaneça em seu coração.',
           icone: '✨'
         });
         setShowToast(true);
-        console.log('✅ Toast ativado:', { showToast: true });
         
         // Mostrar sugestão emocional se houver emoção selecionada
         if (emocaoAtual) {
@@ -188,7 +176,6 @@ export default function SessaoExpressPage() {
       });
       
       // Aqui você pode adicionar um toast de sucesso
-      console.log('Favorito salvo com sucesso!');
     } catch (error) {
       console.error('Erro ao salvar favorito:', error);
     }
@@ -664,7 +651,6 @@ export default function SessaoExpressPage() {
       )}
 
       {/* Toast de Celebração */}
-      {console.log('🔍 Renderizando Toast:', { showToast, toastData })}
       <ToastCelebracao
         isOpen={showToast}
         onClose={() => setShowToast(false)}

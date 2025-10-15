@@ -113,11 +113,12 @@ export default function RegistroPage() {
         }}>
 
           <div>
-            <label 
-              htmlFor="name" 
-              className="block text-sm font-medium text-blue-100 mb-2"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
+            <label htmlFor="name" className="block mb-2" style={{ 
+              fontFamily: typography.sans,
+              fontSize: typography.fixed.label,
+              fontWeight: typography.weights.medium,
+              color: colors.text.whiteMuted
+            }}>
               Nome completo
             </label>
             <input
@@ -125,18 +126,29 @@ export default function RegistroPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              className="w-full rounded-xl outline-none transition-all focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 hover:bg-white/12"
               placeholder="Seu nome completo"
               required
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                border: `1px solid rgba(255,255,255,0.2)`,
+                padding: '1rem 1.25rem',
+                fontFamily: typography.sans,
+                fontSize: typography.body.md,
+                color: colors.text.white,
+                borderRadius: '12px',
+                minHeight: '56px'
+              }}
             />
           </div>
 
           <div>
-            <label 
-              htmlFor="email" 
-              className="block text-sm font-medium text-blue-100 mb-2"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
+            <label htmlFor="email" className="block mb-2" style={{ 
+              fontFamily: typography.sans,
+              fontSize: typography.fixed.label,
+              fontWeight: typography.weights.medium,
+              color: colors.text.whiteMuted
+            }}>
               E-mail
             </label>
             <input
@@ -144,18 +156,29 @@ export default function RegistroPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              className="w-full rounded-xl outline-none transition-all focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 hover:bg-white/12"
               placeholder="seu@email.com"
               required
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                border: `1px solid rgba(255,255,255,0.2)`,
+                padding: '1rem 1.25rem',
+                fontFamily: typography.sans,
+                fontSize: typography.body.md,
+                color: colors.text.white,
+                borderRadius: '12px',
+                minHeight: '56px'
+              }}
             />
           </div>
 
           <div>
-            <label 
-              htmlFor="phone" 
-              className="block text-sm font-medium text-blue-100 mb-2"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
+            <label htmlFor="phone" className="block mb-2" style={{ 
+              fontFamily: typography.sans,
+              fontSize: typography.fixed.label,
+              fontWeight: typography.weights.medium,
+              color: colors.text.whiteMuted
+            }}>
               Telefone (opcional)
             </label>
             <input
@@ -163,23 +186,38 @@ export default function RegistroPage() {
               type="tel"
               value={phone}
               onChange={handlePhoneChange}
-              className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              className="w-full rounded-xl outline-none transition-all focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 hover:bg-white/12"
               placeholder="(11) 99999-9999"
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                border: `1px solid rgba(255,255,255,0.2)`,
+                padding: '1rem 1.25rem',
+                fontFamily: typography.sans,
+                fontSize: typography.body.md,
+                color: colors.text.white,
+                borderRadius: '12px',
+                minHeight: '56px'
+              }}
             />
             <p 
-              className="text-xs text-blue-200/80 mt-1"
-              style={{ fontFamily: "'Inter', sans-serif" }}
+              className="mt-1"
+              style={{ 
+                fontFamily: typography.sans,
+                fontSize: typography.body.xs,
+                color: colors.text.whiteMuted
+              }}
             >
               Para lembretes personalizados via WhatsApp
             </p>
           </div>
 
           <div>
-            <label 
-              htmlFor="password" 
-              className="block text-sm font-medium text-blue-100 mb-2"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
+            <label htmlFor="password" className="block mb-2" style={{ 
+              fontFamily: typography.sans,
+              fontSize: typography.fixed.label,
+              fontWeight: typography.weights.medium,
+              color: colors.text.whiteMuted
+            }}>
               Senha
             </label>
             <input
@@ -187,9 +225,19 @@ export default function RegistroPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              className="w-full rounded-xl outline-none transition-all focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 hover:bg-white/12"
               placeholder="Mínimo 6 caracteres"
               required
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                border: `1px solid rgba(255,255,255,0.2)`,
+                padding: '1rem 1.25rem',
+                fontFamily: typography.sans,
+                fontSize: typography.body.md,
+                color: colors.text.white,
+                borderRadius: '12px',
+                minHeight: '56px'
+              }}
             />
           </div>
 

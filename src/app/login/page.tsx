@@ -59,8 +59,8 @@ export default function LoginPage() {
           <h1 
             className="mb-2"
             style={{ 
-              fontFamily: "'Cormorant Garamond', serif",
-              fontWeight: 600,
+              fontFamily: typography.serif,
+              fontWeight: typography.weights.semibold,
               fontSize: typography.heading.h1,
               color: colors.text.white,
               letterSpacing: '-0.02em'

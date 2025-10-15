@@ -23,9 +23,7 @@ export default function ToastCelebracao({
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    console.log('🍞 ToastCelebracao useEffect:', { isOpen, isVisible });
     if (isOpen) {
-      console.log('🎊 Toast aberto! Iniciando animação...');
       // Pequeno delay para animação de entrada
       setTimeout(() => setIsVisible(true), 100);
       

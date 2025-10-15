@@ -213,10 +213,8 @@ export default function DashboardPage() {
       // Carregar conquistas APENAS se ainda não foram carregadas
       // Isso evita recarregar toda vez que navegamos de volta
       if (achievements.length === 0) {
-        console.log('🔍 Carregando conquistas pela primeira vez...');
         loadAchievements(user.id);
       } else {
-        console.log('✅ Conquistas já carregadas, pulando recarregamento');
       }
       
       // NÃO verificar conquistas automaticamente - apenas carregar as existentes
@@ -241,7 +239,6 @@ export default function DashboardPage() {
           requestNotificationPermission().then((granted) => {
             localStorage.setItem('notification_permission_asked', 'true');
             if (granted) {
-              console.log('✅ Notificações ativadas!');
             }
           });
         }, 5000); // Espera 5s para não ser intrusivo

@@ -190,7 +190,6 @@ export default function TrilhaPazInteriorPage() {
         tags: [trilha?.tema || 'trilha']
       });
       
-      console.log('Favorito salvo com sucesso!');
     } catch (error) {
       console.error('Erro ao salvar favorito:', error);
     }
