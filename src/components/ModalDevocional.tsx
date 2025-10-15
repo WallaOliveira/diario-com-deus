@@ -1,0 +1,252 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { FiX, FiHeart, FiCalendar } from 'react-icons/fi';
+import { colors, typography } from '@/lib/design-system';
+
+interface DevocionalData {
+  id: string;
+  title: string;
+  verse: string;
+  reference: string;
+  reflection: string;
+  prayer: string;
+  action: string;
+  date: string;
+  isFavorited?: boolean;
+}
+
+interface ModalDevocionalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  devocional: DevocionalData | null;
+  onToggleFavorite: (devocional: DevocionalData) => void;
+}
+
+export default function ModalDevocional({
+  isOpen,
+  onClose,
+  devocional,
+  onToggleFavorite
+}: ModalDevocionalProps) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => setIsVisible(true), 100);
+    } else {
+      setIsVisible(false);
+    }
+  }, [isOpen]);
+
+  if (!isOpen || !devocional) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: 'rgba(0, 0, 0, 0.8)' }}
+      onClick={onClose}
+    >
+      <div
+        className={`w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl transition-all duration-300 ${
+          isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+        }`}
+        style={{
+          background: colors.background.card,
+          border: `1px solid ${colors.border}`,
+          backdropFilter: 'blur(10px)'
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{
+              background: colors.accent.gold
+            }}>
+              <FiCalendar className="text-white" size={20} />
+            </div>
+            <div>
+              <h2 
+                className="font-bold"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: typography.heading.h2,
+                  color: colors.text.white
+                }}
+              >
+                {devocional.title}
+              </h2>
+              <p 
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.sm,
+                  color: colors.text.whiteMuted
+                }}
+              >
+                {devocional.date}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-all"
+          >
+            <FiX size={20} />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 space-y-6">
+          {/* Versículo */}
+          <div className="p-4 rounded-xl" style={{ background: 'rgba(212, 175, 55, 0.1)' }}>
+            <p 
+              className="mb-3 leading-relaxed"
+              style={{ 
+                fontFamily: typography.serif,
+                color: colors.text.white,
+                fontSize: typography.body.lg,
+                fontStyle: 'italic'
+              }}
+            >
+              "{devocional.verse}"
+            </p>
+            <p 
+              className="text-sm font-medium"
+              style={{ 
+                fontFamily: typography.sans,
+                color: colors.accent.gold
+              }}
+            >
+              {devocional.reference}
+            </p>
+          </div>
+
+          {/* Reflexão */}
+          <div>
+            <p 
+              className="text-sm font-medium mb-2"
+              style={{ 
+                fontFamily: typography.sans,
+                color: colors.accent.blue,
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
+            >
+              Reflexão
+            </p>
+            <p 
+              className="leading-relaxed"
+              style={{ 
+                fontFamily: typography.sans,
+                color: colors.text.whiteMuted,
+                fontSize: typography.body.md
+              }}
+            >
+              {devocional.reflection}
+            </p>
+          </div>
+
+          {/* Oração */}
+          <div>
+            <p 
+              className="text-sm font-medium mb-2"
+              style={{ 
+                fontFamily: typography.sans,
+                color: colors.accent.purple,
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
+            >
+              Oração
+            </p>
+            <p 
+              className="leading-relaxed"
+              style={{ 
+                fontFamily: typography.sans,
+                color: colors.text.whiteMuted,
+                fontSize: typography.body.md
+              }}
+            >
+              {devocional.prayer}
+            </p>
+          </div>
+
+          {/* Ação do Dia */}
+          <div>
+            <p 
+              className="text-sm font-medium mb-2"
+              style={{ 
+                fontFamily: typography.sans,
+                color: colors.accent.green,
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
+            >
+              Ação do Dia
+            </p>
+            <p 
+              className="leading-relaxed"
+              style={{ 
+                fontFamily: typography.sans,
+                color: colors.text.whiteMuted,
+                fontSize: typography.body.md
+              }}
+            >
+              {devocional.action}
+            </p>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="p-6 border-t border-white/10">
+          <div className="flex items-center justify-between gap-4">
+            <p 
+              style={{ 
+                fontFamily: typography.sans,
+                fontSize: typography.body.sm,
+                color: colors.text.whiteMuted
+              }}
+            >
+              {devocional.isFavorited ? '⭐ Nos seus favoritos' : '💝 Adicione aos favoritos'}
+            </p>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => onToggleFavorite(devocional)}
+                className={`px-6 py-2 rounded-xl font-medium transition-all flex items-center gap-2 ${
+                  devocional.isFavorited 
+                    ? 'text-white bg-red-500 hover:bg-red-600' 
+                    : 'text-red-500 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50'
+                }`}
+                style={{
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.md,
+                  fontWeight: typography.weights.medium
+                }}
+              >
+                <FiHeart 
+                  size={16} 
+                  fill={devocional.isFavorited ? 'currentColor' : 'none'}
+                />
+                {devocional.isFavorited ? 'Favoritado' : 'Favoritar'}
+              </button>
+              <button
+                onClick={onClose}
+                className="px-6 py-2 rounded-xl font-medium transition-all"
+                style={{
+                  background: colors.accent.gold,
+                  color: 'white',
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.md,
+                  fontWeight: typography.weights.medium
+                }}
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

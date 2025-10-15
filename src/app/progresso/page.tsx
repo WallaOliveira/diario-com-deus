@@ -9,6 +9,7 @@ import Link from 'next/link';
 import Container from '@/components/Container';
 import { colors, typography, spacing } from '@/lib/design-system';
 import { getMotivationalMessage, getProgressLevel, getProgressLevelMessage } from '@/lib/motivational-messages';
+import ModalDevocional from '@/components/ModalDevocional';
 import Loading from '@/components/Loading';
 
 // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
@@ -32,9 +33,106 @@ export default function ProgressoPage() {
   const [mesAtual, setMesAtual] = useState(new Date());
   const [dadosCarregados, setDadosCarregados] = useState(false);
   const [devocionalExpandido, setDevocionalExpandido] = useState<number | null>(null);
+  const [modalDevocional, setModalDevocional] = useState<{
+    isOpen: boolean;
+    devocional: any | null;
+  }>({ isOpen: false, devocional: null });
 
   // Em modo DEV, usar mockUser
   const currentUser = DEV_MODE ? mockUser : user;
+
+  // Mock de devocionais por data
+  const devocionaisPorData = {
+    '2025-10-14': {
+      id: 'dev-2025-10-14',
+      title: 'A Fé que Move Montanhas',
+      verse: 'A fé é a certeza daquilo que esperamos e a prova das coisas que não vemos.',
+      reference: 'Hebreus 11:1',
+      reflection: 'A fé não é apenas acreditar no que vemos, mas confiar no que não vemos. É a certeza de que Deus está trabalhando mesmo quando não conseguimos perceber.',
+      prayer: 'Pai, fortalece minha fé. Ajuda-me a confiar em Ti mesmo quando não vejo respostas imediatas.',
+      action: 'Vou praticar a fé hoje, agindo com confiança em Deus mesmo em situações incertas.',
+      date: '14 de Outubro, 2025',
+      isFavorited: true
+    },
+    '2025-10-12': {
+      id: 'dev-2025-10-12',
+      title: 'Deus é Fiel',
+      verse: 'Porque para Deus nada é impossível.',
+      reference: 'Lucas 1:37',
+      reflection: 'Este versículo nos lembra que Deus tem poder sobre todas as coisas. Mesmo quando enfrentamos desafios que parecem impossíveis, Ele pode intervir e transformar nossa situação.',
+      prayer: 'Senhor, obrigado por ser um Deus de milagres. Ajuda-me a confiar em Ti mesmo quando as circunstâncias parecem impossíveis.',
+      action: 'Hoje, vou entregar uma situação difícil nas mãos de Deus e confiar em Sua fidelidade.',
+      date: '12 de Outubro, 2025',
+      isFavorited: false
+    },
+    '2025-10-10': {
+      id: 'dev-2025-10-10',
+      title: 'Gratidão Transformadora',
+      verse: 'Dêem graças em todas as circunstâncias, pois esta é a vontade de Deus para vocês em Cristo Jesus.',
+      reference: '1 Tessalonicenses 5:18',
+      reflection: 'A gratidão não é apenas um sentimento, mas uma escolha ativa que transforma nossa perspectiva e nos aproxima de Deus.',
+      prayer: 'Senhor, ensina-me a ser grato em todas as situações. Ajuda-me a ver Tuas bênçãos mesmo nos momentos difíceis.',
+      action: 'Vou listar 5 coisas pelas quais sou grato hoje e agradecer a Deus por cada uma delas.',
+      date: '10 de Outubro, 2025',
+      isFavorited: false
+    },
+    '2025-10-08': {
+      id: 'dev-2025-10-08',
+      title: 'Paz que Excede',
+      verse: 'E a paz de Deus, que excede todo o entendimento, guardará os vossos corações e os vossos sentimentos em Cristo Jesus.',
+      reference: 'Filipenses 4:7',
+      reflection: 'A paz de Deus é diferente da paz do mundo. Ela não depende das circunstâncias, mas da presença de Cristo em nossa vida.',
+      prayer: 'Senhor, dá-me a Tua paz que excede todo entendimento. Guarda meu coração e meus pensamentos.',
+      action: 'Hoje, vou praticar a gratidão e entregar minhas preocupações a Deus.',
+      date: '8 de Outubro, 2025',
+      isFavorited: false
+    },
+    '2025-10-06': {
+      id: 'dev-2025-10-06',
+      title: 'Amor Incondicional',
+      verse: 'Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.',
+      reference: 'João 3:16',
+      reflection: 'O amor de Deus é incondicional e sacrificial. Ele nos amou primeiro, mesmo quando não merecíamos.',
+      prayer: 'Senhor, obrigado pelo Teu amor incondicional. Ajuda-me a amar os outros como Tu me amas.',
+      action: 'Hoje, vou demonstrar amor incondicional a alguém que precisa.',
+      date: '6 de Outubro, 2025',
+      isFavorited: true
+    },
+    // Devocionais de setembro (mais antigos)
+    '2025-09-15': {
+      id: 'dev-2025-09-15',
+      title: 'Confiança em Deus',
+      verse: 'Entrega o teu caminho ao Senhor; confia nele, e ele o fará.',
+      reference: 'Salmos 37:5',
+      reflection: 'Confiar em Deus significa entregar nossas preocupações e deixar que Ele cuide dos resultados.',
+      prayer: 'Pai, ensina-me a confiar completamente em Ti. Ajuda-me a entregar minhas ansiedades.',
+      action: 'Hoje, vou praticar a confiança entregando uma situação difícil a Deus.',
+      date: '15 de Setembro, 2025',
+      isFavorited: false
+    },
+    '2025-09-12': {
+      id: 'dev-2025-09-12',
+      title: 'Paciência e Perseverança',
+      verse: 'Mas os que esperam no Senhor renovam as suas forças; sobem com asas como águias.',
+      reference: 'Isaías 40:31',
+      reflection: 'A paciência não é passividade, mas uma força ativa que nos permite esperar no timing perfeito de Deus.',
+      prayer: 'Senhor, dá-me paciência para esperar no Teu tempo perfeito.',
+      action: 'Vou praticar a paciência hoje, confiando no plano de Deus.',
+      date: '12 de Setembro, 2025',
+      isFavorited: true
+    },
+    '2025-09-08': {
+      id: 'dev-2025-09-08',
+      title: 'Perdão e Liberdade',
+      verse: 'Perdoa-nos as nossas dívidas, assim como nós perdoamos aos nossos devedores.',
+      reference: 'Mateus 6:12',
+      reflection: 'O perdão é uma escolha que nos liberta da amargura e nos aproxima do coração de Deus.',
+      prayer: 'Senhor, ajuda-me a perdoar como Tu me perdoas. Liberta-me da amargura.',
+      action: 'Hoje, vou escolher perdoar alguém que me magoou.',
+      date: '8 de Setembro, 2025',
+      isFavorited: false
+    }
+  };
 
   useEffect(() => {
     if (!DEV_MODE) {
@@ -190,6 +288,12 @@ export default function ProgressoPage() {
       // Mock: simular dias completados (dias pares + alguns aleatórios)
       const isCompleted = (dia % 2 === 0) || (dia % 7 === 0);
       
+      // Adicionar devocional para alguns dias específicos
+      const dataStr = dataAtual.toISOString().split('T')[0];
+      if (devocionaisPorData[dataStr]) {
+        // Já existe devocional para esta data
+      }
+      
       dias.push({
         day: dia,
         date: dataAtual,
@@ -200,6 +304,40 @@ export default function ProgressoPage() {
     }
     
     return dias;
+  };
+
+  // Função para abrir modal de devocional
+  const abrirModalDevocional = (data: string) => {
+    const devocional = devocionaisPorData[data];
+    if (devocional) {
+      setModalDevocional({
+        isOpen: true,
+        devocional: devocional
+      });
+    }
+  };
+
+  // Função para favoritar devocional
+  const toggleFavoritoDevocional = (devocional: any) => {
+    // Atualizar estado do devocional
+    const devocionalAtualizado = { ...devocional, isFavorited: !devocional.isFavorited };
+    
+    // Atualizar dados mock
+    const dataKey = devocional.id.split('-').slice(1).join('-');
+    devocionaisPorData[dataKey] = devocionalAtualizado;
+    
+    // Atualizar modal
+    setModalDevocional({
+      isOpen: true,
+      devocional: devocionalAtualizado
+    });
+    
+    // Atualizar lista de favoritos se necessário
+    if (devocionalAtualizado.isFavorited) {
+      setFavoritos(prev => [...prev, devocionalAtualizado]);
+    } else {
+      setFavoritos(prev => prev.filter(fav => fav.id !== devocional.id));
+    }
   };
 
   const getEmocaoInfo = (emocao: string) => {
@@ -512,11 +650,18 @@ export default function ProgressoPage() {
                       {dia.isEmpty ? (
                         <div className="w-8 h-8" />
                       ) : (
-                        <div 
+                        <button
+                          onClick={() => {
+                            if (dia.isCompleted) {
+                              const dataStr = dia.date.toISOString().split('T')[0];
+                              abrirModalDevocional(dataStr);
+                            }
+                          }}
                           className={`
                             w-8 h-8 rounded-full flex items-center justify-center mx-auto text-xs font-medium
                             transition-all duration-200
                             ${dia.isHoje ? 'ring-2 ring-blue-400' : ''}
+                            ${dia.isCompleted ? 'cursor-pointer hover:scale-110' : 'cursor-default'}
                           `}
                           style={{
                             background: dia.isCompleted 
@@ -537,7 +682,7 @@ export default function ProgressoPage() {
                           }}
                         >
                           {dia.day}
-                      </div>
+                        </button>
                       )}
                   </div>
                   ))}
@@ -1046,6 +1191,14 @@ export default function ProgressoPage() {
                 </div>
         </div>
       </Container>
+
+      {/* Modal de Devocional */}
+      <ModalDevocional
+        isOpen={modalDevocional.isOpen}
+        onClose={() => setModalDevocional({ isOpen: false, devocional: null })}
+        devocional={modalDevocional.devocional}
+        onToggleFavorite={toggleFavoritoDevocional}
+      />
     </div>
   );
 }
