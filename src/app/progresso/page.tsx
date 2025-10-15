@@ -280,19 +280,19 @@ export default function ProgressoPage() {
 
         {/* Devocionais Feitos - Seção Principal */}
         <div 
-          className="p-6 rounded-2xl transform transition-all hover:scale-[1.02] hover:shadow-2xl"
+          className="p-4 rounded-xl transform transition-all hover:scale-[1.01] hover:shadow-xl"
           style={{
             background: colors.background.card,
             border: `2px solid ${colors.accent.gold}`,
             backdropFilter: 'blur(10px)',
-            boxShadow: '0 8px 32px rgba(212, 175, 55, 0.2)'
+            boxShadow: '0 4px 20px rgba(212, 175, 55, 0.15)'
           }}
         >
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{
               background: colors.text.gold
             }}>
-              <span className="text-2xl">📖</span>
+              <span className="text-xl">📖</span>
             </div>
                     <div>
               <h3 
@@ -318,22 +318,22 @@ export default function ProgressoPage() {
                   </div>
 
           {/* Estatísticas rápidas com mensagens motivacionais */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
             {/* Dias Seguidos */}
-            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
-              <div className="text-3xl mb-2">
+            <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div className="text-2xl mb-1">
                 {getMotivationalMessage('streak', stats?.streak || 0).emoji}
-                  </div>
+              </div>
               <div 
-                className="text-xl font-bold mb-1"
+                className="text-lg font-bold mb-1"
                 style={{ color: getMotivationalMessage('streak', stats?.streak || 0).color }}
               >
                 {getMotivationalMessage('streak', stats?.streak || 0).primary}
-              </div>
+                  </div>
               <p 
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
+                  fontSize: typography.body.xs,
                   color: colors.text.whiteMuted
                 }}
               >
@@ -342,12 +342,12 @@ export default function ProgressoPage() {
                 </div>
 
             {/* Esta Semana */}
-            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
-              <div className="text-3xl mb-2">
+            <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div className="text-2xl mb-1">
                 {getMotivationalMessage('weekly', calcularProgressoSemanal()).emoji}
                     </div>
               <div 
-                className="text-xl font-bold mb-1"
+                className="text-lg font-bold mb-1"
                 style={{ color: getMotivationalMessage('weekly', calcularProgressoSemanal()).color }}
               >
                 {getMotivationalMessage('weekly', calcularProgressoSemanal()).primary}
@@ -355,7 +355,7 @@ export default function ProgressoPage() {
               <p 
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
+                  fontSize: typography.body.xs,
                   color: colors.text.whiteMuted
                 }}
               >
@@ -364,12 +364,12 @@ export default function ProgressoPage() {
                 </div>
 
             {/* Total */}
-            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
-              <div className="text-3xl mb-2">
+            <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div className="text-2xl mb-1">
                 {getMotivationalMessage('total', stats?.devotionals_completed || 0).emoji}
                     </div>
               <div 
-                className="text-xl font-bold mb-1"
+                className="text-lg font-bold mb-1"
                 style={{ color: getMotivationalMessage('total', stats?.devotionals_completed || 0).color }}
               >
                 {getMotivationalMessage('total', stats?.devotionals_completed || 0).primary}
@@ -377,7 +377,7 @@ export default function ProgressoPage() {
               <p 
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
+                  fontSize: typography.body.xs,
                   color: colors.text.whiteMuted
                 }}
               >
@@ -388,10 +388,10 @@ export default function ProgressoPage() {
 
           {/* Calendário de Progresso */}
           <div 
-            className="bg-white/5 rounded-xl p-4 cursor-pointer transition-all hover:bg-white/10"
+            className="bg-white/5 rounded-lg p-3 cursor-pointer transition-all hover:bg-white/10"
             onClick={() => setCalendarioExpandido(!calendarioExpandido)}
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-3">
               <h4 
                 className="font-semibold"
                 style={{ 
@@ -680,26 +680,26 @@ export default function ProgressoPage() {
               <div>
                 <h4 
                   className="font-semibold mb-1"
-                  style={{ 
+                              style={{ 
                     fontFamily: typography.sans,
                     color: colors.text.white,
                     fontSize: typography.body.md
-                  }}
-                >
+                              }}
+                            >
                   ✨ Jornada de Gratidão
-                </h4>
-                <p 
-                  style={{ 
-                    fontFamily: typography.sans,
+                            </h4>
+                            <p 
+                              style={{ 
+                                fontFamily: typography.sans,
                     fontSize: typography.body.sm,
-                    color: colors.text.whiteMuted
-                  }}
-                >
+                                color: colors.text.whiteMuted
+                              }}
+                            >
                   Completada há 2 dias - Parabéns!
-                </p>
-              </div>
+                            </p>
+                          </div>
               <div className="text-2xl">🎉</div>
-            </div>
+                        </div>
                       </div>
               </div>
 
@@ -723,20 +723,20 @@ export default function ProgressoPage() {
                     <div>
                 <h3 
                   className="font-bold mb-1"
-                  style={{ 
-                    fontFamily: typography.serif,
+                    style={{ 
+                      fontFamily: typography.serif,
                     fontSize: typography.heading.h3,
-                    color: colors.text.white
-                  }}
-                >
+                      color: colors.text.white
+                    }}
+                  >
                   Devocionais Favoritos
-                      </h3>
-                <p 
-                  style={{ 
-                    fontFamily: typography.sans,
+                  </h3>
+                  <p 
+                    style={{ 
+                      fontFamily: typography.sans,
                     fontSize: typography.body.sm,
-                    color: colors.text.whiteMuted
-                  }}
+                      color: colors.text.whiteMuted
+                    }}
                 >
                   Devocionais completos que você salvou
                       </p>
@@ -748,7 +748,7 @@ export default function ProgressoPage() {
                 <div 
                   key={favorito.id}
                   className="p-4 rounded-xl"
-                  style={{
+                      style={{
                     background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid rgba(255, 255, 255, 0.1)'
                   }}
@@ -758,9 +758,9 @@ export default function ProgressoPage() {
                     <div className="flex-1">
                       <p 
                         className="mb-2 leading-relaxed"
-                        style={{ 
+                      style={{
                           fontFamily: typography.serif,
-                          color: colors.text.white,
+                        color: colors.text.white,
                           fontSize: typography.body.md
                         }}
                       >
