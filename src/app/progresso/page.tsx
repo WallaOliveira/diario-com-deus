@@ -874,7 +874,7 @@ export default function ProgressoPage() {
                     color: colors.text.white
                   }}
                 >
-                  Seus Favoritos
+                  Devocionais Favoritos
                       </h3>
                 <p 
                   style={{ 
@@ -883,7 +883,7 @@ export default function ProgressoPage() {
                     color: colors.text.whiteMuted
                   }}
                 >
-                  Versículos e citações que tocaram seu coração
+                  Devocionais completos que você salvou
                       </p>
                     </div>
                   </div>

@@ -63,7 +63,7 @@ export const getMotivationalMessage = (
       case 'favorites':
         return {
           primary: "⭐ Salve versículos",
-          secondary: "Crie sua biblioteca pessoal",
+          secondary: "Crie sua biblioteca de versículos",
           emoji: "📚",
           color: colors.accent.red,
           cta: "Ver Versículos",
@@ -159,12 +159,12 @@ const getPositiveInsight = (
     
     case 'favorites':
       return {
-        primary: `${value} favoritos`,
-        secondary: "Versículos que tocaram seu coração",
+        primary: `${value} versículos`,
+        secondary: "Versículos salvos na sua biblioteca",
         emoji: "⭐",
         color: colors.accent.red,
         insight: value >= 3 
-          ? "Sua biblioteca espiritual está crescendo"
+          ? "Sua biblioteca de versículos está crescendo"
           : "Continue salvando versículos que te inspiram"
       };
   }
