@@ -37,6 +37,9 @@ export default function ProgressoPage() {
   useEffect(() => {
     if (!DEV_MODE) {
       checkUser();
+    } else {
+      // Em modo DEV, definir loading como false imediatamente
+      setDadosCarregados(false);
     }
   }, [checkUser]);
 
@@ -177,7 +180,7 @@ export default function ProgressoPage() {
     }
   };
 
-  if (loading || (!DEV_MODE && !dadosCarregados)) {
+  if ((!DEV_MODE && loading) || (!DEV_MODE && !dadosCarregados)) {
     return <Loading />;
   }
 
