@@ -28,6 +28,14 @@ export const colors = {
     goldDark: '#b8860b',
     blue: '#93c5fd',
     blueDark: '#60a5fa',
+    orange: '#f59e0b',
+    orangeDark: '#d97706',
+    green: '#10b981',
+    greenDark: '#059669',
+    red: '#ef4444',
+    redDark: '#dc2626',
+    purple: '#8b5cf6',
+    purpleDark: '#7c3aed',
   },
   
   // Bordas e sombras
