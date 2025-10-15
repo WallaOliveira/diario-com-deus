@@ -65,20 +65,28 @@ export default function ProgressoPage() {
   }, [currentUser, loading, user, router, loadStats]);
 
   const carregarFavoritos = () => {
-    // Mock de favoritos
+    // Mock de devocionais favoritos completos
     setFavoritos([
       {
         id: 1,
-        content: "Porque para Deus nada é impossível.",
-        type: 'verse',
+        title: "Deus é Fiel",
+        verse: "Porque para Deus nada é impossível.",
         reference: 'Lucas 1:37',
+        reflection: "Este versículo nos lembra que Deus tem poder sobre todas as coisas. Mesmo quando enfrentamos desafios que parecem impossíveis, Ele pode intervir e transformar nossa situação.",
+        prayer: "Senhor, obrigado por ser um Deus de milagres. Ajuda-me a confiar em Ti mesmo quando as circunstâncias parecem impossíveis.",
+        action: "Hoje, vou entregar uma situação difícil nas mãos de Deus e confiar em Sua fidelidade.",
+        date: "15 de Janeiro, 2025",
         created_at: new Date().toISOString()
       },
       {
         id: 2,
-        content: "A fé é a certeza daquilo que esperamos e a prova das coisas que não vemos.",
-        type: 'verse',
+        title: "A Fé que Move Montanhas",
+        verse: "A fé é a certeza daquilo que esperamos e a prova das coisas que não vemos.",
         reference: 'Hebreus 11:1',
+        reflection: "A fé não é apenas acreditar no que vemos, mas confiar no que não vemos. É a certeza de que Deus está trabalhando mesmo quando não conseguimos perceber.",
+        prayer: "Pai, fortalece minha fé. Ajuda-me a confiar em Ti mesmo quando não vejo respostas imediatas.",
+        action: "Vou praticar a fé hoje, agindo com confiança em Deus mesmo em situações incertas.",
+        date: "14 de Janeiro, 2025",
         created_at: new Date().toISOString()
       }
     ]);
@@ -323,7 +331,7 @@ export default function ProgressoPage() {
             <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
               <div className="text-2xl mb-1">
                 {getMotivationalMessage('streak', stats?.streak || 0).emoji}
-              </div>
+                  </div>
               <div 
                 className="text-lg font-bold mb-1"
                 style={{ color: getMotivationalMessage('streak', stats?.streak || 0).color }}
@@ -737,51 +745,148 @@ export default function ProgressoPage() {
                     fontSize: typography.body.sm,
                       color: colors.text.whiteMuted
                     }}
-                >
+                  >
                   Devocionais completos que você salvou
-                      </p>
-                    </div>
-                  </div>
+                  </p>
+                </div>
+            </div>
 
             <div className="space-y-4">
-              {favoritos.slice(0, 3).map((favorito) => (
+              {favoritos.slice(0, 2).map((favorito) => (
                 <div 
                   key={favorito.id}
                   className="p-4 rounded-xl"
-                      style={{
+                  style={{
                     background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid rgba(255, 255, 255, 0.1)'
                   }}
                 >
-                  <div className="flex items-start gap-3">
+                  {/* Cabeçalho do devocional */}
+                  <div className="flex items-start gap-3 mb-3">
                     <div className="text-2xl">⭐</div>
                     <div className="flex-1">
-                      <p 
-                        className="mb-2 leading-relaxed"
-                      style={{
+                      <h4 
+                        className="font-semibold mb-1"
+                        style={{ 
                           fontFamily: typography.serif,
-                        color: colors.text.white,
-                          fontSize: typography.body.md
+                          color: colors.text.white,
+                          fontSize: typography.body.lg
                         }}
                       >
-                        "{favorito.content}"
-                      </p>
+                        {favorito.title}
+                      </h4>
                       <p 
-                        className="text-sm"
+                        className="text-xs mb-2"
                         style={{ 
                           fontFamily: typography.sans,
                           color: colors.text.whiteMuted
                         }}
                       >
-                        {favorito.reference}
+                        {favorito.date}
                       </p>
-                      </div>
                     </div>
-                      </div>
+                  </div>
+
+                  {/* Versículo */}
+                  <div className="mb-3 p-3 rounded-lg" style={{ background: 'rgba(212, 175, 55, 0.1)' }}>
+                    <p 
+                      className="mb-1 leading-relaxed"
+                      style={{ 
+                        fontFamily: typography.serif,
+                        color: colors.text.white,
+                        fontSize: typography.body.md,
+                        fontStyle: 'italic'
+                      }}
+                    >
+                      "{favorito.verse}"
+                    </p>
+                    <p 
+                      className="text-xs font-medium"
+                      style={{ 
+                        fontFamily: typography.sans,
+                        color: colors.accent.gold
+                      }}
+                    >
+                      {favorito.reference}
+                    </p>
+                  </div>
+
+                  {/* Reflexão */}
+                  <div className="mb-3">
+                    <p 
+                      className="text-xs font-medium mb-1"
+                      style={{ 
+                        fontFamily: typography.sans,
+                        color: colors.accent.blue,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}
+                    >
+                      Reflexão
+                    </p>
+                    <p 
+                      className="text-sm leading-relaxed"
+                      style={{ 
+                        fontFamily: typography.sans,
+                        color: colors.text.whiteMuted
+                      }}
+                    >
+                      {favorito.reflection}
+                    </p>
+                  </div>
+
+                  {/* Oração */}
+                  <div className="mb-3">
+                    <p 
+                      className="text-xs font-medium mb-1"
+                      style={{
+                        fontFamily: typography.sans,
+                        color: colors.accent.purple,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}
+                    >
+                      Oração
+                    </p>
+                    <p 
+                      className="text-sm leading-relaxed"
+                      style={{
+                        fontFamily: typography.sans,
+                        color: colors.text.whiteMuted
+                      }}
+                    >
+                      {favorito.prayer}
+                    </p>
+                  </div>
+
+                  {/* Ação do Dia */}
+                    <div>
+                    <p 
+                      className="text-xs font-medium mb-1"
+                      style={{ 
+                        fontFamily: typography.sans,
+                        color: colors.accent.green,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}
+                    >
+                      Ação do Dia
+                    </p>
+                    <p 
+                      className="text-sm leading-relaxed"
+                      style={{ 
+                        fontFamily: typography.sans,
+                        color: colors.text.whiteMuted
+                      }}
+                    >
+                      {favorito.action}
+                      </p>
+                    </div>
+                  </div>
               ))}
                     </div>
 
-            {favoritos.length > 3 && (
+            {favoritos.length > 2 && (
               <div className="text-center mt-4">
                 <p 
                   style={{ 
@@ -790,7 +895,7 @@ export default function ProgressoPage() {
                     color: colors.text.whiteMuted
                   }}
                 >
-                  +{favoritos.length - 3} favoritos adicionais
+                  +{favoritos.length - 2} devocionais favoritos adicionais
                       </p>
                     </div>
                   )}
