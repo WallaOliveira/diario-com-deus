@@ -8,6 +8,7 @@ import { FiArrowLeft, FiHeart, FiTrendingUp, FiBookmark, FiStar } from 'react-ic
 import Link from 'next/link';
 import Container from '@/components/Container';
 import { colors, typography, spacing } from '@/lib/design-system';
+import { getMotivationalMessage, getProgressLevel, getProgressLevelMessage } from '@/lib/motivational-messages';
 import Loading from '@/components/Loading';
 
 // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
@@ -36,7 +37,7 @@ export default function ProgressoPage() {
 
   useEffect(() => {
     if (!DEV_MODE) {
-      checkUser();
+    checkUser();
     } else {
       // Em modo DEV, definir loading como false imediatamente
       setDadosCarregados(false);
@@ -146,7 +147,7 @@ export default function ProgressoPage() {
     // Adicionar dias do mês atual
     for (let dia = 1; dia <= ultimoDiaMes.getDate(); dia++) {
       const dataAtual = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), dia);
-      const hoje = new Date();
+  const hoje = new Date();
       const isHoje = dataAtual.toDateString() === hoje.toDateString();
       const isPassado = dataAtual < hoje;
       
@@ -241,13 +242,50 @@ export default function ProgressoPage() {
 
       <Container maxWidth="xl" className="py-6 space-y-6">
 
-        {/* Devocionais Feitos */}
+        {/* Insights Inteligentes */}
+        {stats && (
+          <div 
+            className="p-6 rounded-2xl text-center"
+            style={{
+              background: `linear-gradient(135deg, ${colors.accent.blue}15 0%, ${colors.accent.purple}15 100%)`,
+              border: `1px solid ${colors.accent.blue}40`,
+              backdropFilter: 'blur(10px)'
+            }}
+          >
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <span className="text-2xl">💡</span>
+              <h3 
+                className="font-bold"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: typography.heading.h3,
+                  color: colors.text.white
+                }}
+              >
+                {getProgressLevelMessage(getProgressLevel(stats))}
+              </h3>
+          </div>
+            <p 
+              style={{ 
+                fontFamily: typography.sans,
+                fontSize: typography.body.md,
+                color: colors.text.whiteMuted,
+                fontStyle: 'italic'
+              }}
+            >
+              {getMotivationalMessage('streak', stats?.streak || 0).insight}
+            </p>
+      </div>
+        )}
+
+        {/* Devocionais Feitos - Seção Principal */}
         <div 
-          className="p-6 rounded-2xl"
+          className="p-6 rounded-2xl transform transition-all hover:scale-[1.02] hover:shadow-2xl"
           style={{
             background: colors.background.card,
-            border: `1px solid ${colors.border}`,
-            backdropFilter: 'blur(10px)'
+            border: `2px solid ${colors.accent.gold}`,
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 8px 32px rgba(212, 175, 55, 0.2)'
           }}
         >
           <div className="flex items-center gap-4 mb-6">
@@ -256,7 +294,7 @@ export default function ProgressoPage() {
             }}>
               <span className="text-2xl">📖</span>
             </div>
-            <div>
+                    <div>
               <h3 
                 className="font-bold mb-1"
                 style={{ 
@@ -266,7 +304,7 @@ export default function ProgressoPage() {
                 }}
               >
                 Devocionais Feitos
-              </h3>
+                      </h3>
               <p 
                 style={{ 
                   fontFamily: typography.sans,
@@ -276,17 +314,21 @@ export default function ProgressoPage() {
               >
                 Seu histórico de momentos com Deus
               </p>
-            </div>
-          </div>
+                    </div>
+                  </div>
 
-          {/* Estatísticas rápidas */}
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            <div className="text-center">
+          {/* Estatísticas rápidas com mensagens motivacionais */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {/* Dias Seguidos */}
+            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div className="text-3xl mb-2">
+                {getMotivationalMessage('streak', stats?.streak || 0).emoji}
+                  </div>
               <div 
-                className="text-2xl font-bold mb-1"
-                style={{ color: colors.accent.orange }}
+                className="text-xl font-bold mb-1"
+                style={{ color: getMotivationalMessage('streak', stats?.streak || 0).color }}
               >
-                {stats?.streak || 0}
+                {getMotivationalMessage('streak', stats?.streak || 0).primary}
               </div>
               <p 
                 style={{ 
@@ -295,17 +337,21 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Dias Seguidos
+                {getMotivationalMessage('streak', stats?.streak || 0).secondary}
               </p>
-            </div>
-            
-            <div className="text-center">
+                </div>
+
+            {/* Esta Semana */}
+            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div className="text-3xl mb-2">
+                {getMotivationalMessage('weekly', calcularProgressoSemanal()).emoji}
+                    </div>
               <div 
-                className="text-2xl font-bold mb-1"
-                style={{ color: colors.accent.green }}
+                className="text-xl font-bold mb-1"
+                style={{ color: getMotivationalMessage('weekly', calcularProgressoSemanal()).color }}
               >
-                {calcularProgressoSemanal()}/7
-              </div>
+                {getMotivationalMessage('weekly', calcularProgressoSemanal()).primary}
+                  </div>
               <p 
                 style={{ 
                   fontFamily: typography.sans,
@@ -313,17 +359,21 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Esta Semana
+                {getMotivationalMessage('weekly', calcularProgressoSemanal()).secondary}
               </p>
-            </div>
-            
-            <div className="text-center">
+                </div>
+
+            {/* Total */}
+            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div className="text-3xl mb-2">
+                {getMotivationalMessage('total', stats?.devotionals_completed || 0).emoji}
+                    </div>
               <div 
-                className="text-2xl font-bold mb-1"
-                style={{ color: colors.accent.blue }}
+                className="text-xl font-bold mb-1"
+                style={{ color: getMotivationalMessage('total', stats?.devotionals_completed || 0).color }}
               >
-                {stats?.devotionals_completed || 0}
-              </div>
+                {getMotivationalMessage('total', stats?.devotionals_completed || 0).primary}
+                  </div>
               <p 
                 style={{ 
                   fontFamily: typography.sans,
@@ -331,10 +381,10 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Total
+                {getMotivationalMessage('total', stats?.devotionals_completed || 0).secondary}
               </p>
-            </div>
-          </div>
+                </div>
+              </div>
 
           {/* Calendário de Progresso */}
           <div 
@@ -360,8 +410,8 @@ export default function ProgressoPage() {
                 }}
               >
                 ▼
-              </div>
-            </div>
+                    </div>
+                  </div>
             
             {!calendarioExpandido ? (
               // Visual compacto - últimos 7 dias
@@ -382,10 +432,10 @@ export default function ProgressoPage() {
                       }}
                     >
                       <span className="text-sm">{day.isCompleted ? '✓' : '○'}</span>
-                    </div>
                   </div>
-                ))}
               </div>
+                ))}
+            </div>
             ) : (
               // Calendário completo
               <div className="space-y-4">
@@ -404,7 +454,7 @@ export default function ProgressoPage() {
                   
                   <h5 
                     className="font-semibold"
-                    style={{ 
+                  style={{ 
                       fontFamily: typography.sans,
                       color: colors.text.white,
                       fontSize: typography.body.md
@@ -431,17 +481,17 @@ export default function ProgressoPage() {
                     <div 
                       key={dia}
                       className="text-center py-2"
-                      style={{ 
+                  style={{ 
                         color: colors.text.whiteMuted,
                         fontSize: typography.body.sm,
                         fontFamily: typography.sans
-                      }}
-                    >
+                  }}
+                >
                       {dia}
                     </div>
                   ))}
-                </div>
-                
+              </div>
+
                 {/* Dias do calendário */}
                 <div className="grid grid-cols-7 gap-1">
                   {gerarCalendarioCompleto().map((dia, i) => (
@@ -474,7 +524,7 @@ export default function ProgressoPage() {
                           }}
                         >
                           {dia.day}
-                        </div>
+                      </div>
                       )}
                     </div>
                   ))}
@@ -520,17 +570,18 @@ export default function ProgressoPage() {
               >
                 Toque para ver o calendário completo
               </p>
-            )}
-          </div>
-        </div>
+                        )}
+                      </div>
+                    </div>
 
-        {/* Trilhas Feitas */}
+        {/* Trilhas Feitas - Seção Secundária */}
         <div 
-          className="p-6 rounded-2xl"
+          className="p-5 rounded-2xl transform transition-all hover:scale-[1.01]"
           style={{
             background: colors.background.card,
             border: `1px solid ${colors.border}`,
-            backdropFilter: 'blur(10px)'
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
           }}
         >
           <div className="flex items-center gap-4 mb-6">
@@ -542,56 +593,65 @@ export default function ProgressoPage() {
             <div>
               <h3 
                 className="font-bold mb-1"
-                style={{ 
-                  fontFamily: typography.serif,
+                              style={{ 
+                                fontFamily: typography.serif,
                   fontSize: typography.heading.h3,
                   color: colors.text.white
-                }}
-              >
+                              }}
+                            >
                 Trilhas Feitas
               </h3>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
+                            <p 
+                              style={{ 
+                                fontFamily: typography.sans,
                   fontSize: typography.body.sm,
-                  color: colors.text.whiteMuted
-                }}
-              >
+                                color: colors.text.whiteMuted
+                              }}
+                            >
                 Suas jornadas temáticas
-              </p>
-            </div>
+                            </p>
+                          </div>
           </div>
 
           {/* Trilhas em andamento */}
           <div className="space-y-3">
             <div 
-              className="p-4 rounded-xl flex items-center justify-between"
+              className="p-4 rounded-xl flex items-center justify-between relative"
               style={{
                 background: 'rgba(59, 130, 246, 0.1)',
                 border: '1px solid rgba(59, 130, 246, 0.3)'
               }}
             >
+              {/* Badge de Progresso */}
+              <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold animate-pulse" style={{
+                background: colors.accent.green,
+                color: 'white',
+                boxShadow: '0 2px 8px rgba(16, 185, 129, 0.3)'
+              }}>
+                3
+              </div>
+              
               <div>
                 <h4 
                   className="font-semibold mb-1"
-                  style={{ 
+                              style={{ 
                     fontFamily: typography.sans,
                     color: colors.text.white,
                     fontSize: typography.body.md
-                  }}
-                >
+                              }}
+                            >
                   🌿 7 Dias de Paz Interior
-                </h4>
-                <p 
-                  style={{ 
+                            </h4>
+                            <p 
+                              style={{ 
                     fontFamily: typography.sans,
                     fontSize: typography.body.sm,
                     color: colors.text.whiteMuted
-                  }}
-                >
-                  Dia 3 de 7
-                </p>
-              </div>
+                              }}
+                            >
+                  Dia 3 de 7 - Continue assim!
+                            </p>
+                          </div>
               <div 
                 className="text-2xl font-bold"
                 style={{ color: colors.accent.blue }}
@@ -602,12 +662,21 @@ export default function ProgressoPage() {
 
             {/* Trilhas completadas */}
             <div 
-              className="p-4 rounded-xl flex items-center justify-between"
+              className="p-4 rounded-xl flex items-center justify-between relative"
               style={{
                 background: 'rgba(34, 197, 94, 0.1)',
                 border: '1px solid rgba(34, 197, 94, 0.3)'
               }}
             >
+              {/* Badge de Conquista */}
+              <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{
+                background: colors.accent.gold,
+                color: 'white',
+                boxShadow: '0 2px 8px rgba(212, 175, 55, 0.4)'
+              }}>
+                🏆
+              </div>
+              
               <div>
                 <h4 
                   className="font-semibold mb-1"
@@ -626,21 +695,22 @@ export default function ProgressoPage() {
                     color: colors.text.whiteMuted
                   }}
                 >
-                  Completada há 2 dias
+                  Completada há 2 dias - Parabéns!
                 </p>
               </div>
               <div className="text-2xl">🎉</div>
             </div>
-          </div>
-        </div>
+                      </div>
+              </div>
 
-        {/* Anotações */}
+        {/* Anotações - Seção Terciária */}
         <div 
-          className="p-6 rounded-2xl"
+          className="p-5 rounded-2xl"
           style={{
             background: colors.background.card,
             border: `1px solid ${colors.border}`,
-            backdropFilter: 'blur(10px)'
+            backdropFilter: 'blur(10px)',
+            opacity: 0.95
           }}
         >
           <div className="flex items-center gap-4 mb-6">
@@ -652,34 +722,38 @@ export default function ProgressoPage() {
             <div>
               <h3 
                 className="font-bold mb-1"
-                style={{ 
-                  fontFamily: typography.serif,
+                    style={{ 
+                      fontFamily: typography.serif,
                   fontSize: typography.heading.h3,
-                  color: colors.text.white
-                }}
-              >
+                      color: colors.text.white
+                    }}
+                  >
                 Anotações
-              </h3>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
+                  </h3>
+                  <p 
+                    style={{ 
+                      fontFamily: typography.sans,
                   fontSize: typography.body.sm,
-                  color: colors.text.whiteMuted
-                }}
-              >
+                      color: colors.text.whiteMuted
+                    }}
+                  >
                 Suas reflexões e insights pessoais
-              </p>
+                  </p>
+                </div>
             </div>
-          </div>
 
-          {/* Estatísticas */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="text-center">
+          {/* Estatísticas com mensagens motivacionais */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            {/* Reflexões Escritas */}
+            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div className="text-3xl mb-2">
+                {getMotivationalMessage('reflections', stats?.notes_added || 0).emoji}
+              </div>
               <div 
-                className="text-2xl font-bold mb-1"
-                style={{ color: colors.accent.purple }}
+                className="text-xl font-bold mb-1"
+                style={{ color: getMotivationalMessage('reflections', stats?.notes_added || 0).color }}
               >
-                {stats?.notes_added || 0}
+                {getMotivationalMessage('reflections', stats?.notes_added || 0).primary}
               </div>
               <p 
                 style={{ 
@@ -688,17 +762,21 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Reflexões Escritas
-              </p>
-            </div>
+                {getMotivationalMessage('reflections', stats?.notes_added || 0).secondary}
+                      </p>
+                    </div>
             
-            <div className="text-center">
+            {/* Versículos Favoritos */}
+            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div className="text-3xl mb-2">
+                {getMotivationalMessage('favorites', favoritos.length).emoji}
+                    </div>
               <div 
-                className="text-2xl font-bold mb-1"
-                style={{ color: colors.accent.red }}
+                className="text-xl font-bold mb-1"
+                style={{ color: getMotivationalMessage('favorites', favoritos.length).color }}
               >
-                {favoritos.length}
-              </div>
+                {getMotivationalMessage('favorites', favoritos.length).primary}
+                    </div>
               <p 
                 style={{ 
                   fontFamily: typography.sans,
@@ -706,10 +784,10 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Versículos Favoritos
+                {getMotivationalMessage('favorites', favoritos.length).secondary}
               </p>
-            </div>
-          </div>
+                    </div>
+                  </div>
 
           {/* Anotações recentes (mock) */}
           <div className="space-y-3">
@@ -739,20 +817,20 @@ export default function ProgressoPage() {
               >
                 Hoje • Devocional da Manhã
               </p>
-            </div>
-            
+                  </div>
+
             <div 
               className="p-4 rounded-xl"
-              style={{
+                      style={{
                 background: 'rgba(255, 255, 255, 0.05)',
                 border: '1px solid rgba(255, 255, 255, 0.1)'
               }}
             >
               <p 
                 className="text-sm mb-2"
-                style={{ 
+                      style={{
                   fontFamily: typography.serif,
-                  color: colors.text.white,
+                        color: colors.text.white,
                   fontStyle: 'italic'
                 }}
               >
@@ -767,8 +845,8 @@ export default function ProgressoPage() {
               >
                 Ontem • Trilha de Gratidão
               </p>
-            </div>
-          </div>
+                  </div>
+                </div>
         </div>
 
         {/* Favoritos */}
@@ -786,8 +864,8 @@ export default function ProgressoPage() {
                 background: colors.accent.red
               }}>
                 <FiBookmark size={24} className="text-white" />
-              </div>
-              <div>
+                    </div>
+                    <div>
                 <h3 
                   className="font-bold mb-1"
                   style={{ 
@@ -797,7 +875,7 @@ export default function ProgressoPage() {
                   }}
                 >
                   Seus Favoritos
-                </h3>
+                      </h3>
                 <p 
                   style={{ 
                     fontFamily: typography.sans,
@@ -806,9 +884,9 @@ export default function ProgressoPage() {
                   }}
                 >
                   Versículos e citações que tocaram seu coração
-                </p>
-              </div>
-            </div>
+                      </p>
+                    </div>
+                  </div>
 
             <div className="space-y-4">
               {favoritos.slice(0, 3).map((favorito) => (
@@ -842,11 +920,11 @@ export default function ProgressoPage() {
                       >
                         {favorito.reference}
                       </p>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                      </div>
               ))}
-            </div>
+                    </div>
 
             {favoritos.length > 3 && (
               <div className="text-center mt-4">
@@ -858,69 +936,86 @@ export default function ProgressoPage() {
                   }}
                 >
                   +{favoritos.length - 3} favoritos adicionais
-                </p>
-              </div>
-            )}
-          </div>
-        )}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
 
-        {/* Call to Action */}
+        {/* Call to Action Fortalecido */}
         <div 
-          className="p-6 rounded-2xl text-center"
+          className="p-8 rounded-2xl text-center transform transition-all hover:scale-[1.02] hover:shadow-2xl"
           style={{
-            background: colors.background.card,
-            border: `1px solid ${colors.border}`,
-            backdropFilter: 'blur(10px)'
+            background: `linear-gradient(135deg, ${colors.accent.gold}20 0%, ${colors.accent.blue}20 100%)`,
+            border: `2px solid ${colors.accent.gold}`,
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 12px 40px rgba(212, 175, 55, 0.3)'
           }}
         >
-          <div className="text-4xl mb-4">🙏</div>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse" style={{
+            background: `linear-gradient(135deg, ${colors.accent.gold} 0%, ${colors.accent.orange} 100%)`,
+            boxShadow: '0 8px 32px rgba(212, 175, 55, 0.4)'
+          }}>
+            <span className="text-4xl">🙏</span>
+                </div>
+
           <h3 
-            className="font-bold mb-2"
+            className="font-bold mb-3"
             style={{ 
               fontFamily: typography.serif,
-              fontSize: typography.heading.h3,
-              color: colors.text.white
+              fontSize: typography.heading.h2,
+              fontWeight: typography.weights.semibold,
+              color: colors.text.white,
+              textShadow: '0 2px 4px rgba(0,0,0,0.3)'
             }}
           >
             Continue sua jornada
           </h3>
           <p 
-            className="mb-6"
+            className="mb-8 text-lg"
             style={{ 
               fontFamily: typography.sans,
-              fontSize: typography.body.md,
-              color: colors.text.whiteMuted
+              fontSize: typography.body.lg,
+              color: colors.text.whiteMuted,
+              fontWeight: typography.weights.medium
             }}
           >
             Que tal dedicar alguns minutos para estar com Deus hoje?
           </p>
           
-          <div className="flex gap-3 justify-center">
-            <Link
+          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+                  <Link 
               href="/devocional-do-dia"
-              className="px-6 py-3 rounded-xl font-bold transition-all hover:scale-105"
-              style={{
-                background: colors.text.gold,
-                color: colors.background.primary,
-                fontFamily: typography.sans
+              className="px-8 py-4 rounded-xl font-bold transition-all hover:scale-105 hover:shadow-xl"
+                    style={{
+                background: `linear-gradient(135deg, ${colors.accent.gold} 0%, ${colors.accent.orange} 100%)`,
+                color: 'white',
+                fontFamily: typography.sans,
+                fontSize: typography.body.lg,
+                fontWeight: typography.weights.bold,
+                boxShadow: '0 8px 32px rgba(212, 175, 55, 0.4)',
+                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
               }}
             >
-              Devocional do Dia
-            </Link>
+              ✨ Devocional do Dia
+                  </Link>
             
             <Link
               href="/trilhas"
-              className="px-6 py-3 rounded-xl font-bold transition-all hover:scale-105"
-              style={{
-                background: 'rgba(255, 255, 255, 0.1)',
-                color: colors.text.white,
-                border: `1px solid ${colors.border}`,
-                fontFamily: typography.sans
+              className="px-8 py-4 rounded-xl font-bold transition-all hover:scale-105 hover:shadow-xl"
+                    style={{
+                background: 'transparent',
+                border: `3px solid ${colors.accent.gold}`,
+                color: colors.accent.gold,
+                fontFamily: typography.sans,
+                fontSize: typography.body.lg,
+                fontWeight: typography.weights.bold,
+                boxShadow: '0 4px 20px rgba(212, 175, 55, 0.2)'
               }}
             >
-              Trilhas Guiadas
+              🗺️ Trilhas Guiadas
             </Link>
-          </div>
+                </div>
         </div>
       </Container>
     </div>
