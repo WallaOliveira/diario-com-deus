@@ -29,6 +29,7 @@ export default function ProgressoPage() {
   const [favoritos, setFavoritos] = useState<any[]>([]);
   const [calendarioExpandido, setCalendarioExpandido] = useState(false);
   const [mesAtual, setMesAtual] = useState(new Date());
+  const [dadosCarregados, setDadosCarregados] = useState(false);
 
   // Em modo DEV, usar mockUser
   const currentUser = DEV_MODE ? mockUser : user;
@@ -43,9 +44,19 @@ export default function ProgressoPage() {
     if (!DEV_MODE && !loading && !user) {
       router.push('/login');
     } else if (currentUser?.id) {
-      loadStats(currentUser.id);
-      carregarFavoritos();
-      carregarEmocaoSelecionada();
+      // Em modo DEV, não carregar dados do Supabase
+      if (DEV_MODE) {
+        // Simular dados carregados
+        setTimeout(() => {
+          setDadosCarregados(true);
+          carregarFavoritos();
+          carregarEmocaoSelecionada();
+        }, 1000);
+      } else {
+        loadStats(currentUser.id);
+        carregarFavoritos();
+        carregarEmocaoSelecionada();
+      }
     }
   }, [currentUser, loading, user, router, loadStats]);
 
@@ -166,7 +177,7 @@ export default function ProgressoPage() {
     }
   };
 
-  if (loading) {
+  if (loading || (!DEV_MODE && !dadosCarregados)) {
     return <Loading />;
   }
 

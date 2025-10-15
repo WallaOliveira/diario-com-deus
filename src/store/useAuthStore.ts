@@ -2,6 +2,9 @@ import { create } from 'zustand';
 import { supabase } from '@/lib/supabase';
 import { getErrorMessage } from '@/lib/errors';
 
+// 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
+const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+
 interface AuthState {
   user: any | null;
   loading: boolean;
@@ -16,6 +19,20 @@ export const useAuthStore = create<AuthState>((set) => ({
   loading: true,
 
   signIn: async (email: string, password: string) => {
+    // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
+    if (DEV_MODE) {
+      const mockUser = {
+        id: 'dev-user-123',
+        email: email,
+        user_metadata: {
+          name: 'Usuário Teste',
+          phone: '(11) 99999-9999'
+        }
+      };
+      set({ user: mockUser });
+      return {};
+    }
+
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -59,6 +76,12 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   checkUser: async () => {
+    // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
+    if (DEV_MODE) {
+      set({ user: null, loading: false });
+      return;
+    }
+
     try {
       const { data } = await supabase.auth.getSession();
       set({ user: data.session?.user || null, loading: false });
