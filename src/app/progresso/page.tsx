@@ -278,40 +278,85 @@ export default function ProgressoPage() {
 
       <Container maxWidth="xl" className="py-6 space-y-6">
 
-        {/* Insights Inteligentes */}
+        {/* Insights Inteligentes e Estatísticas */}
         {stats && (
-          <div 
-            className="p-6 rounded-2xl text-center"
-            style={{
-              background: `linear-gradient(135deg, ${colors.accent.blue}15 0%, ${colors.accent.purple}15 100%)`,
-              border: `1px solid ${colors.accent.blue}40`,
-              backdropFilter: 'blur(10px)'
-            }}
-          >
-            <div className="flex items-center justify-center gap-3 mb-3">
-              <span className="text-2xl">💡</span>
-              <h3 
-                className="font-bold"
-                style={{ 
-                  fontFamily: typography.serif,
-                  fontSize: typography.heading.h3,
-                  color: colors.text.white
-                }}
-              >
-                {getProgressLevelMessage(getProgressLevel(stats))}
-              </h3>
-          </div>
-            <p 
-              style={{ 
-                fontFamily: typography.sans,
-                fontSize: typography.body.md,
-                color: colors.text.whiteMuted,
-                fontStyle: 'italic'
+          <div className="space-y-4">
+            {/* Nível de Progresso */}
+            <div 
+              className="p-4 rounded-xl text-center"
+              style={{
+                background: `linear-gradient(135deg, ${colors.accent.blue}15 0%, ${colors.accent.purple}15 100%)`,
+                border: `1px solid ${colors.accent.blue}40`,
+                backdropFilter: 'blur(10px)'
               }}
             >
-              {getMotivationalMessage('streak', stats?.streak || 0).insight}
-            </p>
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <span className="text-xl">💡</span>
+                <h3 
+                  className="font-bold"
+                  style={{ 
+                    fontFamily: typography.serif,
+                    fontSize: typography.body.lg,
+                    color: colors.text.white
+                  }}
+                >
+                  {getProgressLevelMessage(getProgressLevel(stats))}
+                </h3>
+          </div>
+              <p 
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.sm,
+                  color: colors.text.whiteMuted,
+                  fontStyle: 'italic'
+                }}
+              >
+                {getMotivationalMessage('streak', stats?.streak || 0).insight}
+              </p>
       </div>
+
+            {/* Estatísticas Rápidas */}
+            <div className="grid grid-cols-3 gap-3">
+              {/* Dias Seguidos */}
+              <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                <div className="text-xl mb-1">
+                  {getMotivationalMessage('streak', stats?.streak || 0).emoji}
+                    </div>
+                <div 
+                  className="text-sm font-bold mb-1"
+                  style={{ color: getMotivationalMessage('streak', stats?.streak || 0).color }}
+                >
+                  {getMotivationalMessage('streak', stats?.streak || 0).primary}
+                  </div>
+                </div>
+
+              {/* Esta Semana */}
+              <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                <div className="text-xl mb-1">
+                  {getMotivationalMessage('weekly', calcularProgressoSemanal()).emoji}
+                    </div>
+                <div 
+                  className="text-sm font-bold mb-1"
+                  style={{ color: getMotivationalMessage('weekly', calcularProgressoSemanal()).color }}
+                >
+                  {getMotivationalMessage('weekly', calcularProgressoSemanal()).primary}
+                  </div>
+                </div>
+
+              {/* Total */}
+              <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                <div className="text-xl mb-1">
+                  {getMotivationalMessage('total', stats?.devotionals_completed || 0).emoji}
+                    </div>
+                <div 
+                  className="text-sm font-bold mb-1"
+                  style={{ color: getMotivationalMessage('total', stats?.devotionals_completed || 0).color }}
+                >
+                  {getMotivationalMessage('total', stats?.devotionals_completed || 0).primary}
+                  </div>
+                  </div>
+                </div>
+              </div>
         )}
 
         {/* Devocionais Feitos - Seção Principal */}
@@ -353,74 +398,6 @@ export default function ProgressoPage() {
                     </div>
                   </div>
 
-          {/* Estatísticas rápidas com mensagens motivacionais */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-            {/* Dias Seguidos */}
-            <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
-              <div className="text-2xl mb-1">
-                {getMotivationalMessage('streak', stats?.streak || 0).emoji}
-                  </div>
-              <div 
-                className="text-lg font-bold mb-1"
-                style={{ color: getMotivationalMessage('streak', stats?.streak || 0).color }}
-              >
-                {getMotivationalMessage('streak', stats?.streak || 0).primary}
-                  </div>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.xs,
-                  color: colors.text.whiteMuted
-                }}
-              >
-                {getMotivationalMessage('streak', stats?.streak || 0).secondary}
-              </p>
-                </div>
-
-            {/* Esta Semana */}
-            <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
-              <div className="text-2xl mb-1">
-                {getMotivationalMessage('weekly', calcularProgressoSemanal()).emoji}
-                    </div>
-              <div 
-                className="text-lg font-bold mb-1"
-                style={{ color: getMotivationalMessage('weekly', calcularProgressoSemanal()).color }}
-              >
-                {getMotivationalMessage('weekly', calcularProgressoSemanal()).primary}
-                  </div>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.xs,
-                  color: colors.text.whiteMuted
-                }}
-              >
-                {getMotivationalMessage('weekly', calcularProgressoSemanal()).secondary}
-              </p>
-                </div>
-
-            {/* Total */}
-            <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
-              <div className="text-2xl mb-1">
-                {getMotivationalMessage('total', stats?.devotionals_completed || 0).emoji}
-                    </div>
-              <div 
-                className="text-lg font-bold mb-1"
-                style={{ color: getMotivationalMessage('total', stats?.devotionals_completed || 0).color }}
-              >
-                {getMotivationalMessage('total', stats?.devotionals_completed || 0).primary}
-                  </div>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.xs,
-                  color: colors.text.whiteMuted
-                }}
-              >
-                {getMotivationalMessage('total', stats?.devotionals_completed || 0).secondary}
-              </p>
-                </div>
-              </div>
 
           {/* Calendário de Progresso */}
           <div 
@@ -448,7 +425,7 @@ export default function ProgressoPage() {
                 ▼
                     </div>
                   </div>
-            
+
             {!calendarioExpandido ? (
               // Visual compacto - últimos 7 dias
               <div className="grid grid-cols-7 gap-2">
@@ -459,7 +436,7 @@ export default function ProgressoPage() {
                       style={{ color: colors.text.whiteMuted }}
                     >
                       {day.weekday}
-                    </div>
+              </div>
                     <div 
                       className="w-8 h-8 rounded-full flex items-center justify-center mx-auto"
                       style={{
@@ -468,10 +445,10 @@ export default function ProgressoPage() {
                       }}
                     >
                       <span className="text-sm">{day.isCompleted ? '✓' : '○'}</span>
-                  </div>
-              </div>
-                ))}
             </div>
+                  </div>
+                ))}
+                </div>
             ) : (
               // Calendário completo
               <div className="space-y-4">
@@ -509,7 +486,7 @@ export default function ProgressoPage() {
                   >
                     →
                   </button>
-                </div>
+                    </div>
                 
                 {/* Dias da semana */}
                 <div className="grid grid-cols-7 gap-1">
@@ -524,7 +501,7 @@ export default function ProgressoPage() {
                   }}
                 >
                       {dia}
-                    </div>
+                  </div>
                   ))}
               </div>
 
@@ -562,7 +539,7 @@ export default function ProgressoPage() {
                           {dia.day}
                       </div>
                       )}
-                    </div>
+                  </div>
                   ))}
                 </div>
                 
@@ -579,7 +556,7 @@ export default function ProgressoPage() {
                     >
                       Completo
                     </span>
-                  </div>
+                    </div>
                   <div className="flex items-center gap-2">
                     <div 
                       className="w-3 h-3 rounded-full ring-2"
@@ -595,10 +572,10 @@ export default function ProgressoPage() {
                       Hoje
                     </span>
                   </div>
-                </div>
               </div>
-            )}
-            
+            </div>
+          )}
+
             {!calendarioExpandido && (
               <p 
                 className="text-xs text-center mt-3"
@@ -632,7 +609,7 @@ export default function ProgressoPage() {
                               style={{ 
                                 fontFamily: typography.serif,
                   fontSize: typography.heading.h3,
-                  color: colors.text.white
+                    color: colors.text.white
                               }}
                             >
                 Trilhas Feitas
@@ -647,7 +624,7 @@ export default function ProgressoPage() {
                 Suas jornadas temáticas
                             </p>
                           </div>
-          </div>
+              </div>
 
           {/* Trilhas em andamento */}
           <div className="space-y-3">
@@ -665,7 +642,7 @@ export default function ProgressoPage() {
                 boxShadow: '0 2px 8px rgba(16, 185, 129, 0.3)'
               }}>
                 3
-              </div>
+                      </div>
               
               <div>
                 <h4 
@@ -693,8 +670,8 @@ export default function ProgressoPage() {
                 style={{ color: colors.accent.blue }}
               >
                 3/7
-              </div>
-            </div>
+                      </div>
+                    </div>
 
             {/* Trilhas completadas */}
             <div 
@@ -744,7 +721,7 @@ export default function ProgressoPage() {
         {favoritos.length > 0 && (
           <div 
             className="p-6 rounded-2xl"
-            style={{
+                              style={{ 
               background: colors.background.card,
               border: `1px solid ${colors.border}`,
               backdropFilter: 'blur(10px)'
@@ -795,47 +772,32 @@ export default function ProgressoPage() {
                     onClick={() => setDevocionalExpandido(
                       devocionalExpandido === favorito.id ? null : favorito.id
                     )}
-                  >
-                    <div className="flex items-center justify-between">
+                >
+                  <div className="flex items-center justify-between">
                       <div className="flex items-start gap-3">
                         <div className="text-2xl">⭐</div>
                         <div className="flex-1">
                           <h4 
                             className="font-semibold mb-1"
-                            style={{ 
-                              fontFamily: typography.serif,
+                              style={{ 
+                                fontFamily: typography.serif,
                               color: colors.text.white,
                               fontSize: typography.body.lg
-                            }}
-                          >
+                              }}
+                            >
                             {favorito.title}
-                          </h4>
-                          <div className="flex items-center gap-2">
+                            </h4>
                             <p 
-                              className="text-xs"
+                            className="text-xs"
                               style={{ 
                                 fontFamily: typography.sans,
                                 color: colors.text.whiteMuted
                               }}
                             >
-                              {favorito.date}
-                            </p>
-                            {favorito.trail && (
-                              <span 
-                                className="text-xs px-2 py-1 rounded-full"
-                                style={{ 
-                                  background: 'rgba(59, 130, 246, 0.2)',
-                                  color: colors.accent.blue,
-                                  fontFamily: typography.sans,
-                                  fontWeight: typography.weights.medium
-                                }}
-                              >
-                                {favorito.trail.emoji} {favorito.trail.name} - Dia {favorito.trail.day}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
+                            {favorito.date}
+                      </p>
+                    </div>
+                  </div>
                       <div className="flex items-center gap-2">
                         <span 
                           className="text-xs px-2 py-1 rounded-full"
@@ -855,8 +817,8 @@ export default function ProgressoPage() {
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                           </svg>
-                        </div>
-                      </div>
+                    </div>
+                    </div>
                     </div>
                   </div>
 
@@ -868,24 +830,24 @@ export default function ProgressoPage() {
                   <div className="mb-3 p-3 rounded-lg" style={{ background: 'rgba(212, 175, 55, 0.1)' }}>
                     <p 
                       className="mb-1 leading-relaxed"
-                      style={{ 
-                        fontFamily: typography.serif,
+                      style={{
+                      fontFamily: typography.serif,
                         color: colors.text.white,
                         fontSize: typography.body.md,
                         fontStyle: 'italic'
-                      }}
-                    >
+                    }}
+                  >
                       "{favorito.verse}"
                     </p>
-                    <p 
+                  <p 
                       className="text-xs font-medium"
-                      style={{ 
-                        fontFamily: typography.sans,
+                      style={{
+                      fontFamily: typography.sans,
                         color: colors.accent.gold
                       }}
                     >
                       {favorito.reference}
-                    </p>
+                  </p>
                   </div>
 
                   {/* Reflexão */}
@@ -909,7 +871,7 @@ export default function ProgressoPage() {
                       }}
                     >
                       {favorito.reflection}
-                    </p>
+                      </p>
                   </div>
 
                   {/* Oração */}
@@ -934,7 +896,7 @@ export default function ProgressoPage() {
                     >
                       {favorito.prayer}
                     </p>
-                  </div>
+                    </div>
 
                   {/* Ação do Dia */}
                   <div>
@@ -958,14 +920,14 @@ export default function ProgressoPage() {
                     >
                       {favorito.action}
                     </p>
-                  </div>
+                    </div>
 
                   {/* Anotações Pessoais */}
                   {favorito.notes && (
                     <div className="p-3 rounded-lg" style={{ background: 'rgba(139, 92, 246, 0.1)' }}>
                       <p 
                         className="text-xs font-medium mb-2"
-                        style={{ 
+                      style={{
                           fontFamily: typography.sans,
                           color: colors.accent.purple,
                           textTransform: 'uppercase',
@@ -976,21 +938,21 @@ export default function ProgressoPage() {
                       </p>
                       <p 
                         className="text-sm leading-relaxed"
-                        style={{ 
+                      style={{
                           fontFamily: typography.sans,
-                          color: colors.text.white,
+                        color: colors.text.white,
                           fontStyle: 'italic'
-                        }}
-                      >
+                      }}
+                    >
                         "{favorito.notes}"
                       </p>
                     </div>
                   )}
-                    </div>
-                  )}
                 </div>
+              )}
+                  </div>
               ))}
-            </div>
+                </div>
 
             {favoritos.length > 3 && (
               <div className="text-center mt-4">
@@ -1003,7 +965,7 @@ export default function ProgressoPage() {
                 >
                   +{favoritos.length - 3} devocionais favoritos adicionais
                       </p>
-                    </div>
+                  </div>
                   )}
                 </div>
               )}
@@ -1023,7 +985,7 @@ export default function ProgressoPage() {
             boxShadow: '0 8px 32px rgba(212, 175, 55, 0.4)'
           }}>
             <span className="text-4xl">🙏</span>
-                </div>
+              </div>
 
           <h3 
             className="font-bold mb-3"
