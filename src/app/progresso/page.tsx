@@ -31,6 +31,7 @@ export default function ProgressoPage() {
   const [calendarioExpandido, setCalendarioExpandido] = useState(false);
   const [mesAtual, setMesAtual] = useState(new Date());
   const [dadosCarregados, setDadosCarregados] = useState(false);
+  const [devocionalExpandido, setDevocionalExpandido] = useState<number | null>(null);
 
   // Em modo DEV, usar mockUser
   const currentUser = DEV_MODE ? mockUser : user;
@@ -75,7 +76,9 @@ export default function ProgressoPage() {
         reflection: "Este versículo nos lembra que Deus tem poder sobre todas as coisas. Mesmo quando enfrentamos desafios que parecem impossíveis, Ele pode intervir e transformar nossa situação.",
         prayer: "Senhor, obrigado por ser um Deus de milagres. Ajuda-me a confiar em Ti mesmo quando as circunstâncias parecem impossíveis.",
         action: "Hoje, vou entregar uma situação difícil nas mãos de Deus e confiar em Sua fidelidade.",
+        notes: "Deus me mostrou hoje que posso confiar Nele mesmo quando tudo parece perdido. Minha ansiedade diminuiu muito depois desta reflexão.",
         date: "15 de Janeiro, 2025",
+        trail: null, // Devocional do dia
         created_at: new Date().toISOString()
       },
       {
@@ -86,7 +89,32 @@ export default function ProgressoPage() {
         reflection: "A fé não é apenas acreditar no que vemos, mas confiar no que não vemos. É a certeza de que Deus está trabalhando mesmo quando não conseguimos perceber.",
         prayer: "Pai, fortalece minha fé. Ajuda-me a confiar em Ti mesmo quando não vejo respostas imediatas.",
         action: "Vou praticar a fé hoje, agindo com confiança em Deus mesmo em situações incertas.",
+        notes: "Este devocional me ajudou a entender que fé não é ausência de dúvidas, mas confiança apesar delas. Muito edificante!",
         date: "14 de Janeiro, 2025",
+        trail: {
+          name: "7 Dias de Paz Interior",
+          day: 3,
+          total: 7,
+          emoji: "🌿"
+        },
+        created_at: new Date().toISOString()
+      },
+      {
+        id: 3,
+        title: "Gratidão Transformadora",
+        verse: "Dêem graças em todas as circunstâncias, pois esta é a vontade de Deus para vocês em Cristo Jesus.",
+        reference: '1 Tessalonicenses 5:18',
+        reflection: "A gratidão não é apenas um sentimento, mas uma escolha ativa que transforma nossa perspectiva e nos aproxima de Deus.",
+        prayer: "Senhor, ensina-me a ser grato em todas as situações. Ajuda-me a ver Tuas bênçãos mesmo nos momentos difíceis.",
+        action: "Vou listar 5 coisas pelas quais sou grato hoje e agradecer a Deus por cada uma delas.",
+        notes: "Este devocional me fez perceber quantas coisas boas acontecem todos os dias que eu não percebo. Vou começar um diário de gratidão!",
+        date: "13 de Janeiro, 2025",
+        trail: {
+          name: "Jornada de Gratidão",
+          day: 5,
+          total: 7,
+          emoji: "✨"
+        },
         created_at: new Date().toISOString()
       }
     ]);
@@ -752,40 +780,89 @@ export default function ProgressoPage() {
             </div>
 
             <div className="space-y-4">
-              {favoritos.slice(0, 2).map((favorito) => (
+              {favoritos.slice(0, 3).map((favorito) => (
                 <div 
                   key={favorito.id}
-                  className="p-4 rounded-xl"
+                  className="rounded-xl transition-all"
                   style={{
                     background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid rgba(255, 255, 255, 0.1)'
                   }}
                 >
-                  {/* Cabeçalho do devocional */}
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="text-2xl">⭐</div>
-                    <div className="flex-1">
-                      <h4 
-                        className="font-semibold mb-1"
-                        style={{ 
-                          fontFamily: typography.serif,
-                          color: colors.text.white,
-                          fontSize: typography.body.lg
-                        }}
-                      >
-                        {favorito.title}
-                      </h4>
-                      <p 
-                        className="text-xs mb-2"
-                        style={{ 
-                          fontFamily: typography.sans,
-                          color: colors.text.whiteMuted
-                        }}
-                      >
-                        {favorito.date}
-                      </p>
+                  {/* Cabeçalho do devocional - sempre visível */}
+                  <div 
+                    className="p-4 cursor-pointer transition-all hover:bg-white/5"
+                    onClick={() => setDevocionalExpandido(
+                      devocionalExpandido === favorito.id ? null : favorito.id
+                    )}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-start gap-3">
+                        <div className="text-2xl">⭐</div>
+                        <div className="flex-1">
+                          <h4 
+                            className="font-semibold mb-1"
+                            style={{ 
+                              fontFamily: typography.serif,
+                              color: colors.text.white,
+                              fontSize: typography.body.lg
+                            }}
+                          >
+                            {favorito.title}
+                          </h4>
+                          <div className="flex items-center gap-2">
+                            <p 
+                              className="text-xs"
+                              style={{ 
+                                fontFamily: typography.sans,
+                                color: colors.text.whiteMuted
+                              }}
+                            >
+                              {favorito.date}
+                            </p>
+                            {favorito.trail && (
+                              <span 
+                                className="text-xs px-2 py-1 rounded-full"
+                                style={{ 
+                                  background: 'rgba(59, 130, 246, 0.2)',
+                                  color: colors.accent.blue,
+                                  fontFamily: typography.sans,
+                                  fontWeight: typography.weights.medium
+                                }}
+                              >
+                                {favorito.trail.emoji} {favorito.trail.name} - Dia {favorito.trail.day}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span 
+                          className="text-xs px-2 py-1 rounded-full"
+                          style={{ 
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            color: colors.text.whiteMuted,
+                            fontFamily: typography.sans
+                          }}
+                        >
+                          Ver devocional
+                        </span>
+                        <div 
+                          className={`transition-transform duration-200 ${
+                            devocionalExpandido === favorito.id ? 'rotate-180' : ''
+                          }`}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Conteúdo expansível */}
+                  {devocionalExpandido === favorito.id && (
+                    <div className="px-4 pb-4 space-y-4 border-t border-white/10">
 
                   {/* Versículo */}
                   <div className="mb-3 p-3 rounded-lg" style={{ background: 'rgba(212, 175, 55, 0.1)' }}>
@@ -860,7 +937,7 @@ export default function ProgressoPage() {
                   </div>
 
                   {/* Ação do Dia */}
-                    <div>
+                  <div>
                     <p 
                       className="text-xs font-medium mb-1"
                       style={{ 
@@ -880,13 +957,42 @@ export default function ProgressoPage() {
                       }}
                     >
                       {favorito.action}
+                    </p>
+                  </div>
+
+                  {/* Anotações Pessoais */}
+                  {favorito.notes && (
+                    <div className="p-3 rounded-lg" style={{ background: 'rgba(139, 92, 246, 0.1)' }}>
+                      <p 
+                        className="text-xs font-medium mb-2"
+                        style={{ 
+                          fontFamily: typography.sans,
+                          color: colors.accent.purple,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px'
+                        }}
+                      >
+                        📝 Suas Anotações
+                      </p>
+                      <p 
+                        className="text-sm leading-relaxed"
+                        style={{ 
+                          fontFamily: typography.sans,
+                          color: colors.text.white,
+                          fontStyle: 'italic'
+                        }}
+                      >
+                        "{favorito.notes}"
                       </p>
                     </div>
-                  </div>
-              ))}
+                  )}
                     </div>
+                  )}
+                </div>
+              ))}
+            </div>
 
-            {favoritos.length > 2 && (
+            {favoritos.length > 3 && (
               <div className="text-center mt-4">
                 <p 
                   style={{ 
@@ -895,7 +1001,7 @@ export default function ProgressoPage() {
                     color: colors.text.whiteMuted
                   }}
                 >
-                  +{favoritos.length - 2} devocionais favoritos adicionais
+                  +{favoritos.length - 3} devocionais favoritos adicionais
                       </p>
                     </div>
                   )}
