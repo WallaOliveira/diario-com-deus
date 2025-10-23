@@ -1,16 +1,10 @@
-// src/hooks/useFontSize.ts
+'use client';
+
 import { useState, useEffect } from 'react';
 
 export type FontSize = 'small' | 'medium' | 'large' | 'extra-large';
 
-interface FontSizeConfig {
-  small: string;
-  medium: string;
-  large: string;
-  'extra-large': string;
-}
-
-const FONT_SIZE_CONFIG: FontSizeConfig = {
+const FONT_SIZE_CONFIG = {
   small: '14px',
   medium: '16px',
   large: '18px',
@@ -24,19 +18,23 @@ export function useFontSize() {
 
   // Carregar tamanho salvo do localStorage
   useEffect(() => {
-    const savedFontSize = localStorage.getItem(FONT_SIZE_STORAGE_KEY) as FontSize;
-    if (savedFontSize && FONT_SIZE_CONFIG[savedFontSize]) {
-      setFontSize(savedFontSize);
+    if (typeof window !== 'undefined') {
+      const savedFontSize = localStorage.getItem(FONT_SIZE_STORAGE_KEY) as FontSize;
+      if (savedFontSize && FONT_SIZE_CONFIG[savedFontSize]) {
+        setFontSize(savedFontSize);
+      }
     }
   }, []);
 
   // Aplicar tamanho no CSS
   useEffect(() => {
-    const root = document.documentElement;
-    root.style.setProperty('--font-size-base', FONT_SIZE_CONFIG[fontSize]);
-    
-    // Salvar no localStorage
-    localStorage.setItem(FONT_SIZE_STORAGE_KEY, fontSize);
+    if (typeof window !== 'undefined') {
+      const root = document.documentElement;
+      root.style.setProperty('--font-size-base', FONT_SIZE_CONFIG[fontSize]);
+      
+      // Salvar no localStorage
+      localStorage.setItem(FONT_SIZE_STORAGE_KEY, fontSize);
+    }
   }, [fontSize]);
 
   const increaseFontSize = () => {
