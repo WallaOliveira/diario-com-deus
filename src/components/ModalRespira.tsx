@@ -8,10 +8,11 @@ interface ModalRespiraProps {
   isOpen: boolean;
   onClose: () => void;
   onContinue: () => void;
+  onContinueAndDisable: () => void;
   tema?: string;
 }
 
-export default function ModalRespira({ isOpen, onClose, onContinue, tema }: ModalRespiraProps) {
+export default function ModalRespira({ isOpen, onClose, onContinue, onContinueAndDisable, tema }: ModalRespiraProps) {
   const [breathStep, setBreathStep] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
   const [breathCount, setBreathCount] = useState(0);
 
@@ -149,14 +150,27 @@ export default function ModalRespira({ isOpen, onClose, onContinue, tema }: Moda
               Deixe o caos para trás. Este é um momento sagrado.
             </p>
 
-            {/* Botão de ação */}
-            <button
-              onClick={onContinue}
-              className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-              style={{ fontFamily: typography.sans }}
-            >
-              Estou Presente - Continuar
-            </button>
+            {/* Botões de ação */}
+            <div className="space-y-3">
+              <button
+                onClick={onContinue}
+                className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                style={{ fontFamily: typography.sans }}
+              >
+                Estou Presente - Continuar
+              </button>
+              
+              <button
+                onClick={onContinueAndDisable}
+                className="w-full bg-white/10 text-white/80 border border-white/20 py-2 px-4 rounded-lg transition-all hover:bg-white/20 hover:text-white"
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
+              >
+                Não aparecer novamente
+              </button>
+            </div>
           </div>
         </div>
       </div>

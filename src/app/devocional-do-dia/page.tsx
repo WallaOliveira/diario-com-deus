@@ -51,7 +51,7 @@ export default function SessaoExpressPage() {
   const [toastData, setToastData] = useState({ titulo: '', descricao: '', icone: '' });
   
   // Hook para controlar o modal RESPIRA
-  const { showRespira, showRespiraModal, closeRespiraModal, continueRespiraModal } = useRespiraModal();
+  const { showRespira, showRespiraModal, closeRespiraModal, continueRespiraModal, continueAndDisableRespiraModal } = useRespiraModal();
 
   useEffect(() => {
     if (!DEV_MODE) {
@@ -770,6 +770,15 @@ export default function SessaoExpressPage() {
           </div>
         </div>
       )}
+
+      {/* Modal de Respiração */}
+      <ModalRespira
+        isOpen={showRespira}
+        onClose={closeRespiraModal}
+        onContinue={continueRespiraModal}
+        onContinueAndDisable={continueAndDisableRespiraModal}
+        tema={devocional?.tema}
+      />
 
       {/* Toast de Celebração */}
       <ToastCelebracao

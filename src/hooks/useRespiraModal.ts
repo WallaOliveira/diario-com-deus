@@ -5,6 +5,12 @@ import { useState, useEffect } from 'react';
 export function useRespiraModal() {
   const [showRespira, setShowRespira] = useState(false);
 
+  // Função para verificar se o usuário desabilitou o modal
+  const isRespiraModalDisabled = () => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('respira_modal_disabled') === 'true';
+  };
+
   // Função para verificar se já mostrou o modal hoje
   const shouldShowRespiraModal = () => {
     // 🚧 MODO TESTE - Sempre mostrar o modal
@@ -13,6 +19,11 @@ export function useRespiraModal() {
     }
     
     if (typeof window === 'undefined') return false;
+    
+    // Se o usuário desabilitou o modal, não mostrar
+    if (isRespiraModalDisabled()) {
+      return false;
+    }
     
     const today = new Date().toDateString();
     const lastShown = localStorage.getItem('respira_modal_shown');
@@ -26,6 +37,18 @@ export function useRespiraModal() {
     
     const today = new Date().toDateString();
     localStorage.setItem('respira_modal_shown', today);
+  };
+
+  // Função para desabilitar o modal permanentemente
+  const disableRespiraModal = () => {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem('respira_modal_disabled', 'true');
+  };
+
+  // Função para reabilitar o modal (útil para configurações)
+  const enableRespiraModal = () => {
+    if (typeof window === 'undefined') return;
+    localStorage.removeItem('respira_modal_disabled');
   };
 
   // Função para mostrar o modal (se ainda não foi mostrado hoje)
@@ -47,11 +70,21 @@ export function useRespiraModal() {
     markRespiraModalAsShown();
   };
 
+  // Função para continuar e desabilitar o modal
+  const continueAndDisableRespiraModal = () => {
+    setShowRespira(false);
+    markRespiraModalAsShown();
+    disableRespiraModal();
+  };
+
   return {
     showRespira,
     showRespiraModal,
     closeRespiraModal,
     continueRespiraModal,
-    shouldShowRespiraModal
+    continueAndDisableRespiraModal,
+    shouldShowRespiraModal,
+    isRespiraModalDisabled,
+    enableRespiraModal
   };
 }
