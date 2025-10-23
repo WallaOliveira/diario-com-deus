@@ -560,29 +560,18 @@ export default function DashboardPage() {
             </div>
           </Link>
 
-
-          {/* Trilhas Especiais - Bloqueado para testes */}
-          <div className="trilhas-especiais-card relative" style={{
-            background: colors.background.card,
-            borderRadius: '16px',
-            padding: spacing.fixed.cardPadding,
-            border: `1px solid ${colors.border}`,
-            backdropFilter: 'blur(10px)',
-            opacity: 0.6,
-            filter: 'blur(1px)'
-          }}>
-            {/* Cadeado de bloqueio */}
-            <div className="absolute inset-0 flex items-center justify-center z-10">
-              <div 
-                className="bg-black/80 backdrop-blur rounded-full p-3 border-2 border-gray-400/50"
-                style={{
-                  boxShadow: '0 0 15px rgba(156, 163, 175, 0.3)'
-                }}
-              >
-                <FiLock size={24} className="text-gray-400" />
-              </div>
-            </div>
-
+          {/* Presentes para Você */}
+          <Link 
+            href="/presentes"
+            className="presentes-card group transition-all hover:scale-105"
+            style={{
+              background: colors.background.card,
+              borderRadius: '16px',
+              padding: spacing.fixed.cardPadding,
+              border: `1px solid ${colors.border}`,
+              backdropFilter: 'blur(10px)'
+            }}
+          >
             <div className="flex items-center justify-between">
               <div>
                 <h3 
@@ -594,7 +583,7 @@ export default function DashboardPage() {
                     color: colors.text.white
                   }}
                 >
-                  ✨ Trilhas Especiais
+                  🎁 Presentes para Você
                 </h3>
                 <p 
                   style={{ 
@@ -603,88 +592,16 @@ export default function DashboardPage() {
                     color: colors.text.whiteMuted
                   }}
                 >
-                  Conteúdos e planos avançados
+                  PDFs, wallpapers, playlists e muito mais
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-transform" style={{
-                background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-                opacity: 0.5
+              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform" style={{
+                background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
               }}>
                 <FiGift size={24} className="text-white" />
               </div>
             </div>
-          </div>
-        </div>
-
-
-        {/* Presentes para Você */}
-        <div className="relative" style={{
-          background: colors.background.card,
-          borderRadius: '16px',
-          padding: spacing.fixed.cardPadding,
-          border: `1px solid ${colors.border}`,
-          backdropFilter: 'blur(10px)',
-          opacity: 0.6,
-          filter: 'blur(1px)'
-        }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 
-                className="font-bold mb-1"
-                style={{ 
-                  fontFamily: typography.serif,
-                  fontSize: typography.heading.h3,
-                  fontWeight: typography.weights.semibold,
-                  color: colors.text.white
-                }}
-              >
-                🎁 Presentes para Você
-              </h3>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
-                  color: colors.text.whiteMuted
-                }}
-              >
-                PDFs, wallpapers, playlists e muito mais
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-              <FiGift size={24} className="text-white" style={{ opacity: 0.5 }} />
-            </div>
-          </div>
-          
-          {/* Cadeado central */}
-          <div 
-            className="absolute inset-0 flex items-center justify-center z-10"
-            style={{ pointerEvents: 'none' }}
-          >
-            <div 
-              className="bg-black/80 backdrop-blur rounded-full p-3 border-2 border-gray-400/50"
-              style={{
-                boxShadow: '0 0 15px rgba(156, 163, 175, 0.3)'
-              }}
-            >
-              <FiLock size={24} className="text-gray-400" />
-            </div>
-          </div>
-          
-          {/* Texto explicativo */}
-          <div 
-            className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center"
-            style={{ pointerEvents: 'none' }}
-          >
-            <p 
-              className="text-xs"
-              style={{ 
-                fontFamily: typography.sans,
-                color: colors.text.whiteMuted
-              }}
-            >
-              🔒 Em breve - Apenas para testadores beta
-            </p>
-          </div>
+          </Link>
         </div>
 
       </Container>

@@ -43,6 +43,7 @@ export default function SessaoExpressPage() {
   const [showOracaoLivre, setShowOracaoLivre] = useState(false);
   const [emocaoAtual, setEmocaoAtual] = useState<string>('');
   const [showEmotionalSuggestion, setShowEmotionalSuggestion] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
   
   // Toast de celebração
   const [showToast, setShowToast] = useState(false);
@@ -164,18 +165,26 @@ export default function SessaoExpressPage() {
 
   const handleSaveFavorite = async (content: string, type: 'verse' | 'quote' | 'prayer', reference?: string) => {
     const currentUser = DEV_MODE ? mockUser : user;
-    if (!currentUser) return;
+    if (!currentUser || !devocional) return;
     
     try {
       await addFavorite({
         userId: currentUser.id,
+        devotionalId: devocional.id,
         type,
         content,
         reference,
-        tags: [devocional?.tema || 'geral']
+        notes: ''
       });
       
-      // Aqui você pode adicionar um toast de sucesso
+      // Marcar como favoritado e mostrar feedback
+      setIsFavorited(true);
+      setToastData({
+        titulo: '💜 Favoritado!',
+        descricao: 'Devocional salvo em seus favoritos.',
+        icone: '❤️'
+      });
+      setShowToast(true);
     } catch (error) {
       console.error('Erro ao salvar favorito:', error);
     }
@@ -528,11 +537,19 @@ export default function SessaoExpressPage() {
               {/* Opção de favoritar */}
               <button
                 onClick={() => handleSaveFavorite(devocional.texto, 'verse', devocional.referencia)}
-                className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors"
-                style={{ fontFamily: typography.sans }}
+                disabled={isFavorited}
+                className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-xl transition-colors"
+                style={{ 
+                  fontFamily: typography.sans,
+                  background: isFavorited ? 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)' : 'rgba(255, 255, 255, 0.1)',
+                  border: isFavorited ? '1px solid rgba(236, 72, 153, 0.5)' : '1px solid rgba(255, 255, 255, 0.2)',
+                  color: '#fff',
+                  cursor: isFavorited ? 'default' : 'pointer',
+                  opacity: isFavorited ? 0.8 : 1
+                }}
               >
-                <FiHeart size={18} />
-                <span>Favoritar este devocional</span>
+                <FiHeart size={18} fill={isFavorited ? '#fff' : 'none'} />
+                <span>{isFavorited ? 'Favoritado ✓' : 'Favoritar este devocional'}</span>
               </button>
 
               <div className="flex gap-3">
