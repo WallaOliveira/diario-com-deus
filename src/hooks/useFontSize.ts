@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export type FontSize = 'small' | 'medium' | 'large' | 'extra-large';
 
@@ -16,46 +16,70 @@ const FONT_SIZE_STORAGE_KEY = 'diario-font-size';
 export function useFontSize() {
   const [fontSize, setFontSize] = useState<FontSize>('medium');
 
+  // Função para aplicar tamanho globalmente
+  const applyFontSize = useCallback((newFontSize: FontSize) => {
+    if (typeof window !== 'undefined') {
+      const root = document.documentElement;
+      root.style.setProperty('--font-size-base', FONT_SIZE_CONFIG[newFontSize]);
+      localStorage.setItem(FONT_SIZE_STORAGE_KEY, newFontSize);
+      
+      // Disparar evento customizado para sincronizar entre componentes
+      window.dispatchEvent(new CustomEvent('fontSizeChanged', { 
+        detail: { fontSize: newFontSize } 
+      }));
+    }
+  }, []);
+
   // Carregar tamanho salvo do localStorage
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedFontSize = localStorage.getItem(FONT_SIZE_STORAGE_KEY) as FontSize;
       if (savedFontSize && FONT_SIZE_CONFIG[savedFontSize]) {
         setFontSize(savedFontSize);
+        applyFontSize(savedFontSize);
       }
+    }
+  }, [applyFontSize]);
+
+  // Escutar mudanças de outros componentes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const handleFontSizeChange = (e: CustomEvent) => {
+        setFontSize(e.detail.fontSize);
+      };
+
+      window.addEventListener('fontSizeChanged', handleFontSizeChange as EventListener);
+      
+      return () => {
+        window.removeEventListener('fontSizeChanged', handleFontSizeChange as EventListener);
+      };
     }
   }, []);
 
-  // Aplicar tamanho no CSS
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const root = document.documentElement;
-      root.style.setProperty('--font-size-base', FONT_SIZE_CONFIG[fontSize]);
-      
-      // Salvar no localStorage
-      localStorage.setItem(FONT_SIZE_STORAGE_KEY, fontSize);
-    }
-  }, [fontSize]);
-
-  const increaseFontSize = () => {
+  const increaseFontSize = useCallback(() => {
     const sizes: FontSize[] = ['small', 'medium', 'large', 'extra-large'];
     const currentIndex = sizes.indexOf(fontSize);
     if (currentIndex < sizes.length - 1) {
-      setFontSize(sizes[currentIndex + 1]);
+      const newFontSize = sizes[currentIndex + 1];
+      setFontSize(newFontSize);
+      applyFontSize(newFontSize);
     }
-  };
+  }, [fontSize, applyFontSize]);
 
-  const decreaseFontSize = () => {
+  const decreaseFontSize = useCallback(() => {
     const sizes: FontSize[] = ['small', 'medium', 'large', 'extra-large'];
     const currentIndex = sizes.indexOf(fontSize);
     if (currentIndex > 0) {
-      setFontSize(sizes[currentIndex - 1]);
+      const newFontSize = sizes[currentIndex - 1];
+      setFontSize(newFontSize);
+      applyFontSize(newFontSize);
     }
-  };
+  }, [fontSize, applyFontSize]);
 
-  const resetFontSize = () => {
+  const resetFontSize = useCallback(() => {
     setFontSize('medium');
-  };
+    applyFontSize('medium');
+  }, [applyFontSize]);
 
   return {
     fontSize,

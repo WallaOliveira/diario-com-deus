@@ -8,27 +8,39 @@ interface ClientProvidersProps {
 
 export function ClientProviders({ children }: ClientProvidersProps) {
   useEffect(() => {
-    // Aplicar CSS global de acessibilidade
-    const root = document.documentElement;
-    
-    // Definir tamanho de fonte padrão
-    root.style.setProperty('--font-size-base', '16px');
-    
-    // Aplicar estilos de acessibilidade
-    root.style.setProperty('--line-height-base', '1.6');
-    root.style.setProperty('--letter-spacing-base', '0.01em');
-    
-    // Carregar tamanho salvo do localStorage
-    const savedFontSize = localStorage.getItem('diario-font-size');
-    if (savedFontSize) {
+    // Função para aplicar tamanho de fonte global
+    const applyGlobalFontSize = () => {
+      const root = document.documentElement;
+      
+      // Carregar tamanho salvo do localStorage
+      const savedFontSize = localStorage.getItem('diario-font-size') || 'medium';
+      
       const fontSizeConfig = {
         small: '14px',
         medium: '16px',
         large: '18px',
         'extra-large': '20px'
       };
-      root.style.setProperty('--font-size-base', fontSizeConfig[savedFontSize as keyof typeof fontSizeConfig] || '16px');
-    }
+      
+      const fontSize = fontSizeConfig[savedFontSize as keyof typeof fontSizeConfig] || '16px';
+      root.style.setProperty('--font-size-base', fontSize);
+    };
+
+    // Aplicar imediatamente
+    applyGlobalFontSize();
+
+    // Escutar mudanças no localStorage
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'diario-font-size') {
+        applyGlobalFontSize();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   return <>{children}</>;
