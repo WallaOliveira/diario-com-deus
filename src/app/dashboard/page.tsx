@@ -390,34 +390,46 @@ export default function DashboardPage() {
 
           {/* Menu Dropdown */}
           {showMenu && (
-            <div 
-              className="absolute top-16 right-4 z-50"
-              style={{
-                background: colors.background.card,
-                border: `1px solid ${colors.border}`,
-                borderRadius: '12px',
-                padding: '0.5rem',
-                backdropFilter: 'blur(10px)',
-                minWidth: '180px',
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)'
-              }}
-            >
-              <button
-                onClick={() => {
-                  setShowMenu(false);
-                  handleSignOut();
-                }}
-                className="w-full flex items-center gap-2 px-4 py-3 rounded-lg transition-colors hover:bg-white/10"
-                style={{ 
-                  color: colors.text.whiteMuted,
-                  fontFamily: typography.sans,
-                  fontSize: typography.body.sm
+            <>
+              {/* Overlay para fechar ao clicar fora */}
+              <div 
+                className="fixed inset-0 z-40"
+                onClick={() => setShowMenu(false)}
+              />
+              
+              {/* Menu */}
+              <div 
+                className="absolute top-14 right-4 z-50 animate-fadeIn"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(15, 23, 42, 0.98) 100%)',
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: '12px',
+                  padding: '0.25rem',
+                  backdropFilter: 'blur(20px)',
+                  minWidth: '160px',
+                  boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)'
                 }}
               >
-                <FiLogOut size={16} />
-                <span>Sair</span>
-              </button>
-            </div>
+                <button
+                  onClick={() => {
+                    setShowMenu(false);
+                    handleSignOut();
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all"
+                  style={{ 
+                    color: colors.text.white,
+                    fontFamily: typography.sans,
+                    fontSize: typography.body.sm,
+                    fontWeight: typography.weights.medium
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                >
+                  <FiLogOut size={18} style={{ color: '#ef4444' }} />
+                  <span>Sair da conta</span>
+                </button>
+              </div>
+            </>
           )}
 
         </Container>
