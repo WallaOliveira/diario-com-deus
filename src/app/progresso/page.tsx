@@ -7,6 +7,7 @@ import { useStatsStore } from '@/store/useStatsStore';
 import { FiArrowLeft, FiHeart, FiTrendingUp, FiBookmark } from 'react-icons/fi';
 import Link from 'next/link';
 import Container from '@/components/Container';
+import { FontSizeControls } from '@/components/FontSizeControls';
 import { colors, typography, spacing } from '@/lib/design-system';
 import { getMotivationalMessage, getProgressLevel, getProgressLevelMessage } from '@/lib/motivational-messages';
 import ModalDevocional from '@/components/ModalDevocional';
@@ -395,7 +396,8 @@ export default function ProgressoPage() {
                 style={{ 
                   fontFamily: typography.serif,
                   color: colors.text.white,
-                  fontWeight: typography.weights.semibold
+                  fontWeight: typography.weights.semibold,
+                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)'
                 }}
               >
                 Minha Jornada
@@ -403,13 +405,15 @@ export default function ProgressoPage() {
               <p 
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
+                  fontSize: 'var(--font-size-base, 1rem)',
                   color: colors.text.whiteMuted
                 }}
               >
                 Sua jornada espiritual em números
               </p>
             </div>
+            
+            <FontSizeControls />
           </div>
         </Container>
       </header>
@@ -434,7 +438,7 @@ export default function ProgressoPage() {
                   className="font-bold"
                   style={{ 
                     fontFamily: typography.serif,
-                    fontSize: typography.body.lg,
+                    fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
                     color: colors.text.white
                   }}
                 >
@@ -444,7 +448,7 @@ export default function ProgressoPage() {
               <p 
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
+                  fontSize: 'var(--font-size-base, 1rem)',
                   color: colors.text.whiteMuted,
                   fontStyle: 'italic'
                 }}
@@ -527,7 +531,7 @@ export default function ProgressoPage() {
               <p 
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
+                  fontSize: 'var(--font-size-base, 1rem)',
                   color: colors.text.whiteMuted
                 }}
               >
@@ -634,7 +638,7 @@ export default function ProgressoPage() {
                       className="text-center py-2"
                   style={{ 
                         color: colors.text.whiteMuted,
-                        fontSize: typography.body.sm,
+                        fontSize: 'var(--font-size-base, 1rem)',
                         fontFamily: typography.sans
                   }}
                 >
@@ -762,7 +766,7 @@ export default function ProgressoPage() {
                             <p 
                               style={{ 
                                 fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
+                  fontSize: 'var(--font-size-base, 1rem)',
                                 color: colors.text.whiteMuted
                               }}
                             >
@@ -803,7 +807,7 @@ export default function ProgressoPage() {
                             <p 
                               style={{ 
                     fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
+                    fontSize: 'var(--font-size-base, 1rem)',
                     color: colors.text.whiteMuted
                               }}
                             >
@@ -849,7 +853,7 @@ export default function ProgressoPage() {
                             <p 
                               style={{ 
                                 fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
+                    fontSize: 'var(--font-size-base, 1rem)',
                                 color: colors.text.whiteMuted
                               }}
                             >
@@ -892,7 +896,7 @@ export default function ProgressoPage() {
                   <p 
                     style={{ 
                       fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
+                    fontSize: 'var(--font-size-base, 1rem)',
                       color: colors.text.whiteMuted
                     }}
                   >
@@ -1104,7 +1108,7 @@ export default function ProgressoPage() {
                 <p 
                   style={{ 
                     fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
+                    fontSize: 'var(--font-size-base, 1rem)',
                     color: colors.text.whiteMuted
                   }}
                 >
