@@ -249,11 +249,11 @@ export default function DashboardPage() {
 
   const handleSignOut = async () => {
     if (DEV_MODE) {
-      router.push('/');
+      router.push('/login');
       return;
     }
     await signOut();
-    router.push('/');
+    router.push('/login');
   };
 
   if (!DEV_MODE && loading) {
@@ -411,10 +411,7 @@ export default function DashboardPage() {
                 }}
               >
                 <button
-                  onClick={() => {
-                    setShowMenu(false);
-                    handleSignOut();
-                  }}
+                  onClick={handleSignOut}
                   className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all"
                   style={{ 
                     color: colors.text.white,
