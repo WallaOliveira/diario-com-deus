@@ -8,6 +8,7 @@ import Title from '@/components/Title';
 import Button from '@/components/Button';
 import Container from '@/components/Container';
 import Toast from '@/components/Toast';
+import { FontSizeControls } from '@/components/FontSizeControls';
 import { useToast } from '@/hooks/useToast';
 import { analytics } from '@/lib/analytics';
 import { colors, typography, spacing } from '@/lib/design-system';
@@ -47,6 +48,10 @@ export default function LoginPage() {
       <Container maxWidth="md" className="animate-fadeIn">
         {/* Header com Nova Identidade */}
         <div className="text-center mb-8">
+          <div className="flex justify-end mb-4">
+            <FontSizeControls />
+          </div>
+          
           <Link href="/" className="inline-block mb-6">
             <div className="w-16 h-16 rounded-full mx-auto flex items-center justify-center shadow-lg" style={{
               background: colors.text.gold
@@ -61,7 +66,7 @@ export default function LoginPage() {
             style={{ 
               fontFamily: typography.serif,
               fontWeight: typography.weights.semibold,
-              fontSize: typography.heading.h1,
+              fontSize: 'calc(var(--font-size-base, 1rem) * 2)',
               color: colors.text.white,
               letterSpacing: '-0.02em'
             }}
@@ -73,7 +78,7 @@ export default function LoginPage() {
             style={{ 
               fontFamily: typography.sans,
               fontWeight: typography.weights.normal,
-              fontSize: typography.body.md,
+              fontSize: 'var(--font-size-base, 1rem)',
               color: colors.text.whiteMuted
             }}
           >
@@ -93,7 +98,7 @@ export default function LoginPage() {
           <div>
             <label htmlFor="email" className="block mb-2" style={{ 
               fontFamily: typography.sans,
-              fontSize: typography.fixed.label,
+              fontSize: 'var(--font-size-base, 1rem)',
               fontWeight: typography.weights.medium,
               color: colors.text.whiteMuted
             }}>
@@ -123,7 +128,7 @@ export default function LoginPage() {
           <div>
             <label htmlFor="password" className="block mb-2" style={{ 
               fontFamily: typography.sans,
-              fontSize: typography.fixed.label,
+              fontSize: 'var(--font-size-base, 1rem)',
               fontWeight: typography.weights.medium,
               color: colors.text.whiteMuted
             }}>
