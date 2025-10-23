@@ -294,10 +294,16 @@ export default function SessaoExpressPage() {
         {step === 1 && (
           <div className="animate-fadeIn space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-white mb-2">
-                📖 Sabedoria
-              </h2>
-              <p className="text-white/80">
+              <h1 
+                className="text-3xl font-bold text-white mb-2"
+                style={{ fontFamily: typography.serif }}
+              >
+                {devocional.tema}
+              </h1>
+              <p 
+                className="text-white/80 text-lg"
+                style={{ fontFamily: typography.sans }}
+              >
                 {devocional.referencia}
               </p>
             </div>
@@ -364,9 +370,18 @@ export default function SessaoExpressPage() {
         {step === 2 && (
           <div className="animate-fadeIn space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-white mb-2">
+              <h2 
+                className="text-3xl font-bold text-white mb-2"
+                style={{ fontFamily: typography.serif }}
+              >
                 💡 Palavra Viva
               </h2>
+              <p 
+                className="text-white/80 text-lg"
+                style={{ fontFamily: typography.sans }}
+              >
+                Reflexão e meditação
+              </p>
             </div>
 
             <div 
@@ -408,9 +423,18 @@ export default function SessaoExpressPage() {
         {step === 3 && (
           <div className="animate-fadeIn space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-white mb-2">
+              <h2 
+                className="text-3xl font-bold text-white mb-2"
+                style={{ fontFamily: typography.serif }}
+              >
                 🎯 Ação do Dia
               </h2>
+              <p 
+                className="text-white/80 text-lg"
+                style={{ fontFamily: typography.sans }}
+              >
+                Aplicação prática
+              </p>
             </div>
 
             <div 
@@ -482,9 +506,18 @@ export default function SessaoExpressPage() {
         {step === 4 && (
           <div className="animate-fadeIn space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-white mb-2">
+              <h2 
+                className="text-3xl font-bold text-white mb-2"
+                style={{ fontFamily: typography.serif }}
+              >
                 🙏 Ora
               </h2>
+              <p 
+                className="text-white/80 text-lg"
+                style={{ fontFamily: typography.sans }}
+              >
+                Comunhão com Deus
+              </p>
             </div>
             
             <div 
