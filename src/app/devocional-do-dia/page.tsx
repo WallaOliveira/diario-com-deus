@@ -299,14 +299,20 @@ export default function SessaoExpressPage() {
           <div className="animate-fadeIn space-y-6">
             <div className="text-center">
               <h1 
-                className="text-3xl font-bold text-white mb-2"
-                style={{ fontFamily: typography.serif }}
+                className="font-bold text-white mb-2"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: 'clamp(1.75rem, 5vw, 2.5rem)'
+                }}
               >
                 {devocional.tema}
               </h1>
               <p 
-                className="text-white/80 text-lg"
-                style={{ fontFamily: typography.sans }}
+                className="text-white/80"
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)'
+                }}
               >
                 {devocional.referencia}
               </p>
@@ -321,8 +327,11 @@ export default function SessaoExpressPage() {
               }}
             >
               <p 
-                className="text-white leading-relaxed italic text-lg"
-                style={{ fontFamily: typography.serif }}
+                className="text-white leading-relaxed italic"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)'
+                }}
               >
                 "{devocional.texto}"
               </p>
@@ -333,8 +342,11 @@ export default function SessaoExpressPage() {
               <div className="text-center">
                 <button
                   onClick={() => setShowContexto(!showContexto)}
-                  className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
-                  style={{ fontFamily: typography.sans }}
+                  className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors"
+                  style={{ 
+                    fontFamily: typography.sans,
+                    fontSize: 'var(--font-size-base, 1rem)'
+                  }}
                 >
                   {showContexto ? 'Ocultar contexto' : 'Ver contexto'}
                 </button>
@@ -362,7 +374,10 @@ export default function SessaoExpressPage() {
             <button
               onClick={handleNext}
               className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-              style={{ fontFamily: typography.sans }}
+              style={{ 
+                fontFamily: typography.sans,
+                fontSize: 'var(--font-size-base, 1rem)'
+              }}
             >
               Continuar →
             </button>
@@ -375,14 +390,20 @@ export default function SessaoExpressPage() {
           <div className="animate-fadeIn space-y-6">
             <div className="text-center">
               <h2 
-                className="text-3xl font-bold text-white mb-2"
-                style={{ fontFamily: typography.serif }}
+                className="font-bold text-white mb-2"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: 'clamp(1.75rem, 5vw, 2.5rem)'
+                }}
               >
                 💡 Palavra Viva
               </h2>
               <p 
-                className="text-white/80 text-lg"
-                style={{ fontFamily: typography.sans }}
+                className="text-white/80"
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)'
+                }}
               >
                 Reflexão e meditação
               </p>
@@ -398,7 +419,10 @@ export default function SessaoExpressPage() {
             >
               <p 
                 className="text-white leading-relaxed"
-                style={{ fontFamily: typography.sans }}
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
               >
                 {devocional.palavraViva}
               </p>
@@ -408,14 +432,20 @@ export default function SessaoExpressPage() {
               <button
                 onClick={handleBack}
                 className="flex-1 py-3.5 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors font-semibold"
-                style={{ fontFamily: typography.sans }}
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
               >
                 ← Voltar
               </button>
               <button
                 onClick={handleNext}
                 className="flex-[2] bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                style={{ fontFamily: typography.sans }}
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
               >
                 Continuar →
               </button>
@@ -428,14 +458,20 @@ export default function SessaoExpressPage() {
           <div className="animate-fadeIn space-y-6">
             <div className="text-center">
               <h2 
-                className="text-3xl font-bold text-white mb-2"
-                style={{ fontFamily: typography.serif }}
+                className="font-bold text-white mb-2"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: 'clamp(1.75rem, 5vw, 2.5rem)'
+                }}
               >
                 🎯 Ação do Dia
               </h2>
               <p 
-                className="text-white/80 text-lg"
-                style={{ fontFamily: typography.sans }}
+                className="text-white/80"
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)'
+                }}
               >
                 Aplicação prática
               </p>
@@ -454,7 +490,10 @@ export default function SessaoExpressPage() {
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Como você pode aplicar esta palavra em sua vida hoje? Que ação prática você pode tomar?"
                 className="w-full h-32 p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                style={{ fontFamily: typography.sans }}
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
               />
             </div>
 
@@ -462,8 +501,11 @@ export default function SessaoExpressPage() {
             <div className="text-center">
               <button
                 onClick={() => setShowSugestao(!showSugestao)}
-                className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
-                style={{ fontFamily: typography.sans }}
+                className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors"
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
               >
                 {showSugestao ? 'Ocultar sugestão' : 'Ver sugestão prática'}
               </button>
@@ -481,7 +523,7 @@ export default function SessaoExpressPage() {
                 <h4 className="font-semibold text-green-300 mb-2">
                   💡 Sugestão Prática
                 </h4>
-                <p className="text-green-100 text-sm leading-relaxed">
+                <p className="text-green-100 leading-relaxed" style={{ fontSize: 'var(--font-size-base, 1rem)' }}>
                   {devocional.acao}
                 </p>
               </div>
@@ -491,14 +533,20 @@ export default function SessaoExpressPage() {
               <button
                 onClick={handleBack}
                 className="flex-1 py-3.5 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors font-semibold"
-                style={{ fontFamily: typography.sans }}
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
               >
                 ← Voltar
               </button>
               <button
                 onClick={handleNext}
                 className="flex-[2] bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                style={{ fontFamily: typography.sans }}
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
               >
                 Continuar →
               </button>
@@ -511,14 +559,20 @@ export default function SessaoExpressPage() {
           <div className="animate-fadeIn space-y-6">
             <div className="text-center">
               <h2 
-                className="text-3xl font-bold text-white mb-2"
-                style={{ fontFamily: typography.serif }}
+                className="font-bold text-white mb-2"
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: 'clamp(1.75rem, 5vw, 2.5rem)'
+                }}
               >
                 🙏 Ora
               </h2>
               <p 
-                className="text-white/80 text-lg"
-                style={{ fontFamily: typography.sans }}
+                className="text-white/80"
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)'
+                }}
               >
                 Comunhão com Deus
               </p>
@@ -534,7 +588,10 @@ export default function SessaoExpressPage() {
             >
                 <p 
                   className="text-white leading-relaxed italic"
-                  style={{ fontFamily: typography.serif }}
+                  style={{ 
+                    fontFamily: typography.serif,
+                    fontSize: 'var(--font-size-base, 1rem)'
+                  }}
                 >
                   {devocional.oracao}
                 </p>
@@ -544,8 +601,11 @@ export default function SessaoExpressPage() {
               <div className="text-center">
                 <button
                   onClick={() => setShowOracaoLivre(!showOracaoLivre)}
-                  className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors text-sm"
-                  style={{ fontFamily: typography.sans }}
+                  className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 transition-colors"
+                  style={{ 
+                    fontFamily: typography.sans,
+                    fontSize: 'var(--font-size-base, 1rem)'
+                  }}
                 >
                   {showOracaoLivre ? 'Ocultar oração livre' : 'Ou ore livremente'}
                 </button>
@@ -593,14 +653,20 @@ export default function SessaoExpressPage() {
                 <button
                   onClick={handleBack}
                   className="flex-1 py-3.5 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors font-semibold"
-                  style={{ fontFamily: typography.sans }}
+                  style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
                 >
                   ← Voltar
                 </button>
                 <button
                   onClick={handleComplete}
                   className="flex-[2] bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                  style={{ fontFamily: typography.sans }}
+                  style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
                 >
                   ✨ Finalizar Devocional
                 </button>
