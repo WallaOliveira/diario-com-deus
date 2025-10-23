@@ -302,7 +302,7 @@ export default function SessaoExpressPage() {
                 className="font-bold text-white mb-2"
                 style={{ 
                   fontFamily: typography.serif,
-                  fontSize: 'clamp(1.75rem, 5vw, 2.5rem)'
+                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)'
                 }}
               >
                 {devocional.tema}
@@ -311,7 +311,7 @@ export default function SessaoExpressPage() {
                 className="text-white/80"
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)'
+                  fontSize: 'var(--font-size-base, 1rem)'
                 }}
               >
                 {devocional.referencia}
@@ -330,7 +330,7 @@ export default function SessaoExpressPage() {
                 className="text-white leading-relaxed italic"
                 style={{ 
                   fontFamily: typography.serif,
-                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)'
+                  fontSize: 'var(--font-size-base, 1rem)'
                 }}
               >
                 "{devocional.texto}"
@@ -393,7 +393,7 @@ export default function SessaoExpressPage() {
                 className="font-bold text-white mb-2"
                 style={{ 
                   fontFamily: typography.serif,
-                  fontSize: 'clamp(1.75rem, 5vw, 2.5rem)'
+                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)'
                 }}
               >
                 💡 Palavra Viva
@@ -402,7 +402,7 @@ export default function SessaoExpressPage() {
                 className="text-white/80"
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)'
+                  fontSize: 'var(--font-size-base, 1rem)'
                 }}
               >
                 Reflexão e meditação
@@ -461,7 +461,7 @@ export default function SessaoExpressPage() {
                 className="font-bold text-white mb-2"
                 style={{ 
                   fontFamily: typography.serif,
-                  fontSize: 'clamp(1.75rem, 5vw, 2.5rem)'
+                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)'
                 }}
               >
                 🎯 Ação do Dia
@@ -470,7 +470,7 @@ export default function SessaoExpressPage() {
                 className="text-white/80"
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)'
+                  fontSize: 'var(--font-size-base, 1rem)'
                 }}
               >
                 Aplicação prática
@@ -562,7 +562,7 @@ export default function SessaoExpressPage() {
                 className="font-bold text-white mb-2"
                 style={{ 
                   fontFamily: typography.serif,
-                  fontSize: 'clamp(1.75rem, 5vw, 2.5rem)'
+                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)'
                 }}
               >
                 🙏 Ora
@@ -571,7 +571,7 @@ export default function SessaoExpressPage() {
                 className="text-white/80"
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)'
+                  fontSize: 'var(--font-size-base, 1rem)'
                 }}
               >
                 Comunhão com Deus
