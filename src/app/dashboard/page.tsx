@@ -371,14 +371,6 @@ export default function DashboardPage() {
                   }}
                 />
               </button>
-              <Link
-                href="/progresso"
-                className="p-1.5 transition-all hover:scale-110"
-                style={{ color: colors.text.whiteMuted }}
-                title="Minha Jornada"
-              >
-                <FiCalendar size={20} />
-              </Link>
               <button
                 onClick={() => setShowMenu(!showMenu)}
                 className="p-1.5 transition-colors hover:opacity-80 relative"
@@ -589,6 +581,43 @@ export default function DashboardPage() {
                 background: colors.text.blue
               }}>
                 <FiMap size={24} className="text-white" />
+              </div>
+            </div>
+          </Link>
+
+          {/* Minha Jornada */}
+          <Link href="/progresso" className="minha-jornada-card group transition-all hover:scale-105" style={{
+            ...components.card.base,
+            padding: spacing.fixed.cardPadding,
+            boxShadow: colors.shadow.card
+          }}>
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 
+                  className="font-bold mb-1"
+                  style={{ 
+                    fontFamily: typography.serif,
+                    fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
+                    fontWeight: typography.weights.semibold,
+                    color: colors.text.white
+                  }}
+                >
+                  📊 Minha Jornada
+                </h3>
+                <p 
+                  style={{ 
+                    fontFamily: typography.sans,
+                    fontSize: 'var(--font-size-base, 1rem)',
+                    color: colors.text.whiteMuted
+                  }}
+                >
+                  Acompanhe seu progresso espiritual
+                </p>
+              </div>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform" style={{
+                background: colors.text.green
+              }}>
+                <FiCalendar size={24} className="text-white" />
               </div>
             </div>
           </Link>
