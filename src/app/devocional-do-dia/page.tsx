@@ -12,6 +12,7 @@ import Confetti from '@/components/Confetti';
 import AchievementModal from '@/components/AchievementModal';
 import ModalRespira from '@/components/ModalRespira';
 import ToastCelebracao from '@/components/ToastCelebracao';
+import { FontSizeControls } from '@/components/FontSizeControls';
 import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
 import { analytics } from '@/lib/analytics';
 import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
@@ -280,12 +281,15 @@ export default function SessaoExpressPage() {
               />
             </div>
           </div>
-          <span 
-            className="text-sm text-blue-100"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            {step}/4
-          </span>
+          <div className="flex items-center gap-3">
+            <FontSizeControls />
+            <span 
+              className="text-sm text-blue-100"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              {step}/4
+            </span>
+          </div>
         </div>
       </header>
 

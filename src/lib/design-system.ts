@@ -77,9 +77,9 @@ export const colors = {
 
 // ===== TIPOGRAFIA =====
 export const typography = {
-  // Famílias
-  serif: "'Cormorant Garamond', serif",
-  sans: "'Inter', sans-serif",
+  // Famílias - Fontes simples e legíveis para todas as idades
+  serif: "'Georgia', serif", // Fonte serif simples e legível
+  sans: "'system-ui', -apple-system, 'Segoe UI', Roboto, sans-serif", // Fontes do sistema
   
   // Fluid Typography (baseado em PWAs de sucesso)
   title: {
@@ -102,9 +102,9 @@ export const typography = {
   
   // Tamanhos fixos para elementos específicos
   fixed: {
-    button: '1rem',
-    input: '1rem',
-    label: '0.875rem',
+    button: 'var(--font-size-base, 1rem)',
+    input: 'var(--font-size-base, 1rem)',
+    label: 'calc(var(--font-size-base, 1rem) * 0.875)',
   },
   
   // Pesos

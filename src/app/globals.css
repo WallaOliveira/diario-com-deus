@@ -5,16 +5,26 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --font-size-base: 16px;
+  }
+  
   body {
     @apply min-h-screen;
     font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     color: #1e293b;
+    font-size: var(--font-size-base);
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif;
     font-weight: 600;
     color: #0f172a;
+  }
+  
+  /* Aplicar tamanho base em todos os elementos de texto */
+  p, span, div, button, input, textarea {
+    font-size: inherit;
   }
 }
 
