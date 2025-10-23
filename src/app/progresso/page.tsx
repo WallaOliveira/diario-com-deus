@@ -854,11 +854,14 @@ export default function ProgressoPage() {
                   favoritos.map((favorito) => (
                     <div 
                       key={favorito.id}
-                      className="rounded-xl transition-all hover:bg-white/5"
+                      className="rounded-xl transition-all hover:bg-white/5 cursor-pointer"
                       style={{
                         background: 'rgba(255, 255, 255, 0.05)',
                         border: '1px solid rgba(255, 255, 255, 0.1)'
                       }}
+                      onClick={() => setDevocionalExpandido(
+                        devocionalExpandido === favorito.id ? null : favorito.id
+                      )}
                     >
                       <div className="p-4 sm:p-5">
                         <div className="flex items-start gap-3">
@@ -906,8 +909,137 @@ export default function ProgressoPage() {
                               📖 {favorito.reference}
                             </p>
                           </div>
+                          <div className="flex items-center gap-2">
+                            <span 
+                              className="text-xs px-2 py-1 rounded-full"
+                              style={{ 
+                                background: 'rgba(255, 255, 255, 0.1)',
+                                color: colors.text.whiteMuted,
+                                fontFamily: typography.sans
+                              }}
+                            >
+                              {devocionalExpandido === favorito.id ? 'Ver menos' : 'Ver completo'}
+                            </span>
+                            <div 
+                              className={`transition-transform duration-200 ${
+                                devocionalExpandido === favorito.id ? 'rotate-180' : ''
+                              }`}
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                       </div>
+
+                      {/* Conteúdo expansível */}
+                      {devocionalExpandido === favorito.id && (
+                        <div className="px-4 pb-4 sm:px-5 sm:pb-5 space-y-4 border-t border-white/10">
+                          {/* Reflexão */}
+                          <div className="mb-3">
+                            <p 
+                              className="text-xs font-medium mb-2"
+                              style={{ 
+                                fontFamily: typography.sans,
+                                color: colors.accent.blue,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px'
+                              }}
+                            >
+                              💭 Reflexão
+                            </p>
+                            <p 
+                              className="text-sm leading-relaxed"
+                              style={{ 
+                                fontFamily: typography.sans,
+                                color: colors.text.whiteMuted,
+                                fontSize: 'var(--font-size-base, 1rem)'
+                              }}
+                            >
+                              {favorito.reflection}
+                            </p>
+                          </div>
+
+                          {/* Oração */}
+                          <div className="mb-3">
+                            <p 
+                              className="text-xs font-medium mb-2"
+                              style={{
+                                fontFamily: typography.sans,
+                                color: colors.accent.purple,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px'
+                              }}
+                            >
+                              🙏 Oração
+                            </p>
+                            <p 
+                              className="text-sm leading-relaxed"
+                              style={{
+                                fontFamily: typography.sans,
+                                color: colors.text.whiteMuted,
+                                fontSize: 'var(--font-size-base, 1rem)'
+                              }}
+                            >
+                              {favorito.prayer}
+                            </p>
+                          </div>
+
+                          {/* Ação do Dia */}
+                          <div className="mb-3">
+                            <p 
+                              className="text-xs font-medium mb-2"
+                              style={{ 
+                                fontFamily: typography.sans,
+                                color: colors.accent.green,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px'
+                              }}
+                            >
+                              ✨ Ação do Dia
+                            </p>
+                            <p 
+                              className="text-sm leading-relaxed"
+                              style={{ 
+                                fontFamily: typography.sans,
+                                color: colors.text.whiteMuted,
+                                fontSize: 'var(--font-size-base, 1rem)'
+                              }}
+                            >
+                              {favorito.action}
+                            </p>
+                          </div>
+
+                          {/* Anotações Pessoais */}
+                          {favorito.notes && (
+                            <div className="p-3 rounded-lg" style={{ background: 'rgba(139, 92, 246, 0.1)' }}>
+                              <p 
+                                className="text-xs font-medium mb-2"
+                                style={{
+                                  fontFamily: typography.sans,
+                                  color: colors.accent.purple,
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.5px'
+                                }}
+                              >
+                                📝 Suas Anotações
+                              </p>
+                              <p 
+                                className="text-sm leading-relaxed"
+                                style={{
+                                  fontFamily: typography.sans,
+                                  color: colors.text.white,
+                                  fontStyle: 'italic',
+                                  fontSize: 'var(--font-size-base, 1rem)'
+                                }}
+                              >
+                                "{favorito.notes}"
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   ))
                 )}
