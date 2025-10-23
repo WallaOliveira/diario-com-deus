@@ -362,10 +362,10 @@ export default function SessaoExpressPage() {
                   backdropFilter: 'blur(10px)'
                 }}
               >
-                <h4 className="font-semibold text-blue-300 mb-2">
+                <h4 className="font-semibold text-blue-300 mb-2" style={{ fontSize: 'var(--font-size-base, 1rem)' }}>
                   📚 Contexto do Versículo
                 </h4>
-                <p className="text-blue-100 text-sm leading-relaxed">
+                <p className="text-blue-100 leading-relaxed" style={{ fontSize: 'var(--font-size-base, 1rem)' }}>
                   {devocional.versiculo_contexto}
                 </p>
               </div>
@@ -520,7 +520,7 @@ export default function SessaoExpressPage() {
                   backdropFilter: 'blur(10px)'
                 }}
               >
-                <h4 className="font-semibold text-green-300 mb-2">
+                <h4 className="font-semibold text-green-300 mb-2" style={{ fontSize: 'var(--font-size-base, 1rem)' }}>
                   💡 Sugestão Prática
                 </h4>
                 <p className="text-green-100 leading-relaxed" style={{ fontSize: 'var(--font-size-base, 1rem)' }}>
@@ -620,10 +620,10 @@ export default function SessaoExpressPage() {
                     backdropFilter: 'blur(10px)'
                   }}
                 >
-                  <h4 className="font-semibold text-purple-300 mb-2">
+                  <h4 className="font-semibold text-purple-300 mb-2" style={{ fontSize: 'var(--font-size-base, 1rem)' }}>
                     💭 Sua Oração
                   </h4>
-                  <p className="text-purple-100 text-sm leading-relaxed">
+                  <p className="text-purple-100 leading-relaxed" style={{ fontSize: 'var(--font-size-base, 1rem)' }}>
                     Feche os olhos por um momento e converse com Deus do seu coração. 
                     Agradeça, peça orientação, ou simplesmente esteja em Sua presença.
                   </p>
@@ -638,6 +638,7 @@ export default function SessaoExpressPage() {
                 className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-xl transition-colors"
                 style={{ 
                   fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)',
                   background: isFavorited ? 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)' : 'rgba(255, 255, 255, 0.1)',
                   border: isFavorited ? '1px solid rgba(236, 72, 153, 0.5)' : '1px solid rgba(255, 255, 255, 0.2)',
                   color: '#fff',
