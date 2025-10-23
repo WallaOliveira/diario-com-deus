@@ -162,7 +162,7 @@ export default function TrilhasPage() {
               <p 
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: typography.body.md,
+                  fontSize: 'var(--font-size-base, 1rem)',
                   color: colors.text.whiteMuted,
                   lineHeight: '1.6'
                 }}
@@ -207,7 +207,7 @@ export default function TrilhasPage() {
                         className="font-bold mb-2"
                         style={{ 
                           fontFamily: typography.serif,
-                          fontSize: typography.heading.h2,
+                          fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
                           fontWeight: typography.weights.semibold,
                           color: 'white'
                         }}
@@ -218,7 +218,7 @@ export default function TrilhasPage() {
                         className="opacity-90"
                         style={{ 
                           fontFamily: typography.sans,
-                          fontSize: typography.body.md,
+                          fontSize: 'var(--font-size-base, 1rem)',
                           color: 'white'
                         }}
                       >
@@ -236,7 +236,7 @@ export default function TrilhasPage() {
                       <span 
                         style={{ 
                           fontFamily: typography.sans,
-                          fontSize: typography.body.sm
+                          fontSize: 'var(--font-size-base, 1rem)'
                         }}
                       >
                         {trilha.dias} dias
@@ -247,7 +247,7 @@ export default function TrilhasPage() {
                       <span 
                         style={{ 
                           fontFamily: typography.sans,
-                          fontSize: typography.body.sm
+                          fontSize: 'var(--font-size-base, 1rem)'
                         }}
                       >
                         {trilha.diasConcluidos.length}/{trilha.dias} concluídos

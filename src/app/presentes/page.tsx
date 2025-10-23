@@ -60,7 +60,7 @@ export default function PresentesPage() {
             className="font-bold mb-4 text-white"
             style={{ 
               fontFamily: typography.serif,
-              fontSize: typography.heading.h2,
+              fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
               fontWeight: typography.weights.semibold
             }}
           >
@@ -94,7 +94,7 @@ export default function PresentesPage() {
                     style={{ 
                       fontFamily: typography.sans,
                       color: colors.text.white,
-                      fontSize: typography.body.lg
+                      fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)'
                     }}
                   >
                     {item.title}
@@ -103,7 +103,7 @@ export default function PresentesPage() {
                     style={{ 
                       fontFamily: typography.sans,
                       color: colors.text.whiteMuted,
-                      fontSize: typography.body.sm
+                      fontSize: 'var(--font-size-base, 1rem)'
                     }}
                   >
                     {item.desc}
@@ -121,7 +121,7 @@ export default function PresentesPage() {
             className="font-bold mb-4 text-white"
             style={{ 
               fontFamily: typography.serif,
-              fontSize: typography.heading.h2,
+              fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
               fontWeight: typography.weights.semibold
             }}
           >
@@ -157,7 +157,7 @@ export default function PresentesPage() {
                     style={{ 
                       fontFamily: typography.sans,
                       color: colors.text.white,
-                      fontSize: typography.body.lg
+                      fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)'
                     }}
                   >
                     {item.title}
@@ -166,7 +166,7 @@ export default function PresentesPage() {
                     style={{ 
                       fontFamily: typography.sans,
                       color: colors.text.whiteMuted,
-                      fontSize: typography.body.sm
+                      fontSize: 'var(--font-size-base, 1rem)'
                     }}
                   >
                     {item.desc}
@@ -178,7 +178,7 @@ export default function PresentesPage() {
                     style={{ 
                       fontFamily: typography.sans,
                       color: colors.accent.gold,
-                      fontSize: typography.body.lg
+                      fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)'
                     }}
                   >
                     {item.price}

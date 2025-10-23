@@ -12,6 +12,7 @@ import Confetti from '@/components/Confetti';
 import AchievementModal from '@/components/AchievementModal';
 import ModalRespira from '@/components/ModalRespira';
 import ToastCelebracao from '@/components/ToastCelebracao';
+import { FontSizeControls } from '@/components/FontSizeControls';
 import { getTrilhaById, getTrilhaDia, type TrilhaDia } from '@/lib/trilhas';
 import { analytics } from '@/lib/analytics';
 import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
@@ -317,15 +318,28 @@ export default function TrilhaPazInteriorPage() {
               <FiArrowLeft size={24} />
             </Link>
             <div className="text-center flex-1 mx-4">
-              <p className="text-xs text-blue-200 mb-1">{trilha.icone} {trilha.titulo}</p>
-              <p className="text-sm font-bold text-white">Dia {diaAtual} de {trilha.duracao} - {diaData.titulo}</p>
+              <p 
+                className="text-xs text-blue-200 mb-1"
+                style={{ fontSize: 'var(--font-size-base, 1rem)' }}
+              >
+                {trilha.icone} {trilha.titulo}
+              </p>
+              <p 
+                className="text-sm font-bold text-white"
+                style={{ fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)' }}
+              >
+                Dia {diaAtual} de {trilha.duracao} - {diaData.titulo}
+              </p>
             </div>
-            <span 
-              className="text-sm text-blue-100"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              {step}/4
-            </span>
+            <div className="flex items-center gap-2">
+              <span 
+                className="text-sm text-blue-100"
+                style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--font-size-base, 1rem)' }}
+              >
+                {step}/4
+              </span>
+              <FontSizeControls />
+            </div>
           </div>
           <div className="h-2 bg-white/20 rounded-full overflow-hidden">
             <div
@@ -341,10 +355,16 @@ export default function TrilhaPazInteriorPage() {
         {step === 1 && (
           <div className="animate-fadeIn space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-white mb-2">
+              <h2 
+                className="text-2xl font-bold text-white mb-2"
+                style={{ fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)' }}
+              >
                 📖 Sabedoria
               </h2>
-              <p className="text-white/80">
+              <p 
+                className="text-white/80"
+                style={{ fontSize: 'var(--font-size-base, 1rem)' }}
+              >
                 {diaData.referencia}
               </p>
             </div>
