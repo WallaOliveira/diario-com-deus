@@ -14,7 +14,7 @@ import AchievementModal from '@/components/AchievementModal';
 import HelpButton from '@/components/HelpButton';
 import Container from '@/components/Container';
 import CheckInEmocional from '@/components/CheckInEmocional';
-import { colors, typography, spacing, utils } from '@/lib/design-system';
+import { colors, typography, spacing, components, animations, utils } from '@/lib/design-system';
 import { 
   checkInactivityStatus, 
   updateLastAccessDate, 
@@ -397,35 +397,27 @@ export default function DashboardPage() {
                 onClick={() => setShowMenu(false)}
               />
               
-              {/* Menu */}
-              <div 
-                className="absolute top-14 right-4 z-50 animate-fadeIn"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(15, 23, 42, 0.98) 100%)',
-                  border: `1px solid ${colors.border}`,
-                  borderRadius: '12px',
-                  padding: '0.25rem',
-                  backdropFilter: 'blur(20px)',
-                  minWidth: '160px',
-                  boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)'
-                }}
-              >
-                <button
-                  onClick={handleSignOut}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all"
-                  style={{ 
-                    color: colors.text.white,
-                    fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
-                    fontWeight: typography.weights.medium
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                >
-                  <FiLogOut size={18} style={{ color: '#ef4444' }} />
-                  <span>Sair da conta</span>
-                </button>
-              </div>
+        {/* Menu */}
+        <div 
+          className="absolute top-14 right-4 z-50 animate-fadeIn"
+          style={components.dropdown}
+        >
+          <button
+            onClick={handleSignOut}
+            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all"
+            style={{ 
+              color: colors.text.white,
+              fontFamily: typography.sans,
+              fontSize: typography.body.sm,
+              fontWeight: typography.weights.medium
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = colors.interactive.hover}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+          >
+            <FiLogOut size={18} style={{ color: colors.accent.red }} />
+            <span>Sair da conta</span>
+          </button>
+        </div>
             </>
           )}
 
@@ -526,11 +518,9 @@ export default function DashboardPage() {
         <div className="flex flex-col gap-4">
           {/* Devocional do Dia */}
           <Link href="/devocional-do-dia" className="devocional-do-dia-card group transition-all hover:scale-105" style={{
-            background: colors.background.card,
-            borderRadius: '16px',
+            ...components.card.base,
             padding: spacing.fixed.cardPadding,
-            border: `1px solid ${colors.border}`,
-            backdropFilter: 'blur(10px)'
+            boxShadow: colors.shadow.card
           }}>
             <div className="flex items-center justify-between">
               <div>
@@ -566,11 +556,9 @@ export default function DashboardPage() {
 
           {/* Trilhas Guiadas */}
           <Link href="/trilhas" className="trilhas-card group transition-all hover:scale-105" style={{
-            background: colors.background.card,
-            borderRadius: '16px',
+            ...components.card.base,
             padding: spacing.fixed.cardPadding,
-            border: `1px solid ${colors.border}`,
-            backdropFilter: 'blur(10px)'
+            boxShadow: colors.shadow.card
           }}>
             <div className="flex items-center justify-between">
               <div>
@@ -608,11 +596,9 @@ export default function DashboardPage() {
             href="/presentes"
             className="presentes-card group transition-all hover:scale-105"
             style={{
-              background: colors.background.card,
-              borderRadius: '16px',
+              ...components.card.base,
               padding: spacing.fixed.cardPadding,
-              border: `1px solid ${colors.border}`,
-              backdropFilter: 'blur(10px)'
+              boxShadow: colors.shadow.card
             }}
           >
             <div className="flex items-center justify-between">
