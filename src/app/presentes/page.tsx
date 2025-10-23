@@ -3,6 +3,7 @@
 import { FiArrowLeft, FiDownload, FiMusic, FiImage, FiBookOpen } from 'react-icons/fi';
 import Link from 'next/link';
 import Container from '@/components/Container';
+import { FontSizeControls } from '@/components/FontSizeControls';
 import { colors, typography, spacing } from '@/lib/design-system';
 
 export default function PresentesPage() {
@@ -28,7 +29,7 @@ export default function PresentesPage() {
             >
               <FiArrowLeft size={20} />
             </Link>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-1">
               <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{
                 background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
               }}>
@@ -39,7 +40,7 @@ export default function PresentesPage() {
                   className="font-bold text-white"
                   style={{ 
                     fontFamily: typography.serif,
-                    fontSize: typography.heading.h3,
+                    fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
                     fontWeight: typography.weights.semibold
                   }}
                 >
@@ -47,6 +48,7 @@ export default function PresentesPage() {
                 </h1>
               </div>
             </div>
+            <FontSizeControls />
           </div>
         </Container>
       </header>

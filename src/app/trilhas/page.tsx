@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { FiArrowLeft, FiClock, FiCheckCircle, FiMap, FiChevronDown, FiChevronUp, FiLock } from 'react-icons/fi';
 import Container from '@/components/Container';
+import { FontSizeControls } from '@/components/FontSizeControls';
 import { colors, typography, spacing } from '@/lib/design-system';
 import { TRILHAS_DISPONIVEIS, calcularProgressoTrilha, getProximoDiaDisponivel } from '@/lib/trilhas';
 import Link from 'next/link';
@@ -93,12 +94,12 @@ export default function TrilhasPage() {
             <Link href="/dashboard" className="transition-colors hover:opacity-80" style={{ color: colors.text.whiteMuted }}>
               <FiArrowLeft size={24} />
             </Link>
-            <div>
+            <div className="flex-1">
               <h1 
                 className="font-bold"
                 style={{ 
                   fontFamily: typography.serif,
-                  fontSize: typography.heading.h2,
+                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
                   fontWeight: typography.weights.semibold,
                   color: colors.text.white
                 }}
@@ -108,13 +109,14 @@ export default function TrilhasPage() {
               <p 
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
+                  fontSize: 'var(--font-size-base, 1rem)',
                   color: colors.text.whiteMuted
                 }}
               >
                 Jornadas temáticas de 7, 14 e 30 dias
               </p>
             </div>
+            <FontSizeControls />
           </div>
         </Container>
       </header>
@@ -142,7 +144,7 @@ export default function TrilhasPage() {
                 className="font-bold text-left"
                 style={{ 
                   fontFamily: typography.serif,
-                  fontSize: typography.heading.h3,
+                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
                   fontWeight: typography.weights.semibold,
                   color: colors.text.white
                 }}

@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { AccessibilityProvider } from "@/components/AccessibilityProvider";
+import { ClientProviders } from "@/components/ClientProviders";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,9 +35,9 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className} style={{ backgroundColor: 'transparent' }}>
-        <AccessibilityProvider>
+        <ClientProviders>
           {children}
-        </AccessibilityProvider>
+        </ClientProviders>
       </body>
     </html>
   );
