@@ -14,6 +14,7 @@ import AchievementModal from '@/components/AchievementModal';
 import HelpButton from '@/components/HelpButton';
 import Container from '@/components/Container';
 import CheckInEmocional from '@/components/CheckInEmocional';
+import { FontSizeControls } from '@/components/FontSizeControls';
 import { colors, typography, spacing, components, animations, utils } from '@/lib/design-system';
 import { 
   checkInactivityStatus, 
@@ -307,7 +308,7 @@ export default function DashboardPage() {
                     style={{ 
                       fontFamily: typography.serif,
                       fontWeight: typography.weights.semibold,
-                      fontSize: typography.heading.h3,
+                      fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
                       letterSpacing: typography.letterSpacing.tight,
                       ...utils.textGradient(colors.text.gold)
                     }}
@@ -319,7 +320,7 @@ export default function DashboardPage() {
                     style={{ 
                       fontFamily: typography.serif,
                       fontWeight: typography.weights.light,
-                      fontSize: typography.body.sm,
+                      fontSize: 'var(--font-size-base, 1rem)',
                       color: colors.text.whiteSubtle,
                       letterSpacing: typography.letterSpacing.normal,
                       margin: `0 ${spacing.fixed.titleMargin}`,
@@ -333,7 +334,7 @@ export default function DashboardPage() {
                     style={{ 
                       fontFamily: typography.serif,
                       fontWeight: typography.weights.semibold,
-                      fontSize: typography.heading.h3,
+                      fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
                       letterSpacing: typography.letterSpacing.tight,
                       ...utils.textGradient(colors.text.blue)
                     }}
@@ -344,7 +345,7 @@ export default function DashboardPage() {
                 <p 
                   style={{ 
                     fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
+                    fontSize: 'var(--font-size-base, 1rem)',
                     color: colors.text.whiteMuted
                   }}
                 >
@@ -353,6 +354,7 @@ export default function DashboardPage() {
               </div>
             </div>
             <div className="flex items-center gap-1.5 flex-shrink-0">
+              <FontSizeControls />
               <button
                 onClick={() => setShowCheckIn(true)}
                 className="p-1.5 transition-all hover:scale-110"
@@ -494,7 +496,7 @@ export default function DashboardPage() {
               className={`mb-2 ${dynamicMessage.animation}-text`}
               style={{ 
                 fontFamily: typography.serif,
-                fontSize: typography.heading.h2,
+                fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
                 fontWeight: typography.weights.semibold,
                 color: colors.text.white
               }}
@@ -504,7 +506,7 @@ export default function DashboardPage() {
             <p 
               style={{ 
                 fontFamily: typography.sans,
-                fontSize: typography.body.md,
+                fontSize: 'var(--font-size-base, 1rem)',
                 color: colors.text.whiteMuted
               }}
             >
@@ -528,7 +530,7 @@ export default function DashboardPage() {
                   className="font-bold mb-1"
                   style={{ 
                     fontFamily: typography.serif,
-                    fontSize: typography.heading.h3,
+                    fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
                     fontWeight: typography.weights.semibold,
                     color: colors.text.white
                   }}
@@ -538,7 +540,7 @@ export default function DashboardPage() {
                 <p 
                   style={{ 
                     fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
+                    fontSize: 'var(--font-size-base, 1rem)',
                     color: colors.text.whiteMuted
                   }}
                 >
@@ -566,7 +568,7 @@ export default function DashboardPage() {
                   className="font-bold mb-1"
                   style={{ 
                     fontFamily: typography.serif,
-                    fontSize: typography.heading.h3,
+                    fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
                     fontWeight: typography.weights.semibold,
                     color: colors.text.white
                   }}
@@ -576,7 +578,7 @@ export default function DashboardPage() {
                 <p 
                   style={{ 
                     fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
+                    fontSize: 'var(--font-size-base, 1rem)',
                     color: colors.text.whiteMuted
                   }}
                 >
@@ -607,7 +609,7 @@ export default function DashboardPage() {
                   className="font-bold mb-1"
                   style={{ 
                     fontFamily: typography.serif,
-                    fontSize: typography.heading.h3,
+                    fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
                     fontWeight: typography.weights.semibold,
                     color: colors.text.white
                   }}
@@ -617,7 +619,7 @@ export default function DashboardPage() {
                 <p 
                   style={{ 
                     fontFamily: typography.sans,
-                    fontSize: typography.body.sm,
+                    fontSize: 'var(--font-size-base, 1rem)',
                     color: colors.text.whiteMuted
                   }}
                 >
