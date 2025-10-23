@@ -520,7 +520,7 @@ export default function ProgressoPage() {
 
         {/* Meus Momentos com Deus - Seção Unificada */}
         <div 
-          className="p-6 rounded-2xl transform transition-all hover:scale-[1.01] hover:shadow-xl"
+          className="p-4 sm:p-6 rounded-2xl transform transition-all hover:scale-[1.01] hover:shadow-xl"
           style={{
             background: colors.background.card,
             border: `2px solid ${colors.accent.gold}`,
@@ -528,11 +528,11 @@ export default function ProgressoPage() {
             boxShadow: '0 4px 20px rgba(212, 175, 55, 0.15)'
           }}
         >
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
+          <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
               background: colors.text.gold
             }}>
-              <span className="text-2xl">🙏</span>
+              <span className="text-xl sm:text-2xl">🙏</span>
             </div>
             <div>
               <h3 
@@ -558,7 +558,7 @@ export default function ProgressoPage() {
           </div>
 
           {/* Abas de Navegação */}
-          <div className="flex gap-2 mb-6">
+          <div className="flex gap-2 mb-4 sm:mb-6">
             <button
               onClick={() => setAbaAtiva('calendario')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -699,11 +699,11 @@ export default function ProgressoPage() {
               </div>
 
                 {/* Dias do calendário */}
-                <div className="grid grid-cols-7 gap-1">
+                <div className="grid grid-cols-7 gap-1 sm:gap-1">
                   {gerarCalendarioCompleto().map((dia, i) => (
                     <div key={i} className="text-center">
                       {dia.isEmpty ? (
-                        <div className="w-8 h-8" />
+                        <div className="w-10 h-10 sm:w-8 sm:h-8" />
                       ) : (
                         <div className="relative">
                           <button
@@ -714,7 +714,7 @@ export default function ProgressoPage() {
                               }
                             }}
                             className={`
-                              w-8 h-8 rounded-full flex items-center justify-center mx-auto text-xs font-medium
+                              w-10 h-10 sm:w-8 sm:h-8 rounded-full flex items-center justify-center mx-auto text-sm sm:text-xs font-medium
                               transition-all duration-200
                               ${dia.isHoje ? 'ring-2 ring-blue-400' : ''}
                               ${dia.isCompleted ? 'cursor-pointer hover:scale-110' : 'cursor-default'}
@@ -751,7 +751,7 @@ export default function ProgressoPage() {
                                 // Filtrar favoritos para mostrar apenas os do dia clicado
                                 console.log('Favoritos do dia:', favoritosDoDia);
                               }}
-                              className="absolute -top-1 -right-1 w-3 h-3 rounded-full flex items-center justify-center hover:scale-110 transition-transform"
+                              className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center hover:scale-110 transition-transform"
                               style={{ background: colors.accent.red }}
                               title={`${obterFavoritosDoDia(dia.date.toISOString().split('T')[0]).length} favorito(s) - Clique para ver`}
                             >
@@ -826,7 +826,7 @@ export default function ProgressoPage() {
           {abaAtiva === 'favoritos' && (
             <>
               {/* Lista Simples de Favoritos */}
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {favoritos.length === 0 ? (
                   <div className="text-center py-8">
                     <div className="text-4xl mb-4">💝</div>
@@ -860,7 +860,7 @@ export default function ProgressoPage() {
                         border: '1px solid rgba(255, 255, 255, 0.1)'
                       }}
                     >
-                      <div className="p-4">
+                      <div className="p-4 sm:p-5">
                         <div className="flex items-start gap-3">
                           <div className="text-2xl">⭐</div>
                           <div className="flex-1">
