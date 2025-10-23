@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useStatsStore } from '@/store/useStatsStore';
-import { FiArrowLeft, FiHeart, FiTrendingUp, FiBookmark } from 'react-icons/fi';
+import { FiArrowLeft, FiHeart, FiTrendingUp, FiBookmark, FiSearch } from 'react-icons/fi';
 import Link from 'next/link';
 import Container from '@/components/Container';
 import { FontSizeControls } from '@/components/FontSizeControls';
@@ -30,6 +30,7 @@ export default function ProgressoPage() {
   
   const [emocaoSelecionada, setEmocaoSelecionada] = useState<string>('');
   const [favoritos, setFavoritos] = useState<any[]>([]);
+  const [buscaFavoritos, setBuscaFavoritos] = useState('');
   const [calendarioExpandido, setCalendarioExpandido] = useState(false);
   const [mesAtual, setMesAtual] = useState(new Date());
   const [dadosCarregados, setDadosCarregados] = useState(false);
@@ -218,6 +219,14 @@ export default function ProgressoPage() {
       }
     ]);
   };
+
+  // Filtrar favoritos baseado na busca
+  const favoritosFiltrados = favoritos.filter(favorito => 
+    favorito.title.toLowerCase().includes(buscaFavoritos.toLowerCase()) ||
+    favorito.verse.toLowerCase().includes(buscaFavoritos.toLowerCase()) ||
+    favorito.reference.toLowerCase().includes(buscaFavoritos.toLowerCase()) ||
+    favorito.date.toLowerCase().includes(buscaFavoritos.toLowerCase())
+  );
 
   const carregarEmocaoSelecionada = () => {
     const emocao = localStorage.getItem('emocao_selecionada');
@@ -905,8 +914,43 @@ export default function ProgressoPage() {
                 </div>
             </div>
 
+            {/* Campo de busca */}
+            <div className="mb-6">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Buscar nos favoritos..."
+                  value={buscaFavoritos}
+                  onChange={(e) => setBuscaFavoritos(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    color: colors.text.white,
+                    fontSize: 'var(--font-size-base, 1rem)',
+                    fontFamily: typography.sans,
+                    border: '1px solid rgba(255, 255, 255, 0.2)'
+                  }}
+                />
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <FiSearch size={20} className="text-white/60" />
+                </div>
+              </div>
+              {buscaFavoritos && (
+                <p 
+                  className="mt-2 text-sm"
+                  style={{ 
+                    color: colors.text.whiteMuted,
+                    fontSize: 'var(--font-size-base, 1rem)',
+                    fontFamily: typography.sans
+                  }}
+                >
+                  {favoritosFiltrados.length} resultado{favoritosFiltrados.length !== 1 ? 's' : ''} encontrado{favoritosFiltrados.length !== 1 ? 's' : ''}
+                </p>
+              )}
+            </div>
+
             <div className="space-y-4">
-              {favoritos.slice(0, 3).map((favorito) => (
+              {(buscaFavoritos ? favoritosFiltrados : favoritos.slice(0, 3)).map((favorito) => (
                 <div 
                   key={favorito.id}
                   className="rounded-xl transition-all"
@@ -1103,7 +1147,7 @@ export default function ProgressoPage() {
               ))}
                 </div>
 
-            {favoritos.length > 3 && (
+            {!buscaFavoritos && favoritos.length > 3 && (
               <div className="text-center mt-4">
                 <p 
                   style={{ 
