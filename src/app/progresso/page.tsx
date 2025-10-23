@@ -31,6 +31,7 @@ export default function ProgressoPage() {
   const [emocaoSelecionada, setEmocaoSelecionada] = useState<string>('');
   const [favoritos, setFavoritos] = useState<any[]>([]);
   const [filtroFavoritos, setFiltroFavoritos] = useState<'todos' | 'recentes' | 'antigos'>('todos');
+  const [abaAtiva, setAbaAtiva] = useState<'calendario' | 'favoritos'>('calendario');
   const [calendarioExpandido, setCalendarioExpandido] = useState(false);
   const [mesAtual, setMesAtual] = useState(new Date());
   const [dadosCarregados, setDadosCarregados] = useState(false);
@@ -528,9 +529,9 @@ export default function ProgressoPage() {
               </div>
         )}
 
-        {/* Devocionais Feitos - Seção Principal */}
+        {/* Meus Momentos com Deus - Seção Unificada */}
         <div 
-          className="p-4 rounded-xl transform transition-all hover:scale-[1.01] hover:shadow-xl"
+          className="p-6 rounded-2xl transform transition-all hover:scale-[1.01] hover:shadow-xl"
           style={{
             background: colors.background.card,
             border: `2px solid ${colors.accent.gold}`,
@@ -538,23 +539,23 @@ export default function ProgressoPage() {
             boxShadow: '0 4px 20px rgba(212, 175, 55, 0.15)'
           }}
         >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
               background: colors.text.gold
             }}>
-              <span className="text-xl">📖</span>
+              <span className="text-2xl">🙏</span>
             </div>
-                    <div>
+            <div>
               <h3 
                 className="font-bold mb-1"
                 style={{ 
                   fontFamily: typography.serif,
-                  fontSize: typography.heading.h3,
+                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
                   color: colors.text.white
                 }}
               >
-                Devocionais Feitos
-                      </h3>
+                Meus Momentos com Deus
+              </h3>
               <p 
                 style={{ 
                   fontFamily: typography.sans,
@@ -562,13 +563,47 @@ export default function ProgressoPage() {
                   color: colors.text.whiteMuted
                 }}
               >
-                Seu histórico de momentos com Deus
+                Seu histórico e momentos especiais salvos
               </p>
-                    </div>
-                  </div>
+            </div>
+          </div>
 
+          {/* Abas de Navegação */}
+          <div className="flex gap-2 mb-6">
+            <button
+              onClick={() => setAbaAtiva('calendario')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                abaAtiva === 'calendario' 
+                  ? 'bg-blue-500 text-white' 
+                  : 'bg-white/10 text-white/70 hover:bg-white/20'
+              }`}
+              style={{
+                fontSize: 'var(--font-size-base, 1rem)',
+                fontFamily: typography.sans
+              }}
+            >
+              📅 Calendário
+            </button>
+            <button
+              onClick={() => setAbaAtiva('favoritos')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                abaAtiva === 'favoritos' 
+                  ? 'bg-red-500 text-white' 
+                  : 'bg-white/10 text-white/70 hover:bg-white/20'
+              }`}
+              style={{
+                fontSize: 'var(--font-size-base, 1rem)',
+                fontFamily: typography.sans
+              }}
+            >
+              ❤️ Favoritos ({favoritos.length})
+            </button>
+          </div>
 
-          {/* Calendário de Progresso */}
+          {/* Conteúdo das Abas */}
+          {abaAtiva === 'calendario' && (
+            <>
+              {/* Calendário de Progresso */}
           <div 
             className="bg-white/5 rounded-lg p-3 cursor-pointer transition-all hover:bg-white/10"
             onClick={() => setCalendarioExpandido(!calendarioExpandido)}
@@ -787,7 +822,174 @@ export default function ProgressoPage() {
               </p>
                         )}
                       </div>
+            </>
+          )}
+
+          {abaAtiva === 'favoritos' && (
+            <>
+              {/* Filtros visuais */}
+              <div className="mb-6">
+                <div className="flex gap-2 flex-wrap">
+                  <button
+                    onClick={() => setFiltroFavoritos('todos')}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      filtroFavoritos === 'todos' 
+                        ? 'bg-blue-500 text-white' 
+                        : 'bg-white/10 text-white/70 hover:bg-white/20'
+                    }`}
+                    style={{
+                      fontSize: 'var(--font-size-base, 1rem)',
+                      fontFamily: typography.sans
+                    }}
+                  >
+                    📚 Todos
+                  </button>
+                  <button
+                    onClick={() => setFiltroFavoritos('recentes')}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      filtroFavoritos === 'recentes' 
+                        ? 'bg-green-500 text-white' 
+                        : 'bg-white/10 text-white/70 hover:bg-white/20'
+                    }`}
+                    style={{
+                      fontSize: 'var(--font-size-base, 1rem)',
+                      fontFamily: typography.sans
+                    }}
+                  >
+                    🕒 Recentes
+                  </button>
+                  <button
+                    onClick={() => setFiltroFavoritos('antigos')}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      filtroFavoritos === 'antigos' 
+                        ? 'bg-purple-500 text-white' 
+                        : 'bg-white/10 text-white/70 hover:bg-white/20'
+                    }`}
+                    style={{
+                      fontSize: 'var(--font-size-base, 1rem)',
+                      fontFamily: typography.sans
+                    }}
+                  >
+                    📖 Antigos
+                  </button>
+                  <button
+                    onClick={() => {
+                      const mesAtualStr = mesAtual.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+                      // Filtrar favoritos do mês atual
+                      const favoritosDoMes = favoritos.filter(favorito => 
+                        favorito.date.includes(mesAtualStr.split(' ')[0]) // Comparar mês
+                      );
+                      // Por enquanto, apenas mostrar no console - pode ser expandido depois
+                      console.log(`Favoritos de ${mesAtualStr}:`, favoritosDoMes);
+                    }}
+                    className="px-4 py-2 rounded-full text-sm font-medium transition-all bg-white/10 text-white/70 hover:bg-white/20"
+                    style={{
+                      fontSize: 'var(--font-size-base, 1rem)',
+                      fontFamily: typography.sans
+                    }}
+                  >
+                    📅 Este Mês
+                  </button>
+                </div>
+                <p 
+                  className="mt-2 text-sm"
+                  style={{ 
+                    color: colors.text.whiteMuted,
+                    fontSize: 'var(--font-size-base, 1rem)',
+                    fontFamily: typography.sans
+                  }}
+                >
+                  {favoritosFiltrados.length} devocional{favoritosFiltrados.length !== 1 ? 'is' : ''} favorito{favoritosFiltrados.length !== 1 ? 's' : ''}
+                </p>
+              </div>
+
+              {/* Lista de Favoritos */}
+              <div className="space-y-4">
+                {favoritosFiltrados.slice(0, 5).map((favorito) => (
+                  <div 
+                    key={favorito.id}
+                    className="rounded-xl transition-all"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}
+                  >
+                    {/* Cabeçalho do devocional - sempre visível */}
+                    <div 
+                      className="p-4 cursor-pointer transition-all hover:bg-white/5"
+                      onClick={() => setDevocionalExpandido(
+                        devocionalExpandido === favorito.id ? null : favorito.id
+                      )}
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-start gap-3">
+                          <div className="text-2xl">⭐</div>
+                          <div className="flex-1">
+                            <h4 
+                              className="font-semibold mb-2"
+                              style={{ 
+                                fontFamily: typography.serif,
+                                color: colors.text.white,
+                                fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
+                              }}
+                            >
+                              {favorito.title}
+                            </h4>
+                            <p 
+                              className="text-sm mb-2"
+                              style={{ 
+                                fontFamily: typography.sans,
+                                color: colors.text.whiteMuted,
+                                fontSize: 'var(--font-size-base, 1rem)'
+                              }}
+                            >
+                              📅 {favorito.date}
+                            </p>
+                            <div 
+                              className="text-sm italic mb-2 p-2 rounded-lg"
+                              style={{ 
+                                background: 'rgba(255, 255, 255, 0.05)',
+                                color: colors.text.white,
+                                fontFamily: typography.serif,
+                                fontSize: 'var(--font-size-base, 1rem)'
+                              }}
+                            >
+                              "{favorito.verse}"
+                            </div>
+                            <p 
+                              className="text-xs"
+                              style={{ 
+                                fontFamily: typography.sans,
+                                color: colors.accent.purple,
+                                fontSize: 'calc(var(--font-size-base, 1rem) * 0.875)'
+                              }}
+                            >
+                              📖 {favorito.reference}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                ))}
+
+                {favoritosFiltrados.length > 5 && (
+                  <div className="text-center mt-4">
+                    <p 
+                      style={{ 
+                        fontFamily: typography.sans,
+                        fontSize: 'var(--font-size-base, 1rem)',
+                        color: colors.text.whiteMuted
+                      }}
+                    >
+                      +{favoritosFiltrados.length - 5} devocionais favoritos adicionais
+                    </p>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
 
         {/* Trilhas Feitas - Seção Secundária */}
         <div 
@@ -919,7 +1121,7 @@ export default function ProgressoPage() {
               </div>
 
 
-        {/* Favoritos */}
+        {/* Call to Action Fortalecido */}
         {favoritos.length > 0 && (
           <div 
             className="p-6 rounded-2xl"
