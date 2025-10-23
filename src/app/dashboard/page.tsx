@@ -178,6 +178,7 @@ export default function DashboardPage() {
   const [emocaoSelecionada, setEmocaoSelecionada] = useState<string>('');
   const [showCheckIn, setShowCheckIn] = useState(false);
   const [showEmotionalDevotionalSuggestion, setShowEmotionalDevotionalSuggestion] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   // Em modo DEV, usar mockUser
   const currentUser = DEV_MODE ? mockUser : user;
@@ -372,20 +373,53 @@ export default function DashboardPage() {
                 href="/progresso"
                 className="p-1.5 transition-all hover:scale-110"
                 style={{ color: colors.text.whiteMuted }}
-                title="Minha Jornada - Estatísticas e conquistas"
+                title="Minha Jornada"
               >
-                <FiCalendar size={18} />
+                <FiCalendar size={20} />
               </Link>
               <button
-                onClick={handleSignOut}
-                className="p-1.5 transition-colors hover:opacity-80"
+                onClick={() => setShowMenu(!showMenu)}
+                className="p-1.5 transition-colors hover:opacity-80 relative"
                 style={{ color: colors.text.whiteMuted }}
-                title="Sair"
+                title="Menu"
               >
-                <FiLogOut size={18} />
+                <FiMenu size={20} />
               </button>
             </div>
           </div>
+
+          {/* Menu Dropdown */}
+          {showMenu && (
+            <div 
+              className="absolute top-16 right-4 z-50"
+              style={{
+                background: colors.background.card,
+                border: `1px solid ${colors.border}`,
+                borderRadius: '12px',
+                padding: '0.5rem',
+                backdropFilter: 'blur(10px)',
+                minWidth: '180px',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)'
+              }}
+            >
+              <button
+                onClick={() => {
+                  setShowMenu(false);
+                  handleSignOut();
+                }}
+                className="w-full flex items-center gap-2 px-4 py-3 rounded-lg transition-colors hover:bg-white/10"
+                style={{ 
+                  color: colors.text.whiteMuted,
+                  fontFamily: typography.sans,
+                  fontSize: typography.body.sm
+                }}
+              >
+                <FiLogOut size={16} />
+                <span>Sair</span>
+              </button>
+            </div>
+          )}
+
         </Container>
       </header>
 
