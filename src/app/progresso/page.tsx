@@ -1047,7 +1047,7 @@ export default function ProgressoPage() {
 
 
         {/* Call to Action Fortalecido */}
-        {favoritos.length > 0 && (
+        {false && (
           <div 
             className="p-6 rounded-2xl"
                               style={{ 
@@ -1089,9 +1089,9 @@ export default function ProgressoPage() {
             <div className="mb-6">
               <div className="flex gap-2 flex-wrap">
                 <button
-                  onClick={() => setFiltroFavoritos('todos')}
+                  onClick={() => {}}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    filtroFavoritos === 'todos' 
+                    false 
                       ? 'bg-blue-500 text-white' 
                       : 'bg-white/10 text-white/70 hover:bg-white/20'
                   }`}
