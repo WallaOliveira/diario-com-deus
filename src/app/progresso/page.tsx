@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useStatsStore } from '@/store/useStatsStore';
-import { FiArrowLeft, FiHeart, FiTrendingUp, FiBookmark, FiSearch } from 'react-icons/fi';
+import { FiArrowLeft, FiHeart, FiTrendingUp, FiBookmark } from 'react-icons/fi';
 import Link from 'next/link';
 import Container from '@/components/Container';
 import { FontSizeControls } from '@/components/FontSizeControls';
@@ -30,7 +30,7 @@ export default function ProgressoPage() {
   
   const [emocaoSelecionada, setEmocaoSelecionada] = useState<string>('');
   const [favoritos, setFavoritos] = useState<any[]>([]);
-  const [buscaFavoritos, setBuscaFavoritos] = useState('');
+  const [filtroFavoritos, setFiltroFavoritos] = useState<'todos' | 'recentes' | 'antigos'>('todos');
   const [calendarioExpandido, setCalendarioExpandido] = useState(false);
   const [mesAtual, setMesAtual] = useState(new Date());
   const [dadosCarregados, setDadosCarregados] = useState(false);
@@ -220,13 +220,17 @@ export default function ProgressoPage() {
     ]);
   };
 
-  // Filtrar favoritos baseado na busca
-  const favoritosFiltrados = favoritos.filter(favorito => 
-    favorito.title.toLowerCase().includes(buscaFavoritos.toLowerCase()) ||
-    favorito.verse.toLowerCase().includes(buscaFavoritos.toLowerCase()) ||
-    favorito.reference.toLowerCase().includes(buscaFavoritos.toLowerCase()) ||
-    favorito.date.toLowerCase().includes(buscaFavoritos.toLowerCase())
-  );
+  // Filtrar e ordenar favoritos
+  const favoritosFiltrados = favoritos.sort((a, b) => {
+    if (filtroFavoritos === 'recentes') {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    } else if (filtroFavoritos === 'antigos') {
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+    } else {
+      // Ordenar por título A-Z
+      return a.title.localeCompare(b.title);
+    }
+  });
 
   const carregarEmocaoSelecionada = () => {
     const emocao = localStorage.getItem('emocao_selecionada');
@@ -914,43 +918,66 @@ export default function ProgressoPage() {
                 </div>
             </div>
 
-            {/* Campo de busca */}
+            {/* Filtros visuais */}
             <div className="mb-6">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Buscar nos favoritos..."
-                  value={buscaFavoritos}
-                  onChange={(e) => setBuscaFavoritos(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              <div className="flex gap-2 flex-wrap">
+                <button
+                  onClick={() => setFiltroFavoritos('todos')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    filtroFavoritos === 'todos' 
+                      ? 'bg-blue-500 text-white' 
+                      : 'bg-white/10 text-white/70 hover:bg-white/20'
+                  }`}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    color: colors.text.white,
-                    fontSize: 'var(--font-size-base, 1rem)',
-                    fontFamily: typography.sans,
-                    border: '1px solid rgba(255, 255, 255, 0.2)'
-                  }}
-                />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                  <FiSearch size={20} className="text-white/60" />
-                </div>
-              </div>
-              {buscaFavoritos && (
-                <p 
-                  className="mt-2 text-sm"
-                  style={{ 
-                    color: colors.text.whiteMuted,
                     fontSize: 'var(--font-size-base, 1rem)',
                     fontFamily: typography.sans
                   }}
                 >
-                  {favoritosFiltrados.length} resultado{favoritosFiltrados.length !== 1 ? 's' : ''} encontrado{favoritosFiltrados.length !== 1 ? 's' : ''}
-                </p>
-              )}
+                  📚 Todos
+                </button>
+                <button
+                  onClick={() => setFiltroFavoritos('recentes')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    filtroFavoritos === 'recentes' 
+                      ? 'bg-green-500 text-white' 
+                      : 'bg-white/10 text-white/70 hover:bg-white/20'
+                  }`}
+                  style={{
+                    fontSize: 'var(--font-size-base, 1rem)',
+                    fontFamily: typography.sans
+                  }}
+                >
+                  🕒 Recentes
+                </button>
+                <button
+                  onClick={() => setFiltroFavoritos('antigos')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    filtroFavoritos === 'antigos' 
+                      ? 'bg-purple-500 text-white' 
+                      : 'bg-white/10 text-white/70 hover:bg-white/20'
+                  }`}
+                  style={{
+                    fontSize: 'var(--font-size-base, 1rem)',
+                    fontFamily: typography.sans
+                  }}
+                >
+                  📖 Antigos
+                </button>
+              </div>
+              <p 
+                className="mt-2 text-sm"
+                style={{ 
+                  color: colors.text.whiteMuted,
+                  fontSize: 'var(--font-size-base, 1rem)',
+                  fontFamily: typography.sans
+                }}
+              >
+                {favoritosFiltrados.length} devocional{favoritosFiltrados.length !== 1 ? 'is' : ''} favorito{favoritosFiltrados.length !== 1 ? 's' : ''}
+              </p>
             </div>
 
             <div className="space-y-4">
-              {(buscaFavoritos ? favoritosFiltrados : favoritos.slice(0, 3)).map((favorito) => (
+              {favoritosFiltrados.slice(0, 5).map((favorito) => (
                 <div 
                   key={favorito.id}
                   className="rounded-xl transition-all"
@@ -966,31 +993,53 @@ export default function ProgressoPage() {
                       devocionalExpandido === favorito.id ? null : favorito.id
                     )}
                 >
-                  <div className="flex items-center justify-between">
-                      <div className="flex items-start gap-3">
-                        <div className="text-2xl">⭐</div>
-                        <div className="flex-1">
-                          <h4 
-                            className="font-semibold mb-1"
-                              style={{ 
-                                fontFamily: typography.serif,
-                              color: colors.text.white,
-                              fontSize: typography.body.lg
-                              }}
-                            >
-                            {favorito.title}
-                            </h4>
-                            <p 
-                            className="text-xs"
-                              style={{ 
-                                fontFamily: typography.sans,
-                                color: colors.text.whiteMuted
-                              }}
-                            >
-                            {favorito.date}
-                      </p>
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-3">
+                      <div className="text-2xl">⭐</div>
+                      <div className="flex-1">
+                        <h4 
+                          className="font-semibold mb-2"
+                          style={{ 
+                            fontFamily: typography.serif,
+                            color: colors.text.white,
+                            fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
+                          }}
+                        >
+                          {favorito.title}
+                        </h4>
+                        <p 
+                          className="text-sm mb-2"
+                          style={{ 
+                            fontFamily: typography.sans,
+                            color: colors.text.whiteMuted,
+                            fontSize: 'var(--font-size-base, 1rem)'
+                          }}
+                        >
+                          📅 {favorito.date}
+                        </p>
+                        <div 
+                          className="text-sm italic mb-2 p-2 rounded-lg"
+                          style={{ 
+                            background: 'rgba(255, 255, 255, 0.05)',
+                            color: colors.text.white,
+                            fontFamily: typography.serif,
+                            fontSize: 'var(--font-size-base, 1rem)'
+                          }}
+                        >
+                          "{favorito.verse}"
+                        </div>
+                        <p 
+                          className="text-xs"
+                          style={{ 
+                            fontFamily: typography.sans,
+                            color: colors.accent.purple,
+                            fontSize: 'calc(var(--font-size-base, 1rem) * 0.875)'
+                          }}
+                        >
+                          📖 {favorito.reference}
+                        </p>
+                      </div>
                     </div>
-                  </div>
                       <div className="flex items-center gap-2">
                         <span 
                           className="text-xs px-2 py-1 rounded-full"
@@ -1147,7 +1196,7 @@ export default function ProgressoPage() {
               ))}
                 </div>
 
-            {!buscaFavoritos && favoritos.length > 3 && (
+            {favoritosFiltrados.length > 5 && (
               <div className="text-center mt-4">
                 <p 
                   style={{ 
@@ -1156,7 +1205,7 @@ export default function ProgressoPage() {
                     color: colors.text.whiteMuted
                   }}
                 >
-                  +{favoritos.length - 3} devocionais favoritos adicionais
+                  +{favoritosFiltrados.length - 5} devocionais favoritos adicionais
                       </p>
                   </div>
                   )}
