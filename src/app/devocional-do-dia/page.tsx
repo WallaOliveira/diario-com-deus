@@ -12,12 +12,10 @@ import Confetti from '@/components/Confetti';
 import AchievementModal from '@/components/AchievementModal';
 import ModalRespira from '@/components/ModalRespira';
 import ToastCelebracao from '@/components/ToastCelebracao';
-import CheckInEmocional from '@/components/CheckInEmocional';
 import { FontSizeControls } from '@/components/FontSizeControls';
 import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
 import { analytics } from '@/lib/analytics';
 import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
-import { getEmotionalSuggestion, getEmotionalTrilhaSuggestion } from '@/lib/emotional-suggestions';
 import { colors, typography, spacing } from '@/lib/design-system';
 
 // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
@@ -43,9 +41,6 @@ export default function SessaoExpressPage() {
   const [showContexto, setShowContexto] = useState(false);
   const [showSugestao, setShowSugestao] = useState(false);
   const [showOracaoLivre, setShowOracaoLivre] = useState(false);
-  const [emocaoAtual, setEmocaoAtual] = useState<string>('');
-  const [showEmotionalSuggestion, setShowEmotionalSuggestion] = useState(false);
-  const [showCheckIn, setShowCheckIn] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
   
   // Toast de celebração
@@ -71,12 +66,6 @@ export default function SessaoExpressPage() {
     // Track devocional iniciado
     if (devotionalOfDay) {
       analytics.devotionalStarted(devotionalOfDay.tema);
-    }
-
-    // Carregar emoção do localStorage
-    const savedEmotion = localStorage.getItem('emocao_selecionada');
-    if (savedEmotion) {
-      setEmocaoAtual(savedEmotion);
     }
 
     // Mostrar modal RESPIRA apenas se não foi mostrado hoje
@@ -141,11 +130,6 @@ export default function SessaoExpressPage() {
           icone: '✨'
         });
         setShowToast(true);
-        
-        // Mostrar sugestão emocional se houver emoção selecionada
-        if (emocaoAtual) {
-          setShowEmotionalSuggestion(true);
-        }
         
         setCompleted(true);
       } catch (error) {
@@ -296,39 +280,6 @@ export default function SessaoExpressPage() {
       </header>
 
       <div className="max-w-2xl mx-auto px-4 py-8">
-        {/* Check-in Emocional - Primeira vez */}
-        {step === 1 && !emocaoAtual && (
-          <div className="animate-fadeIn space-y-6 mb-8">
-            <div className="text-center">
-              <h2 
-                className="text-2xl font-bold text-white mb-2"
-                style={{ 
-                  fontFamily: typography.serif,
-                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)'
-                }}
-              >
-                😊 Como você está se sentindo hoje?
-              </h2>
-              <p 
-                className="text-blue-100"
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: 'var(--font-size-base, 1rem)'
-                }}
-              >
-                Compartilhe seu coração com Deus antes de começarmos
-              </p>
-            </div>
-            
-            <CheckInEmocional 
-              onSelect={(emocao) => {
-                setEmocaoAtual(emocao);
-                localStorage.setItem('emocao_selecionada', emocao);
-              }} 
-            />
-          </div>
-        )}
-
         {/* Step 1: LÊ - Leitura Bíblica (RESPIRA agora é modal) */}
         {step === 1 && (
           <div className="animate-fadeIn space-y-6">
