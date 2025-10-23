@@ -1,7 +1,7 @@
 // src/components/FontSizeControls.tsx
 import React from 'react';
 import { FiMinus, FiPlus, FiType } from 'react-icons/fi';
-import { useFontSize } from '@/hooks/useFontSize';
+import { useAccessibility } from '@/components/AccessibilityProvider';
 import { colors, typography } from '@/lib/design-system';
 
 interface FontSizeControlsProps {
@@ -15,7 +15,7 @@ export const FontSizeControls: React.FC<FontSizeControlsProps> = ({ className = 
     decreaseFontSize, 
     canIncrease, 
     canDecrease 
-  } = useFontSize();
+  } = useAccessibility();
 
   const getFontSizeLabel = (size: string) => {
     switch (size) {

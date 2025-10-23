@@ -8,6 +8,7 @@ interface AccessibilityContextType {
   fontSize: string;
   increaseFontSize: () => void;
   decreaseFontSize: () => void;
+  resetFontSize: () => void;
   canIncrease: boolean;
   canDecrease: boolean;
 }
@@ -37,7 +38,14 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
   }, [fontControls.fontSize]);
 
   return (
-    <AccessibilityContext.Provider value={fontControls}>
+    <AccessibilityContext.Provider value={{
+      fontSize: fontControls.fontSize,
+      increaseFontSize: fontControls.increaseFontSize,
+      decreaseFontSize: fontControls.decreaseFontSize,
+      resetFontSize: fontControls.resetFontSize,
+      canIncrease: fontControls.canIncrease,
+      canDecrease: fontControls.canDecrease
+    }}>
       {children}
     </AccessibilityContext.Provider>
   );
