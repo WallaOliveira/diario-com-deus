@@ -379,7 +379,10 @@ export default function TrilhaPazInteriorPage() {
             >
               <p 
                 className="text-white leading-relaxed italic text-lg"
-                style={{ fontFamily: typography.serif }}
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
               >
                 "{diaData.texto}"
               </p>
@@ -407,10 +410,16 @@ export default function TrilhaPazInteriorPage() {
                   backdropFilter: 'blur(10px)'
                 }}
               >
-                <h4 className="font-semibold text-blue-300 mb-2">
+                <h4 
+                  className="font-semibold text-blue-300 mb-2"
+                  style={{ fontSize: 'var(--font-size-base, 1rem)' }}
+                >
                   📚 Contexto do Versículo
                 </h4>
-                <p className="text-blue-100 text-sm leading-relaxed">
+                <p 
+                  className="text-blue-100 leading-relaxed"
+                  style={{ fontSize: 'var(--font-size-base, 1rem)' }}
+                >
                   {diaData.versiculo_contexto}
                 </p>
               </div>
@@ -445,7 +454,10 @@ export default function TrilhaPazInteriorPage() {
             >
               <p 
                 className="text-white leading-relaxed"
-                style={{ fontFamily: typography.sans }}
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
               >
                 {diaData.palavraViva}
               </p>
@@ -516,10 +528,16 @@ export default function TrilhaPazInteriorPage() {
                   backdropFilter: 'blur(10px)'
                 }}
               >
-                <h4 className="font-semibold text-green-300 mb-2">
+                <h4 
+                  className="font-semibold text-green-300 mb-2"
+                  style={{ fontSize: 'var(--font-size-base, 1rem)' }}
+                >
                   💡 Sugestão Prática
                 </h4>
-                <p className="text-green-100 text-sm leading-relaxed">
+                <p 
+                  className="text-green-100 leading-relaxed"
+                  style={{ fontSize: 'var(--font-size-base, 1rem)' }}
+                >
                   {diaData.acao}
                 </p>
               </div>
@@ -563,7 +581,10 @@ export default function TrilhaPazInteriorPage() {
             >
               <p 
                 className="text-white leading-relaxed italic"
-                style={{ fontFamily: typography.serif }}
+                style={{ 
+                  fontFamily: typography.serif,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
               >
                 {diaData.oracao}
               </p>
