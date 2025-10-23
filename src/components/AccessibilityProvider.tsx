@@ -1,3 +1,5 @@
+'use client';
+
 // src/components/AccessibilityProvider.tsx
 import React, { createContext, useContext, useEffect } from 'react';
 import { useFontSize } from '@/hooks/useFontSize';
