@@ -232,6 +232,20 @@ export default function ProgressoPage() {
     }
   });
 
+  // Verificar se um dia tem favoritos
+  const diaTemFavoritos = (data: string) => {
+    return favoritos.some(favorito => 
+      favorito.date.includes(data.split('-')[2]) // Comparar dia
+    );
+  };
+
+  // Obter favoritos de um dia específico
+  const obterFavoritosDoDia = (data: string) => {
+    return favoritos.filter(favorito => 
+      favorito.date.includes(data.split('-')[2])
+    );
+  };
+
   const carregarEmocaoSelecionada = () => {
     const emocao = localStorage.getItem('emocao_selecionada');
     if (emocao) {
@@ -667,39 +681,51 @@ export default function ProgressoPage() {
                       {dia.isEmpty ? (
                         <div className="w-8 h-8" />
                       ) : (
-                        <button
-                          onClick={() => {
-                            if (dia.isCompleted) {
-                              const dataStr = dia.date.toISOString().split('T')[0];
-                              abrirModalDevocional(dataStr);
-                            }
-                          }}
-                          className={`
-                            w-8 h-8 rounded-full flex items-center justify-center mx-auto text-xs font-medium
-                            transition-all duration-200
-                            ${dia.isHoje ? 'ring-2 ring-blue-400' : ''}
-                            ${dia.isCompleted ? 'cursor-pointer hover:scale-110' : 'cursor-default'}
-                          `}
-                          style={{
-                            background: dia.isCompleted 
-                              ? colors.accent.green 
-                              : dia.isHoje 
-                                ? colors.accent.blue 
-                                : dia.isPassado 
-                                  ? 'rgba(255, 255, 255, 0.1)' 
-                                  : 'rgba(255, 255, 255, 0.05)',
-                            border: dia.isCompleted 
-                              ? `2px solid ${colors.accent.green}` 
-                              : dia.isHoje 
-                                ? `2px solid ${colors.accent.blue}` 
-                                : `1px solid ${colors.border}`,
-                            color: dia.isCompleted || dia.isHoje 
-                              ? colors.text.white 
-                              : colors.text.whiteMuted
-                          }}
-                        >
-                          {dia.day}
-                        </button>
+                        <div className="relative">
+                          <button
+                            onClick={() => {
+                              if (dia.isCompleted) {
+                                const dataStr = dia.date.toISOString().split('T')[0];
+                                abrirModalDevocional(dataStr);
+                              }
+                            }}
+                            className={`
+                              w-8 h-8 rounded-full flex items-center justify-center mx-auto text-xs font-medium
+                              transition-all duration-200
+                              ${dia.isHoje ? 'ring-2 ring-blue-400' : ''}
+                              ${dia.isCompleted ? 'cursor-pointer hover:scale-110' : 'cursor-default'}
+                            `}
+                            style={{
+                              background: dia.isCompleted 
+                                ? colors.accent.green 
+                                : dia.isHoje 
+                                  ? colors.accent.blue 
+                                  : dia.isPassado 
+                                    ? 'rgba(255, 255, 255, 0.1)' 
+                                    : 'rgba(255, 255, 255, 0.05)',
+                              border: dia.isCompleted 
+                                ? `2px solid ${colors.accent.green}` 
+                                : dia.isHoje 
+                                  ? `2px solid ${colors.accent.blue}` 
+                                  : `1px solid ${colors.border}`,
+                              color: dia.isCompleted || dia.isHoje 
+                                ? colors.text.white 
+                                : colors.text.whiteMuted
+                            }}
+                          >
+                            {dia.day}
+                          </button>
+                          {/* Marcação de favoritos */}
+                          {dia.isCompleted && diaTemFavoritos(dia.date.toISOString().split('T')[0]) && (
+                            <div 
+                              className="absolute -top-1 -right-1 w-3 h-3 rounded-full flex items-center justify-center"
+                              style={{ background: colors.accent.red }}
+                              title={`${obterFavoritosDoDia(dia.date.toISOString().split('T')[0]).length} favorito(s)`}
+                            >
+                              <span className="text-xs">❤️</span>
+                            </div>
+                          )}
+                        </div>
                       )}
                   </div>
                   ))}
@@ -732,6 +758,20 @@ export default function ProgressoPage() {
                       style={{ color: colors.text.whiteMuted }}
                     >
                       Hoje
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div 
+                      className="w-3 h-3 rounded-full flex items-center justify-center"
+                      style={{ background: colors.accent.red }}
+                    >
+                      <span className="text-xs">❤️</span>
+                    </div>
+                    <span 
+                      className="text-xs"
+                      style={{ color: colors.text.whiteMuted }}
+                    >
+                      Com Favoritos
                     </span>
                   </div>
               </div>
@@ -962,6 +1002,24 @@ export default function ProgressoPage() {
                   }}
                 >
                   📖 Antigos
+                </button>
+                <button
+                  onClick={() => {
+                    const mesAtualStr = mesAtual.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+                    // Filtrar favoritos do mês atual
+                    const favoritosDoMes = favoritos.filter(favorito => 
+                      favorito.date.includes(mesAtualStr.split(' ')[0]) // Comparar mês
+                    );
+                    // Por enquanto, apenas mostrar no console - pode ser expandido depois
+                    console.log(`Favoritos de ${mesAtualStr}:`, favoritosDoMes);
+                  }}
+                  className="px-4 py-2 rounded-full text-sm font-medium transition-all bg-white/10 text-white/70 hover:bg-white/20"
+                  style={{
+                    fontSize: 'var(--font-size-base, 1rem)',
+                    fontFamily: typography.sans
+                  }}
+                >
+                  📅 Este Mês
                 </button>
               </div>
               <p 
