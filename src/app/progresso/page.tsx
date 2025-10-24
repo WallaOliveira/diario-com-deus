@@ -147,6 +147,22 @@ export default function ProgressoPage() {
     }
   }, [checkUser]);
 
+  // Listener para novos favoritos
+  useEffect(() => {
+    const handleFavoriteAdded = async (event: CustomEvent) => {
+      console.log('🔄 Novo favorito detectado:', event.detail);
+      // Recarregar favoritos quando um novo for adicionado
+      await carregarFavoritosReais();
+      console.log('✅ Favoritos recarregados na página de progresso!');
+    };
+
+    window.addEventListener('favoriteAdded', handleFavoriteAdded as EventListener);
+    
+    return () => {
+      window.removeEventListener('favoriteAdded', handleFavoriteAdded as EventListener);
+    };
+  }, []);
+
   useEffect(() => {
     if (!DEV_MODE && !loading && !user) {
       router.push('/login');

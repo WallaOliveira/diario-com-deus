@@ -155,7 +155,7 @@ export default function SessaoExpressPage() {
     if (!currentUser || !devocional) return;
     
     try {
-      await addFavorite({
+      const result = await addFavorite({
         userId: currentUser.id,
         devotionalId: devocional.id,
         type,
@@ -164,14 +164,28 @@ export default function SessaoExpressPage() {
         notes: ''
       });
       
-      // Marcar como favoritado e mostrar feedback
-      setIsFavorited(true);
-      setToastData({
-        titulo: '💜 Favoritado!',
-        descricao: 'Devocional salvo em seus favoritos.',
-        icone: '❤️'
-      });
-      setShowToast(true);
+      if (result.success) {
+        // Marcar como favoritado e mostrar feedback
+        setIsFavorited(true);
+        setToastData({
+          titulo: '💜 Favoritado!',
+          descricao: 'Devocional salvo em seus favoritos.',
+          icone: '❤️'
+        });
+        setShowToast(true);
+        
+        // Notificar outras páginas sobre o novo favorito
+        window.dispatchEvent(new CustomEvent('favoriteAdded', {
+          detail: {
+            devotionalId: devocional.id,
+            content,
+            reference,
+            type
+          }
+        }));
+        
+        console.log('✅ Favorito salvo e notificação enviada!');
+      }
     } catch (error) {
       console.error('Erro ao salvar favorito:', error);
     }
