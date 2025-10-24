@@ -1,17 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/store/useAuthStore';
-import { useStatsStore } from '@/store/useStatsStore';
-import { FiArrowLeft, FiHeart, FiTrendingUp, FiBookmark } from 'react-icons/fi';
-import Link from 'next/link';
-import Container from '@/components/Container';
-import { FontSizeControls } from '@/components/FontSizeControls';
-import { colors, typography, spacing } from '@/lib/design-system';
-import { getMotivationalMessage, getProgressLevel, getProgressLevelMessage } from '@/lib/motivational-messages';
-import ModalDevocional from '@/components/ModalDevocional';
-import Loading from '@/components/Loading';
+import { addFavorite, removeFavorite, getUserFavorites } from '@/lib/database';
 
 // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
 const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
@@ -155,16 +144,49 @@ export default function ProgressoPage() {
         // Simular dados carregados
         setTimeout(() => {
           setDadosCarregados(true);
-          carregarFavoritos();
+          carregarFavoritosReais(); // Carregar favoritos reais do database
           carregarEmocaoSelecionada();
         }, 1000);
       } else {
         loadStats(currentUser.id);
-        carregarFavoritos();
+        carregarFavoritosReais(); // Carregar favoritos reais do database
         carregarEmocaoSelecionada();
       }
     }
   }, [currentUser, loading, user, router, loadStats]);
+
+  // Carregar favoritos reais do database
+  const carregarFavoritosReais = async () => {
+    const currentUser = DEV_MODE ? mockUser : user;
+    if (!currentUser) return;
+    
+    try {
+      const favoritosReais = await getUserFavorites(currentUser.id);
+      if (favoritosReais.success && favoritosReais.favorites) {
+        // Converter favoritos do database para o formato do mock
+        const favoritosFormatados = favoritosReais.favorites.map((fav: any) => ({
+          id: fav.devotional_id || `dev-${fav.id}`,
+          title: fav.content?.substring(0, 50) + '...' || 'Devocional Favorito',
+          verse: fav.content || '',
+          reference: fav.reference || '',
+          reflection: 'Reflexão do devocional favorito',
+          prayer: 'Oração do devocional favorito',
+          action: 'Ação do devocional favorito',
+          date: new Date(fav.created_at).toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+          }),
+          isFavorited: true
+        }));
+        
+        setFavoritos(favoritosFormatados);
+        console.log('Favoritos carregados do database:', favoritosFormatados.length);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar favoritos:', error);
+    }
+  };
 
   const carregarFavoritos = () => {
     // Mock de devocionais favoritos completos
@@ -367,36 +389,58 @@ export default function ProgressoPage() {
   };
 
   // Função para favoritar devocional
-  const toggleFavoritoDevocional = (devocional: any) => {
-    // Atualizar estado do devocional
-    const devocionalAtualizado = { ...devocional, isFavorited: !devocional.isFavorited };
+  const toggleFavoritoDevocional = async (devocional: any) => {
+    const currentUser = DEV_MODE ? mockUser : user;
+    if (!currentUser) return;
     
-    // Atualizar dados mock
-    const dataKey = devocional.id.split('-').slice(1).join('-');
-    devocionaisPorData[dataKey] = devocionalAtualizado;
-    
-    // Atualizar modal
-    setModalDevocional({
-      isOpen: true,
-      devocional: devocionalAtualizado
-    });
-    
-    // Atualizar lista de favoritos se necessário
-    if (devocionalAtualizado.isFavorited) {
-      setFavoritos(prev => {
-        // Verificar se já existe antes de adicionar
-        const jaExiste = prev.some(fav => fav.id === devocionalAtualizado.id);
-        if (jaExiste) {
-          return prev;
+    try {
+      if (devocional.isFavorited) {
+        // Remover favorito
+        // TODO: Implementar remoção quando tivermos o ID do favorito
+        console.log('Removendo favorito:', devocional.id);
+      } else {
+        // Adicionar favorito
+        const result = await addFavorite({
+          userId: currentUser.id,
+          devotionalId: devocional.id,
+          type: 'verse',
+          content: devocional.verse,
+          reference: devocional.reference,
+          notes: ''
+        });
+        
+        if (result.success) {
+          // Atualizar estado do devocional
+          const devocionalAtualizado = { ...devocional, isFavorited: true };
+          
+          // Atualizar dados mock
+          const dataKey = devocional.id.split('-').slice(1).join('-');
+          devocionaisPorData[dataKey] = devocionalAtualizado;
+          
+          // Atualizar modal
+          setModalDevocional({
+            isOpen: true,
+            devocional: devocionalAtualizado
+          });
+          
+          // Atualizar lista de favoritos
+          setFavoritos(prev => {
+            const jaExiste = prev.some(fav => fav.id === devocionalAtualizado.id);
+            if (jaExiste) {
+              return prev;
+            }
+            return [...prev, devocionalAtualizado];
+          });
+          
+          // Forçar re-renderização do calendário
+          setCalendarioExpandido(prev => prev);
+          
+          console.log('Favorito adicionado com sucesso!');
         }
-        return [...prev, devocionalAtualizado];
-      });
-    } else {
-      setFavoritos(prev => prev.filter(fav => fav.id !== devocional.id));
+      }
+    } catch (error) {
+      console.error('Erro ao favoritar devocional:', error);
     }
-    
-    // Forçar re-renderização do calendário
-    setCalendarioExpandido(prev => prev);
   };
 
   const getEmocaoInfo = (emocao: string) => {
