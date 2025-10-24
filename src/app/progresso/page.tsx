@@ -383,10 +383,20 @@ export default function ProgressoPage() {
     
     // Atualizar lista de favoritos se necessário
     if (devocionalAtualizado.isFavorited) {
-      setFavoritos(prev => [...prev, devocionalAtualizado]);
+      setFavoritos(prev => {
+        // Verificar se já existe antes de adicionar
+        const jaExiste = prev.some(fav => fav.id === devocionalAtualizado.id);
+        if (jaExiste) {
+          return prev;
+        }
+        return [...prev, devocionalAtualizado];
+      });
     } else {
       setFavoritos(prev => prev.filter(fav => fav.id !== devocional.id));
     }
+    
+    // Forçar re-renderização do calendário
+    setCalendarioExpandido(prev => prev);
   };
 
   const getEmocaoInfo = (emocao: string) => {
