@@ -71,12 +71,11 @@ export default function ModalDevocional({
               <h2 
                 className="font-bold leading-tight"
                 style={{ 
-                  fontFamily: typography.serif,
-                  fontSize: 'clamp(1rem, calc(var(--font-size-base, 1rem) * 1.1), 1.3rem)',
+                  fontFamily: typography.sans,
+                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)',
                   color: colors.text.white,
-                  wordBreak: 'keep-all',
-                  hyphens: 'none',
-                  lineHeight: '1.2'
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
                 }}
               >
                 {devocional.title}
@@ -231,12 +230,7 @@ export default function ModalDevocional({
                 size={14} 
                 fill={devocional.isFavorited ? 'currentColor' : 'none'}
               />
-              <span className="hidden sm:inline">
-                {devocional.isFavorited ? 'Favoritado' : 'Favoritar'}
-              </span>
-              <span className="sm:hidden">
-                {devocional.isFavorited ? '❤️' : '🤍'}
-              </span>
+              {devocional.isFavorited ? 'Favoritado' : 'Favoritar'}
             </button>
             <button
               onClick={onClose}
