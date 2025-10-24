@@ -859,9 +859,15 @@ export default function ProgressoPage() {
                         background: 'rgba(255, 255, 255, 0.05)',
                         border: '1px solid rgba(255, 255, 255, 0.1)'
                       }}
-                      onClick={() => setDevocionalExpandido(
-                        devocionalExpandido === favorito.id ? null : favorito.id
-                      )}
+                      onClick={() => {
+                        // Se clicou no mesmo favorito, fecha
+                        if (devocionalExpandido === favorito.id) {
+                          setDevocionalExpandido(null);
+                        } else {
+                          // Se clicou em outro favorito, abre ele (fecha o anterior automaticamente)
+                          setDevocionalExpandido(favorito.id);
+                        }
+                      }}
                     >
                       <div className="p-4 sm:p-5">
                         <div className="flex items-start gap-3">
@@ -887,16 +893,29 @@ export default function ProgressoPage() {
                             >
                               📅 {favorito.date}
                             </p>
-                            <div 
-                              className="text-sm italic mb-2 p-2 rounded-lg"
-                              style={{ 
-                                background: 'rgba(255, 255, 255, 0.05)',
-                                color: colors.text.white,
-                                fontFamily: typography.serif,
-                                fontSize: 'var(--font-size-base, 1rem)'
-                              }}
-                            >
-                              "{favorito.verse}"
+                            {/* Versículo */}
+                            <div className="mb-3">
+                              <p 
+                                className="text-xs font-medium mb-2"
+                                style={{ 
+                                  fontFamily: typography.sans,
+                                  color: colors.accent.gold,
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.5px'
+                                }}
+                              >
+                                📖 Versículo
+                              </p>
+                              <p 
+                                className="text-sm leading-relaxed italic"
+                                style={{ 
+                                  fontFamily: typography.serif,
+                                  color: colors.text.white,
+                                  fontSize: 'var(--font-size-base, 1rem)'
+                                }}
+                              >
+                                "{favorito.verse}"
+                              </p>
                             </div>
                             <p 
                               className="text-xs"
