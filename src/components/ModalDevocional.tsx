@@ -60,28 +60,16 @@ export default function ModalDevocional({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-start justify-between p-4 sm:p-6 border-b border-white/10">
-          <div className="flex items-start gap-3 flex-1 min-w-0">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/10">
+          <div className="flex items-center gap-3">
             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{
               background: colors.accent.gold
             }}>
               <FiCalendar className="text-white" size={16} />
             </div>
-            <div className="min-w-0 flex-1">
-              <h2 
-                className="font-bold leading-tight"
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)',
-                  color: colors.text.white,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px'
-                }}
-              >
-                {devocional.title}
-              </h2>
+            <div>
               <p 
-                className="text-sm opacity-80 mt-1"
+                className="text-sm opacity-80"
                 style={{ 
                   fontFamily: typography.sans,
                   fontSize: 'clamp(0.875rem, calc(var(--font-size-base, 1rem) * 0.875), 1rem)',
@@ -105,32 +93,23 @@ export default function ModalDevocional({
 
         {/* Content */}
         <div className="p-6 space-y-6">
-          {/* Versículo */}
-          <div className="p-4 rounded-xl" style={{ background: 'rgba(212, 175, 55, 0.1)' }}>
+          {/* Título do Devocional */}
+          <div>
             <p 
-              className="mb-3 leading-relaxed"
-              style={{ 
-                fontFamily: typography.serif,
-                color: colors.text.white,
-                fontSize: 'var(--font-size-base, 1rem)',
-                fontStyle: 'italic'
-              }}
-            >
-              "{devocional.verse}"
-            </p>
-            <p 
-              className="text-sm font-medium"
+              className="text-sm font-medium mb-2"
               style={{ 
                 fontFamily: typography.sans,
                 color: colors.accent.gold,
-                fontSize: 'var(--font-size-base, 1rem)'
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
               }}
             >
-              {devocional.reference}
+              {devocional.title}
             </p>
           </div>
 
-          {/* Reflexão */}
+          {/* TEXTO - Versículo Bíblico */}
           <div>
             <p 
               className="text-sm font-medium mb-2"
@@ -142,7 +121,46 @@ export default function ModalDevocional({
                 fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
               }}
             >
-              Reflexão
+              📖 Texto
+            </p>
+            <div className="p-4 rounded-xl" style={{ background: 'rgba(212, 175, 55, 0.1)' }}>
+              <p 
+                className="mb-3 leading-relaxed"
+                style={{ 
+                  fontFamily: typography.serif,
+                  color: colors.text.white,
+                  fontSize: 'var(--font-size-base, 1rem)',
+                  fontStyle: 'italic'
+                }}
+              >
+                "{devocional.verse}"
+              </p>
+              <p 
+                className="text-sm font-medium"
+                style={{ 
+                  fontFamily: typography.sans,
+                  color: colors.accent.gold,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
+              >
+                {devocional.reference}
+              </p>
+            </div>
+          </div>
+
+          {/* PALAVRA VIVA - Reflexão */}
+          <div>
+            <p 
+              className="text-sm font-medium mb-2"
+              style={{ 
+                fontFamily: typography.sans,
+                color: colors.accent.purple,
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
+              }}
+            >
+              💡 Palavra Viva
             </p>
             <p 
               className="leading-relaxed"
@@ -156,33 +174,7 @@ export default function ModalDevocional({
             </p>
           </div>
 
-          {/* Oração */}
-          <div>
-            <p 
-              className="text-sm font-medium mb-2"
-              style={{ 
-                fontFamily: typography.sans,
-                color: colors.accent.purple,
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-                fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
-              }}
-            >
-              Oração
-            </p>
-            <p 
-              className="leading-relaxed"
-              style={{ 
-                fontFamily: typography.sans,
-                color: colors.text.whiteMuted,
-                fontSize: 'var(--font-size-base, 1rem)'
-              }}
-            >
-              {devocional.prayer}
-            </p>
-          </div>
-
-          {/* Ação do Dia */}
+          {/* AÇÃO DO DIA */}
           <div>
             <p 
               className="text-sm font-medium mb-2"
@@ -194,7 +186,7 @@ export default function ModalDevocional({
                 fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
               }}
             >
-              Ação do Dia
+              🎯 Ação do Dia
             </p>
             <p 
               className="leading-relaxed"
@@ -205,6 +197,32 @@ export default function ModalDevocional({
               }}
             >
               {devocional.action}
+            </p>
+          </div>
+
+          {/* ORAÇÃO */}
+          <div>
+            <p 
+              className="text-sm font-medium mb-2"
+              style={{ 
+                fontFamily: typography.sans,
+                color: colors.accent.purple,
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
+              }}
+            >
+              🙏 Ora
+            </p>
+            <p 
+              className="leading-relaxed"
+              style={{ 
+                fontFamily: typography.sans,
+                color: colors.text.whiteMuted,
+                fontSize: 'var(--font-size-base, 1rem)'
+              }}
+            >
+              {devocional.prayer}
             </p>
           </div>
         </div>
