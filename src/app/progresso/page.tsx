@@ -1379,15 +1379,26 @@ export default function ProgressoPage() {
 
       {/* Modal de Favoritos */}
       {modalFavoritos && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ 
+            background: 'rgba(0, 0, 0, 0.8)',
+            backdropFilter: 'blur(5px)'
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setModalFavoritos(false);
+            }
+          }}
+        >
           <div 
             className="rounded-2xl w-full max-w-lg max-h-[85vh] overflow-hidden"
             style={{
               background: colors.background.card,
               border: `2px solid ${colors.accent.gold}`,
-              backdropFilter: 'blur(10px)',
-              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)'
+              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)'
             }}
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Header do Modal */}
             <div className="p-6 border-b" style={{ borderColor: colors.border }}>
@@ -1442,7 +1453,32 @@ export default function ProgressoPage() {
                   {(() => {
                     // Organizar favoritos por mês/ano
                     const favoritosPorMes = favoritos.reduce((acc, favorito) => {
-                      const data = new Date(favorito.date);
+                      // Corrigir parsing da data
+                      let data;
+                      try {
+                        // Tentar diferentes formatos de data
+                        if (favorito.date.includes('de')) {
+                          // Formato: "15 de Janeiro, 2025"
+                          const partes = favorito.date.split(' de ');
+                          const dia = partes[0];
+                          const mesAno = partes[1].split(', ');
+                          const mes = mesAno[0];
+                          const ano = mesAno[1];
+                          
+                          const meses = {
+                            'Janeiro': '01', 'Fevereiro': '02', 'Março': '03', 'Abril': '04',
+                            'Maio': '05', 'Junho': '06', 'Julho': '07', 'Agosto': '08',
+                            'Setembro': '09', 'Outubro': '10', 'Novembro': '11', 'Dezembro': '12'
+                          };
+                          
+                          data = new Date(`${ano}-${meses[mes]}-${dia.padStart(2, '0')}`);
+                        } else {
+                          data = new Date(favorito.date);
+                        }
+                      } catch (e) {
+                        data = new Date(); // Fallback para data atual
+                      }
+                      
                       const mesAno = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
                       const nomeMes = data.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
                       
@@ -1485,14 +1521,66 @@ export default function ProgressoPage() {
                         {/* Lista de Favoritos do Mês */}
                         <div className="divide-y" style={{ borderColor: colors.border }}>
                           {favoritosPorMes[mesAno].favoritos
-                            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                            .sort((a, b) => {
+                              // Ordenar por data dentro do mês
+                              let dataA, dataB;
+                              try {
+                                if (a.date.includes('de')) {
+                                  const partesA = a.date.split(' de ');
+                                  const diaA = partesA[0];
+                                  const mesAnoA = partesA[1].split(', ');
+                                  const mesA = mesAnoA[0];
+                                  const anoA = mesAnoA[1];
+                                  
+                                  const meses = {
+                                    'Janeiro': '01', 'Fevereiro': '02', 'Março': '03', 'Abril': '04',
+                                    'Maio': '05', 'Junho': '06', 'Julho': '07', 'Agosto': '08',
+                                    'Setembro': '09', 'Outubro': '10', 'Novembro': '11', 'Dezembro': '12'
+                                  };
+                                  
+                                  dataA = new Date(`${anoA}-${meses[mesA]}-${diaA.padStart(2, '0')}`);
+                                } else {
+                                  dataA = new Date(a.date);
+                                }
+                                
+                                if (b.date.includes('de')) {
+                                  const partesB = b.date.split(' de ');
+                                  const diaB = partesB[0];
+                                  const mesAnoB = partesB[1].split(', ');
+                                  const mesB = mesAnoB[0];
+                                  const anoB = mesAnoB[1];
+                                  
+                                  const meses = {
+                                    'Janeiro': '01', 'Fevereiro': '02', 'Março': '03', 'Abril': '04',
+                                    'Maio': '05', 'Junho': '06', 'Julho': '07', 'Agosto': '08',
+                                    'Setembro': '09', 'Outubro': '10', 'Novembro': '11', 'Dezembro': '12'
+                                  };
+                                  
+                                  dataB = new Date(`${anoB}-${meses[mesB]}-${diaB.padStart(2, '0')}`);
+                                } else {
+                                  dataB = new Date(b.date);
+                                }
+                              } catch (e) {
+                                dataA = new Date();
+                                dataB = new Date();
+                              }
+                              
+                              return dataB.getTime() - dataA.getTime();
+                            })
                             .map((favorito) => (
                             <div
                               key={favorito.id}
                               className="p-4 hover:bg-white/5 cursor-pointer transition-colors"
                               onClick={() => {
                                 setModalFavoritos(false);
-                                abrirModalDevocional(favorito.date);
+                                // Corrigir abertura do modal do devocional
+                                const devocionalData = devocionaisPorData[favorito.date];
+                                if (devocionalData) {
+                                  setModalDevocional({
+                                    isOpen: true,
+                                    devocional: devocionalData
+                                  });
+                                }
                               }}
                             >
                               <div className="flex items-center gap-3">
