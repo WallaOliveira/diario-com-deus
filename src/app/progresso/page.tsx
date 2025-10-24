@@ -893,30 +893,6 @@ export default function ProgressoPage() {
                             >
                               📅 {favorito.date}
                             </p>
-                            {/* Versículo */}
-                            <div className="mb-3">
-                              <p 
-                                className="text-xs font-medium mb-2"
-                                style={{ 
-                                  fontFamily: typography.sans,
-                                  color: colors.accent.blue,
-                                  textTransform: 'uppercase',
-                                  letterSpacing: '0.5px'
-                                }}
-                              >
-                                📖 Versículo
-                              </p>
-                              <p 
-                                className="text-sm leading-relaxed"
-                                style={{ 
-                                  fontFamily: typography.sans,
-                                  color: colors.text.whiteMuted,
-                                  fontSize: 'var(--font-size-base, 1rem)'
-                                }}
-                              >
-                                "{favorito.verse}"
-                              </p>
-                            </div>
                             <p 
                               className="text-xs"
                               style={{ 
@@ -955,6 +931,31 @@ export default function ProgressoPage() {
                       {/* Conteúdo expansível */}
                       {devocionalExpandido === favorito.id && (
                         <div className="px-4 pb-4 sm:px-5 sm:pb-5 space-y-4 border-t border-white/10">
+                          {/* Versículo */}
+                          <div className="mb-3">
+                            <p 
+                              className="text-xs font-medium mb-2"
+                              style={{ 
+                                fontFamily: typography.sans,
+                                color: colors.accent.blue,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px'
+                              }}
+                            >
+                              📖 Versículo
+                            </p>
+                            <p 
+                              className="text-sm leading-relaxed"
+                              style={{ 
+                                fontFamily: typography.sans,
+                                color: colors.text.whiteMuted,
+                                fontSize: 'var(--font-size-base, 1rem)'
+                              }}
+                            >
+                              "{favorito.verse}"
+                            </p>
+                          </div>
+
                           {/* Reflexão */}
                           <div className="mb-3">
                             <p 
