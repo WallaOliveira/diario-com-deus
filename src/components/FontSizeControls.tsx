@@ -81,3 +81,5 @@ export const FontSizeControls: React.FC<FontSizeControlsProps> = ({ className = 
     </div>
   );
 };
+
+export default FontSizeControls;

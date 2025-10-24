@@ -382,7 +382,6 @@ export default function ProgressoPage() {
     return <Loading />;
   }
 
-
   return (
     <div 
       className="min-h-screen pb-20"
