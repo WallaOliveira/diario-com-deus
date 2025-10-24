@@ -217,58 +217,8 @@ export default function ProgressoPage() {
   };
 
   const carregarFavoritos = () => {
-    // Mock de devocionais favoritos completos
-    setFavoritos([
-      {
-        id: 1,
-        title: "Deus é Fiel",
-        verse: "Porque para Deus nada é impossível.",
-        reference: 'Lucas 1:37',
-        reflection: "Este versículo nos lembra que Deus tem poder sobre todas as coisas. Mesmo quando enfrentamos desafios que parecem impossíveis, Ele pode intervir e transformar nossa situação.",
-        prayer: "Senhor, obrigado por ser um Deus de milagres. Ajuda-me a confiar em Ti mesmo quando as circunstâncias parecem impossíveis.",
-        action: "Hoje, vou entregar uma situação difícil nas mãos de Deus e confiar em Sua fidelidade.",
-        notes: "Deus me mostrou hoje que posso confiar Nele mesmo quando tudo parece perdido. Minha ansiedade diminuiu muito depois desta reflexão.",
-        date: "15 de Janeiro, 2025",
-        trail: null, // Devocional do dia
-        created_at: new Date().toISOString()
-      },
-      {
-        id: 2,
-        title: "A Fé que Move Montanhas",
-        verse: "A fé é a certeza daquilo que esperamos e a prova das coisas que não vemos.",
-        reference: 'Hebreus 11:1',
-        reflection: "A fé não é apenas acreditar no que vemos, mas confiar no que não vemos. É a certeza de que Deus está trabalhando mesmo quando não conseguimos perceber.",
-        prayer: "Pai, fortalece minha fé. Ajuda-me a confiar em Ti mesmo quando não vejo respostas imediatas.",
-        action: "Vou praticar a fé hoje, agindo com confiança em Deus mesmo em situações incertas.",
-        notes: "Este devocional me ajudou a entender que fé não é ausência de dúvidas, mas confiança apesar delas. Muito edificante!",
-        date: "14 de Janeiro, 2025",
-        trail: {
-          name: "7 Dias de Paz Interior",
-          day: 3,
-          total: 7,
-          emoji: "🌿"
-        },
-        created_at: new Date().toISOString()
-      },
-      {
-        id: 3,
-        title: "Gratidão Transformadora",
-        verse: "Dêem graças em todas as circunstâncias, pois esta é a vontade de Deus para vocês em Cristo Jesus.",
-        reference: '1 Tessalonicenses 5:18',
-        reflection: "A gratidão não é apenas um sentimento, mas uma escolha ativa que transforma nossa perspectiva e nos aproxima de Deus.",
-        prayer: "Senhor, ensina-me a ser grato em todas as situações. Ajuda-me a ver Tuas bênçãos mesmo nos momentos difíceis.",
-        action: "Vou listar 5 coisas pelas quais sou grato hoje e agradecer a Deus por cada uma delas.",
-        notes: "Este devocional me fez perceber quantas coisas boas acontecem todos os dias que eu não percebo. Vou começar um diário de gratidão!",
-        date: "13 de Janeiro, 2025",
-        trail: {
-          name: "Jornada de Gratidão",
-          day: 5,
-          total: 7,
-          emoji: "✨"
-        },
-        created_at: new Date().toISOString()
-      }
-    ]);
+    // Simular usuário novo - sem favoritos
+    setFavoritos([]);
   };
 
   // Filtrar e ordenar favoritos
@@ -354,8 +304,8 @@ export default function ProgressoPage() {
       const isHoje = dataAtual.toDateString() === hoje.toDateString();
       const isPassado = dataAtual < hoje;
       
-      // Mock: simular dias completados (dias pares + alguns aleatórios)
-      const isCompleted = (dia % 2 === 0) || (dia % 7 === 0);
+      // Simular usuário novo - sem devocionais completados
+      const isCompleted = false;
       
       // Adicionar devocional para alguns dias específicos
       const dataStr = dataAtual.toISOString().split('T')[0];
