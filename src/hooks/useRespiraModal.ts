@@ -13,16 +13,16 @@ export function useRespiraModal() {
 
   // Função para verificar se já mostrou o modal hoje
   const shouldShowRespiraModal = () => {
-    // 🚧 MODO TESTE - Sempre mostrar o modal
-    if (process.env.NEXT_PUBLIC_DEV_MODE === 'true') {
-      return true;
-    }
-    
     if (typeof window === 'undefined') return false;
     
-    // Se o usuário desabilitou o modal, não mostrar
+    // Se o usuário desabilitou o modal, não mostrar (mesmo em modo DEV)
     if (isRespiraModalDisabled()) {
       return false;
+    }
+    
+    // 🚧 MODO TESTE - Mostrar apenas se não foi desabilitado
+    if (process.env.NEXT_PUBLIC_DEV_MODE === 'true') {
+      return true;
     }
     
     const today = new Date().toDateString();
@@ -77,6 +77,22 @@ export function useRespiraModal() {
     disableRespiraModal();
   };
 
+  // Função para debug - verificar status do modal
+  const getRespiraModalStatus = () => {
+    if (typeof window === 'undefined') return 'SSR';
+    
+    const disabled = isRespiraModalDisabled();
+    const lastShown = localStorage.getItem('respira_modal_shown');
+    const today = new Date().toDateString();
+    
+    return {
+      disabled,
+      lastShown,
+      today,
+      shouldShow: shouldShowRespiraModal()
+    };
+  };
+
   return {
     showRespira,
     showRespiraModal,
@@ -85,6 +101,7 @@ export function useRespiraModal() {
     continueAndDisableRespiraModal,
     shouldShowRespiraModal,
     isRespiraModalDisabled,
-    enableRespiraModal
+    enableRespiraModal,
+    getRespiraModalStatus
   };
 }
