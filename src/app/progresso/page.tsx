@@ -432,8 +432,8 @@ export default function ProgressoPage() {
           userId: currentUser.id,
           devotionalId: devocional.id,
           type: 'verse',
-          content: devocional.verse,
-          reference: devocional.reference,
+          content: devocional.texto || devocional.verse || devocional.content,
+          reference: devocional.referencia || devocional.reference,
           notes: ''
         });
         

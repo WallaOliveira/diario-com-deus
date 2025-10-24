@@ -150,7 +150,7 @@ export default function SessaoExpressPage() {
     }
   };
 
-  const handleSaveFavorite = async (content: string, type: 'verse' | 'quote' | 'prayer', reference?: string) => {
+  const handleSaveFavorite = async (content: string, type: 'verse' | 'reflection' | 'prayer', reference?: string) => {
     const currentUser = DEV_MODE ? mockUser : user;
     if (!currentUser || !devocional) return;
     
