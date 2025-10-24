@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { FiX, FiHeart, FiCalendar } from 'react-icons/fi';
 import { colors, typography } from '@/lib/design-system';
+import FontSizeControls from './FontSizeControls';
 
 interface DevocionalData {
   id: string;
@@ -71,7 +72,7 @@ export default function ModalDevocional({
                 className="font-bold"
                 style={{ 
                   fontFamily: typography.serif,
-                  fontSize: typography.heading.h2,
+                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
                   color: colors.text.white
                 }}
               >
@@ -80,7 +81,7 @@ export default function ModalDevocional({
               <p 
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: typography.body.sm,
+                  fontSize: 'var(--font-size-base, 1rem)',
                   color: colors.text.whiteMuted
                 }}
               >
@@ -88,12 +89,15 @@ export default function ModalDevocional({
               </p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-all"
-          >
-            <FiX size={20} />
-          </button>
+          <div className="flex items-center gap-3">
+            <FontSizeControls />
+            <button
+              onClick={onClose}
+              className="p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-all"
+            >
+              <FiX size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Content */}
@@ -105,7 +109,7 @@ export default function ModalDevocional({
               style={{ 
                 fontFamily: typography.serif,
                 color: colors.text.white,
-                fontSize: typography.body.lg,
+                fontSize: 'var(--font-size-base, 1rem)',
                 fontStyle: 'italic'
               }}
             >
@@ -115,7 +119,8 @@ export default function ModalDevocional({
               className="text-sm font-medium"
               style={{ 
                 fontFamily: typography.sans,
-                color: colors.accent.gold
+                color: colors.accent.gold,
+                fontSize: 'var(--font-size-base, 1rem)'
               }}
             >
               {devocional.reference}
@@ -130,7 +135,8 @@ export default function ModalDevocional({
                 fontFamily: typography.sans,
                 color: colors.accent.blue,
                 textTransform: 'uppercase',
-                letterSpacing: '0.5px'
+                letterSpacing: '0.5px',
+                fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
               }}
             >
               Reflexão
@@ -140,7 +146,7 @@ export default function ModalDevocional({
               style={{ 
                 fontFamily: typography.sans,
                 color: colors.text.whiteMuted,
-                fontSize: typography.body.md
+                fontSize: 'var(--font-size-base, 1rem)'
               }}
             >
               {devocional.reflection}
@@ -155,7 +161,8 @@ export default function ModalDevocional({
                 fontFamily: typography.sans,
                 color: colors.accent.purple,
                 textTransform: 'uppercase',
-                letterSpacing: '0.5px'
+                letterSpacing: '0.5px',
+                fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
               }}
             >
               Oração
@@ -165,7 +172,7 @@ export default function ModalDevocional({
               style={{ 
                 fontFamily: typography.sans,
                 color: colors.text.whiteMuted,
-                fontSize: typography.body.md
+                fontSize: 'var(--font-size-base, 1rem)'
               }}
             >
               {devocional.prayer}
@@ -180,7 +187,8 @@ export default function ModalDevocional({
                 fontFamily: typography.sans,
                 color: colors.accent.green,
                 textTransform: 'uppercase',
-                letterSpacing: '0.5px'
+                letterSpacing: '0.5px',
+                fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
               }}
             >
               Ação do Dia
@@ -190,7 +198,7 @@ export default function ModalDevocional({
               style={{ 
                 fontFamily: typography.sans,
                 color: colors.text.whiteMuted,
-                fontSize: typography.body.md
+                fontSize: 'var(--font-size-base, 1rem)'
               }}
             >
               {devocional.action}
@@ -204,7 +212,7 @@ export default function ModalDevocional({
             <p 
               style={{ 
                 fontFamily: typography.sans,
-                fontSize: typography.body.sm,
+                fontSize: 'var(--font-size-base, 1rem)',
                 color: colors.text.whiteMuted
               }}
             >
@@ -220,7 +228,7 @@ export default function ModalDevocional({
                 }`}
                 style={{
                   fontFamily: typography.sans,
-                  fontSize: typography.body.md,
+                  fontSize: 'var(--font-size-base, 1rem)',
                   fontWeight: typography.weights.medium
                 }}
               >
@@ -237,7 +245,7 @@ export default function ModalDevocional({
                   background: colors.accent.gold,
                   color: 'white',
                   fontFamily: typography.sans,
-                  fontSize: typography.body.md,
+                  fontSize: 'var(--font-size-base, 1rem)',
                   fontWeight: typography.weights.medium
                 }}
               >
