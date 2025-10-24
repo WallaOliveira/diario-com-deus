@@ -899,7 +899,7 @@ export default function ProgressoPage() {
                                 className="text-xs font-medium mb-2"
                                 style={{ 
                                   fontFamily: typography.sans,
-                                  color: colors.accent.gold,
+                                  color: colors.accent.blue,
                                   textTransform: 'uppercase',
                                   letterSpacing: '0.5px'
                                 }}
@@ -907,10 +907,10 @@ export default function ProgressoPage() {
                                 📖 Versículo
                               </p>
                               <p 
-                                className="text-sm leading-relaxed italic"
+                                className="text-sm leading-relaxed"
                                 style={{ 
-                                  fontFamily: typography.serif,
-                                  color: colors.text.white,
+                                  fontFamily: typography.sans,
+                                  color: colors.text.whiteMuted,
                                   fontSize: 'var(--font-size-base, 1rem)'
                                 }}
                               >
