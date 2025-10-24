@@ -1377,12 +1377,12 @@ export default function ProgressoPage() {
         onToggleFavorite={toggleFavoritoDevocional}
       />
 
-      {/* Modal de Favoritos */}
+      {/* Modal de Favoritos - SÓLIDO E FUNCIONAL */}
       {modalFavoritos && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
           style={{ 
-            background: 'rgba(0, 0, 0, 0.9)',
+            background: '#000000',
             backdropFilter: 'none'
           }}
           onClick={(e) => {
@@ -1394,20 +1394,19 @@ export default function ProgressoPage() {
           <div 
             className="rounded-2xl w-full max-w-lg max-h-[85vh] overflow-hidden"
             style={{
-              background: colors.background.card,
+              background: '#1a1a1a',
               border: `2px solid ${colors.accent.gold}`,
-              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.8)'
+              boxShadow: '0 20px 40px rgba(0, 0, 0, 1)'
             }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header do Modal */}
-            <div className="p-6 border-b" style={{ borderColor: colors.border }}>
+            <div className="p-6 border-b border-gray-600">
               <div className="flex items-center justify-between">
                 <h3 
-                  className="text-xl font-bold"
+                  className="text-xl font-bold text-white"
                   style={{
                     fontFamily: typography.serif,
-                    color: colors.text.white,
                     fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)'
                   }}
                 >
@@ -1415,45 +1414,26 @@ export default function ProgressoPage() {
                 </h3>
                 <button
                   onClick={() => setModalFavoritos(false)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
-                  style={{ color: colors.text.whiteMuted }}
+                  className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors text-white"
                 >
                   ✕
                 </button>
               </div>
             </div>
 
-            {/* Lista de Favoritos */}
+            {/* Dropdown de Favoritos */}
             <div className="overflow-y-auto max-h-[70vh]">
               {favoritos.length === 0 ? (
                 <div className="text-center py-12 px-6">
                   <div className="text-6xl mb-4">💝</div>
-                  <p 
-                    style={{
-                      fontFamily: typography.sans,
-                      fontSize: 'var(--font-size-base, 1rem)',
-                      color: colors.text.whiteMuted
-                    }}
-                  >
-                    Nenhum favorito ainda
-                  </p>
-                  <p 
-                    className="text-sm mt-2"
-                    style={{
-                      fontFamily: typography.sans,
-                      fontSize: 'calc(var(--font-size-base, 1rem) * 0.875)',
-                      color: colors.text.whiteMuted
-                    }}
-                  >
-                    Marque devocionais como favoritos para vê-los aqui
-                  </p>
+                  <p className="text-gray-400 mb-2">Nenhum favorito ainda</p>
+                  <p className="text-sm text-gray-500">Marque devocionais como favoritos para vê-los aqui</p>
                 </div>
               ) : (
                 <div>
+                  {/* Dropdown por Mês */}
                   {(() => {
-                    // Organizar favoritos por mês/ano
                     const favoritosPorMes = favoritos.reduce((acc, favorito) => {
-                      // Corrigir parsing da data
                       let data;
                       try {
                         if (favorito.date.includes('de')) {
@@ -1495,28 +1475,14 @@ export default function ProgressoPage() {
                     return mesesOrdenados.map((mesAno) => (
                       <div key={mesAno}>
                         {/* Cabeçalho do Mês */}
-                        <div 
-                          className="sticky top-0 px-6 py-3 border-b"
-                          style={{ 
-                            background: colors.background.primary,
-                            borderColor: colors.border
-                          }}
-                        >
-                          <h4 
-                            className="font-semibold"
-                            style={{
-                              fontFamily: typography.sans,
-                              fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)',
-                              color: colors.text.white,
-                              textTransform: 'capitalize'
-                            }}
-                          >
+                        <div className="sticky top-0 px-6 py-3 border-b border-gray-600 bg-gray-800">
+                          <h4 className="font-semibold text-white text-lg capitalize">
                             📅 {favoritosPorMes[mesAno].nomeMes}
                           </h4>
                         </div>
 
                         {/* Lista de Favoritos do Mês */}
-                        <div className="divide-y" style={{ borderColor: colors.border }}>
+                        <div className="divide-y divide-gray-600">
                           {favoritosPorMes[mesAno].favoritos
                             .sort((a, b) => {
                               let dataA, dataB;
@@ -1566,10 +1532,10 @@ export default function ProgressoPage() {
                             .map((favorito) => (
                             <div
                               key={favorito.id}
-                              className="p-4 hover:bg-white/5 cursor-pointer transition-colors"
+                              className="p-4 hover:bg-gray-700 cursor-pointer transition-colors"
                               onClick={() => {
                                 setModalFavoritos(false);
-                                // Abrir o devocional correto
+                                // CORRIGIR: Abrir o devocional correto
                                 const devocionalData = devocionaisPorData[favorito.date];
                                 if (devocionalData) {
                                   setModalDevocional({
@@ -1582,45 +1548,17 @@ export default function ProgressoPage() {
                               <div className="flex items-center gap-3">
                                 <div className="text-2xl">⭐</div>
                                 <div className="flex-1">
-                                  <h5 
-                                    className="font-semibold mb-1"
-                                    style={{
-                                      fontFamily: typography.serif,
-                                      fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)',
-                                      color: colors.text.white
-                                    }}
-                                  >
+                                  <h5 className="font-semibold mb-1 text-white text-lg">
                                     {favorito.title}
                                   </h5>
-                                  <p 
-                                    className="text-sm"
-                                    style={{
-                                      fontFamily: typography.sans,
-                                      fontSize: 'var(--font-size-base, 1rem)',
-                                      color: colors.text.whiteMuted
-                                    }}
-                                  >
+                                  <p className="text-sm text-gray-400 mb-1">
                                     📅 {favorito.date}
                                   </p>
-                                  <p 
-                                    className="text-xs mt-1"
-                                    style={{
-                                      fontFamily: typography.sans,
-                                      fontSize: 'calc(var(--font-size-base, 1rem) * 0.875)',
-                                      color: colors.accent.purple
-                                    }}
-                                  >
+                                  <p className="text-xs text-purple-400">
                                     📖 {favorito.reference}
                                   </p>
                                 </div>
-                                <div 
-                                  className="text-xs px-3 py-1 rounded-full font-medium"
-                                  style={{
-                                    background: colors.accent.gold,
-                                    color: colors.text.white,
-                                    fontFamily: typography.sans
-                                  }}
-                                >
+                                <div className="text-xs px-3 py-1 rounded-full font-medium bg-yellow-500 text-white">
                                   Ver
                                 </div>
                               </div>
