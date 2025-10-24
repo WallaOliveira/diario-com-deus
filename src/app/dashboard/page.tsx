@@ -21,7 +21,6 @@ import {
   getComebackReward,
   requestNotificationPermission 
 } from '@/lib/reengagement';
-import { getEmotionalSuggestion } from '@/lib/emotional-suggestions';
 
 // Sistema de mensagens dinâmicas
 const getDynamicMessage = (streak: number, lastLogin: string | null, completedToday: boolean, emotion?: string) => {
