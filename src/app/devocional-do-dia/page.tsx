@@ -668,6 +668,7 @@ export default function SessaoExpressPage() {
         isOpen={showRespira}
         onClose={closeRespiraModal}
         onContinue={continueRespiraModal}
+        onContinueAndDisable={continueAndDisableRespiraModal}
         tema={devocional?.tema}
       />
 

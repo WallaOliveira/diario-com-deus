@@ -52,7 +52,7 @@ export default function TrilhaPazInteriorPage() {
   const [toastData, setToastData] = useState({ titulo: '', descricao: '', icone: '' });
   
   // Hook para controlar o modal RESPIRA
-  const { showRespira, showRespiraModal, closeRespiraModal, continueRespiraModal } = useRespiraModal();
+  const { showRespira, showRespiraModal, closeRespiraModal, continueRespiraModal, continueAndDisableRespiraModal } = useRespiraModal();
 
   // Dados da trilha
   const trilha = getTrilhaById('7-dias-paz-interior');
@@ -654,6 +654,7 @@ export default function TrilhaPazInteriorPage() {
         isOpen={showRespira}
         onClose={closeRespiraModal}
         onContinue={continueRespiraModal}
+        onContinueAndDisable={continueAndDisableRespiraModal}
         tema={`${trilha.icone} Dia ${diaAtual}: ${diaData.titulo}`}
       />
 
