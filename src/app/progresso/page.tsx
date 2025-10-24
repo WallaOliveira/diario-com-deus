@@ -577,7 +577,7 @@ export default function ProgressoPage() {
                 fontFamily: typography.sans
               }}
             >
-              ❤️ Favoritos ({favoritos.length})
+              ❤️ Favoritos
             </button>
           </div>
 
@@ -1382,8 +1382,8 @@ export default function ProgressoPage() {
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
           style={{ 
-            background: 'rgba(0, 0, 0, 0.8)',
-            backdropFilter: 'blur(5px)'
+            background: 'rgba(0, 0, 0, 0.9)',
+            backdropFilter: 'none'
           }}
           onClick={(e) => {
             if (e.target === e.currentTarget) {
@@ -1396,7 +1396,7 @@ export default function ProgressoPage() {
             style={{
               background: colors.background.card,
               border: `2px solid ${colors.accent.gold}`,
-              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)'
+              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.8)'
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -1423,7 +1423,7 @@ export default function ProgressoPage() {
               </div>
             </div>
 
-            {/* Dropdown de Favoritos */}
+            {/* Lista de Favoritos */}
             <div className="overflow-y-auto max-h-[70vh]">
               {favoritos.length === 0 ? (
                 <div className="text-center py-12 px-6">
@@ -1456,9 +1456,7 @@ export default function ProgressoPage() {
                       // Corrigir parsing da data
                       let data;
                       try {
-                        // Tentar diferentes formatos de data
                         if (favorito.date.includes('de')) {
-                          // Formato: "15 de Janeiro, 2025"
                           const partes = favorito.date.split(' de ');
                           const dia = partes[0];
                           const mesAno = partes[1].split(', ');
@@ -1476,7 +1474,7 @@ export default function ProgressoPage() {
                           data = new Date(favorito.date);
                         }
                       } catch (e) {
-                        data = new Date(); // Fallback para data atual
+                        data = new Date();
                       }
                       
                       const mesAno = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
@@ -1492,7 +1490,6 @@ export default function ProgressoPage() {
                       return acc;
                     }, {} as any);
 
-                    // Ordenar por data (mais recente primeiro)
                     const mesesOrdenados = Object.keys(favoritosPorMes).sort().reverse();
 
                     return mesesOrdenados.map((mesAno) => (
@@ -1522,7 +1519,6 @@ export default function ProgressoPage() {
                         <div className="divide-y" style={{ borderColor: colors.border }}>
                           {favoritosPorMes[mesAno].favoritos
                             .sort((a, b) => {
-                              // Ordenar por data dentro do mês
                               let dataA, dataB;
                               try {
                                 if (a.date.includes('de')) {
@@ -1573,7 +1569,7 @@ export default function ProgressoPage() {
                               className="p-4 hover:bg-white/5 cursor-pointer transition-colors"
                               onClick={() => {
                                 setModalFavoritos(false);
-                                // Corrigir abertura do modal do devocional
+                                // Abrir o devocional correto
                                 const devocionalData = devocionaisPorData[favorito.date];
                                 if (devocionalData) {
                                   setModalDevocional({
