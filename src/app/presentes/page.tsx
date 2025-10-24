@@ -20,7 +20,7 @@ export default function PresentesPage() {
         borderBottom: `1px solid ${colors.border}`,
         backdropFilter: 'blur(10px)'
       }}>
-        <Container maxWidth="xl" style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
+        <Container maxWidth="xl">
           <div className="flex items-center gap-4">
             <Link 
               href="/dashboard"

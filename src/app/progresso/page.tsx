@@ -156,10 +156,10 @@ export default function ProgressoPage() {
       console.log('✅ Favoritos recarregados na página de progresso!');
     };
 
-    window.addEventListener('favoriteAdded', handleFavoriteAdded as EventListener);
+    window.addEventListener('favoriteAdded', handleFavoriteAdded as unknown as EventListener);
     
     return () => {
-      window.removeEventListener('favoriteAdded', handleFavoriteAdded as EventListener);
+      window.removeEventListener('favoriteAdded', handleFavoriteAdded as unknown as EventListener);
     };
   }, []);
 
@@ -190,9 +190,9 @@ export default function ProgressoPage() {
     
     try {
       const favoritosReais = await getUserFavorites(currentUser.id);
-      if (favoritosReais.success && favoritosReais.favorites) {
+      if (favoritosReais && favoritosReais.length > 0) {
         // Converter favoritos do database para o formato do mock
-        const favoritosFormatados = favoritosReais.favorites.map((fav: any) => ({
+        const favoritosFormatados = favoritosReais.map((fav: any) => ({
           id: fav.devotional_id || `dev-${fav.id}`,
           title: fav.content?.substring(0, 50) + '...' || 'Devocional Favorito',
           verse: fav.content || '',
@@ -359,7 +359,7 @@ export default function ProgressoPage() {
       
       // Adicionar devocional para alguns dias específicos
       const dataStr = dataAtual.toISOString().split('T')[0];
-      if (devocionaisPorData[dataStr]) {
+      if ((devocionaisPorData as any)[dataStr]) {
         // Já existe devocional para esta data
       }
       
@@ -380,7 +380,7 @@ export default function ProgressoPage() {
     console.log('Tentando abrir devocional para data:', data);
     console.log('Devocionais disponíveis:', Object.keys(devocionaisPorData));
     
-    const devocional = devocionaisPorData[data];
+    const devocional = (devocionaisPorData as any)[data];
     if (devocional) {
       console.log('Devocional encontrado:', devocional);
       setModalDevocional({
@@ -443,7 +443,7 @@ export default function ProgressoPage() {
           
           // Atualizar dados mock
           const dataKey = devocional.id.split('-').slice(1).join('-');
-          devocionaisPorData[dataKey] = devocionalAtualizado;
+          (devocionaisPorData as any)[dataKey] = devocionalAtualizado;
           
           // Atualizar modal
           setModalDevocional({
@@ -480,7 +480,7 @@ export default function ProgressoPage() {
       case 'cansado':
         return { emoji: '🌙', nome: 'Cansado(a)', cor: colors.accent.purple };
       case 'esperançoso':
-        return { emoji: '🌟', nome: 'Esperançoso(a)', cor: colors.accent.yellow };
+        return { emoji: '🌟', nome: 'Esperançoso(a)', cor: colors.accent.gold };
       default:
         return { emoji: '😊', nome: 'Bem', cor: colors.accent.green };
     }
@@ -581,7 +581,7 @@ export default function ProgressoPage() {
                   fontStyle: 'italic'
                 }}
               >
-                {getMotivationalMessage('streak', stats?.streak || 0).insight}
+                {getMotivationalMessage('streak', stats?.current_streak || 0).insight}
               </p>
       </div>
 

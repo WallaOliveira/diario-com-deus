@@ -156,7 +156,6 @@ export default function LoginPage() {
           </div>
 
           <Button
-            type="submit"
             disabled={loading}
             variant="primary"
             size="lg"

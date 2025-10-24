@@ -69,7 +69,7 @@ export default function Error({
             <p 
               style={{ 
                 fontFamily: 'monospace',
-                fontSize: typography.body.xs,
+                fontSize: typography.body.sm,
                 color: '#fca5a5',
               }}
             >

@@ -45,7 +45,15 @@ export default function FavoritosPage() {
     try {
       setLoadingFavorites(true);
       const userFavorites = await getUserFavorites(user.id);
-      setFavorites(userFavorites);
+      const mappedFavorites: Favorite[] = userFavorites.map(fav => ({
+        id: fav.id,
+        type: fav.favorite_type as 'verse' | 'quote' | 'prayer',
+        content: fav.content,
+        reference: fav.reference,
+        tags: [],
+        created_at: fav.created_at
+      }));
+      setFavorites(mappedFavorites);
     } catch (error) {
       console.error('Erro ao carregar favoritos:', error);
       showError('Erro ao carregar favoritos');
@@ -212,7 +220,7 @@ export default function FavoritosPage() {
                         className="font-bold text-white"
                         style={{ 
                           fontFamily: typography.serif,
-                          fontSize: typography.heading.h4,
+                          fontSize: typography.heading.h3,
                           fontWeight: typography.weights.semibold
                         }}
                       >

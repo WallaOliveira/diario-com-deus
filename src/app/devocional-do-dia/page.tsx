@@ -102,10 +102,11 @@ export default function SessaoExpressPage() {
         await saveDevotionalProgress({
           userId: currentUser.id,
           devotionalId: devocional.id,
-          notes: notes,
-          prayer: '', // Pode ser expandido futuramente
-          duration: duration,
-          completedAt: new Date().toISOString()
+          durationMinutes: duration,
+          personalNotes: notes,
+          personalPrayer: '', // Pode ser expandido futuramente
+          usedAudio: false, // TODO: Implementar quando tivermos áudio
+          completedAllSteps: true
         });
         
         // Atualizar stats do usuário
@@ -200,7 +201,7 @@ export default function SessaoExpressPage() {
           minHeight: '100vh'
         }}
       >
-        <Confetti />
+        <Confetti show={true} />
         <div className="text-center space-y-6 animate-fadeIn">
           <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full mx-auto flex items-center justify-center">
             <FiCheck size={40} className="text-white" />
@@ -230,7 +231,7 @@ export default function SessaoExpressPage() {
         {newAchievements.length > 0 && (
           <AchievementModal 
             achievements={newAchievements}
-            onClose={clearNewAchievements}
+            onClose={() => clearNewAchievements(currentUser.id)}
           />
         )}
       </div>
@@ -265,7 +266,7 @@ export default function SessaoExpressPage() {
       }}
     >
       {/* Confetti quando completar */}
-      {completed && <Confetti />}
+      {completed && <Confetti show={true} />}
 
       {/* Header com Nova Identidade */}
       <header className="bg-white/10 backdrop-blur border-b border-white/20 sticky top-0 z-10">
