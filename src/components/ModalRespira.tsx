@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiX } from 'react-icons/fi';
 import { colors, typography, spacing } from '@/lib/design-system';
+import FontSizeControls from './FontSizeControls';
 
 interface ModalRespiraProps {
   isOpen: boolean;
@@ -80,18 +81,24 @@ export default function ModalRespira({ isOpen, onClose, onContinue, onContinueAn
               {tema && (
                 <span 
                   className="inline-block px-3 py-1 bg-yellow-400/20 text-yellow-200 rounded-full text-xs font-medium border border-yellow-300/30"
-                  style={{ fontFamily: typography.sans }}
+                  style={{ 
+                    fontFamily: typography.sans,
+                    fontSize: 'var(--font-size-base, 1rem)'
+                  }}
                 >
                   {tema}
                 </span>
               )}
             </div>
-            <button
-              onClick={onClose}
-              className="p-2 text-white/60 hover:text-white transition-colors"
-            >
-              <FiX size={20} />
-            </button>
+            <div className="flex items-center gap-2">
+              <FontSizeControls />
+              <button
+                onClick={onClose}
+                className="p-2 text-white/60 hover:text-white transition-colors"
+              >
+                <FiX size={20} />
+              </button>
+            </div>
           </div>
 
           {/* Conteúdo principal */}
@@ -100,7 +107,10 @@ export default function ModalRespira({ isOpen, onClose, onContinue, onContinueAn
             <div>
               <p 
                 className="text-lg text-white leading-relaxed"
-                style={{ fontFamily: typography.sans }}
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
+                }}
               >
                 Feche os olhos, inspire, segure e expire por 3x
               </p>
@@ -133,6 +143,7 @@ export default function ModalRespira({ isOpen, onClose, onContinue, onContinueAn
                 className="text-2xl font-bold mb-2 transition-colors duration-500"
                 style={{ 
                   fontFamily: typography.serif,
+                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
                   color: breathStep === 'inhale' ? colors.text.blue :
                          breathStep === 'hold' ? colors.text.gold :
                          '#10b981'
@@ -145,7 +156,10 @@ export default function ModalRespira({ isOpen, onClose, onContinue, onContinueAn
             {/* Instrução final */}
             <p 
               className="text-base text-white/90"
-              style={{ fontFamily: typography.sans }}
+              style={{ 
+                fontFamily: typography.sans,
+                fontSize: 'var(--font-size-base, 1rem)'
+              }}
             >
               Deixe o caos para trás. Este é um momento sagrado.
             </p>
@@ -155,7 +169,10 @@ export default function ModalRespira({ isOpen, onClose, onContinue, onContinueAn
               <button
                 onClick={onContinue}
                 className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-900 font-bold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                style={{ fontFamily: typography.sans }}
+                style={{ 
+                  fontFamily: typography.sans,
+                  fontSize: 'var(--font-size-base, 1rem)'
+                }}
               >
                 Estou Presente - Continuar
               </button>
