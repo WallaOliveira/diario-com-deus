@@ -590,13 +590,13 @@ export default function ProgressoPage() {
               {/* Dias Seguidos */}
               <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
                 <div className="text-xl mb-1">
-                  {getMotivationalMessage('streak', stats?.streak || 0).emoji}
+                  {getMotivationalMessage('streak', stats?.current_streak || 0).emoji}
                     </div>
                 <div 
                   className="text-sm font-bold mb-1"
-                  style={{ color: getMotivationalMessage('streak', stats?.streak || 0).color }}
+                  style={{ color: getMotivationalMessage('streak', stats?.current_streak || 0).color }}
                 >
-                  {getMotivationalMessage('streak', stats?.streak || 0).primary}
+                  {getMotivationalMessage('streak', stats?.current_streak || 0).primary}
                   </div>
                 </div>
 
@@ -616,13 +616,13 @@ export default function ProgressoPage() {
               {/* Total */}
               <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
                 <div className="text-xl mb-1">
-                  {getMotivationalMessage('total', stats?.devotionals_completed || 0).emoji}
+                  {getMotivationalMessage('total', stats?.total_moments || 0).emoji}
                     </div>
                 <div 
                   className="text-sm font-bold mb-1"
-                  style={{ color: getMotivationalMessage('total', stats?.devotionals_completed || 0).color }}
+                  style={{ color: getMotivationalMessage('total', stats?.total_moments || 0).color }}
                 >
-                  {getMotivationalMessage('total', stats?.devotionals_completed || 0).primary}
+                  {getMotivationalMessage('total', stats?.total_moments || 0).primary}
                   </div>
                   </div>
                 </div>
@@ -860,7 +860,7 @@ export default function ProgressoPage() {
                       className="w-3 h-3 rounded-full ring-2"
                       style={{ 
                         background: colors.accent.blue,
-                        ringColor: colors.accent.blue
+                        border: `2px solid ${colors.accent.blue}`
                       }}
                     />
                     <span 
@@ -1085,34 +1085,7 @@ export default function ProgressoPage() {
                 >
                   📚 Todos
                 </button>
-                <button
-                  onClick={() => setFiltroFavoritos('recentes')}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    filtroFavoritos === 'recentes' 
-                      ? 'bg-green-500 text-white' 
-                      : 'bg-white/10 text-white/70 hover:bg-white/20'
-                  }`}
-                  style={{
-                    fontSize: 'var(--font-size-base, 1rem)',
-                    fontFamily: typography.sans
-                  }}
-                >
-                  🕒 Recentes
-                </button>
-                <button
-                  onClick={() => setFiltroFavoritos('antigos')}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    filtroFavoritos === 'antigos' 
-                      ? 'bg-purple-500 text-white' 
-                      : 'bg-white/10 text-white/70 hover:bg-white/20'
-                  }`}
-                  style={{
-                    fontSize: 'var(--font-size-base, 1rem)',
-                    fontFamily: typography.sans
-                  }}
-                >
-                  📖 Antigos
-                </button>
+                {/* Filtros de favoritos removidos - sistema simplificado */}
                 <button
                   onClick={() => {
                     const mesAtualStr = mesAtual.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
@@ -1140,12 +1113,12 @@ export default function ProgressoPage() {
                   fontFamily: typography.sans
                 }}
               >
-                {favoritosFiltrados.length} devocional{favoritosFiltrados.length !== 1 ? 'is' : ''} favorito{favoritosFiltrados.length !== 1 ? 's' : ''}
+                {favoritos.length} devocional{favoritos.length !== 1 ? 'is' : ''} favorito{favoritos.length !== 1 ? 's' : ''}
               </p>
             </div>
 
             <div className="space-y-4">
-              {favoritosFiltrados.slice(0, 5).map((favorito) => (
+              {favoritos.slice(0, 5).map((favorito) => (
                 <div 
                   key={favorito.id}
                   className="rounded-xl transition-all"
