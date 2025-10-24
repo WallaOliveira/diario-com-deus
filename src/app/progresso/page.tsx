@@ -382,7 +382,6 @@ export default function ProgressoPage() {
     return <Loading />;
   }
 
-  const emocaoInfo = emocaoSelecionada ? getEmocaoInfo(emocaoSelecionada) : null;
 
   return (
     <div 
@@ -1380,21 +1379,20 @@ export default function ProgressoPage() {
 
       {/* Modal de Favoritos */}
       {modalFavoritos && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
           <div 
-            className="bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 w-full max-w-md max-h-[80vh] overflow-hidden"
+            className="bg-white rounded-2xl w-full max-w-lg max-h-[85vh] overflow-hidden shadow-2xl"
             style={{
-              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)'
+              boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)'
             }}
           >
             {/* Header do Modal */}
-            <div className="p-6 border-b border-white/10">
+            <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-red-500 to-pink-500">
               <div className="flex items-center justify-between">
                 <h3 
-                  className="text-xl font-bold"
+                  className="text-xl font-bold text-white"
                   style={{
                     fontFamily: typography.serif,
-                    color: colors.text.white,
                     fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)'
                   }}
                 >
@@ -1402,91 +1400,134 @@ export default function ProgressoPage() {
                 </h3>
                 <button
                   onClick={() => setModalFavoritos(false)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
-                  style={{ color: colors.text.whiteMuted }}
+                  className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors text-white"
                 >
                   ✕
                 </button>
               </div>
             </div>
 
-            {/* Lista de Favoritos */}
-            <div className="p-6 overflow-y-auto max-h-[60vh]">
+            {/* Lista de Favoritos Organizada por Data */}
+            <div className="overflow-y-auto max-h-[70vh]">
               {favoritos.length === 0 ? (
-                <div className="text-center py-8">
-                  <div className="text-4xl mb-4">💝</div>
+                <div className="text-center py-12 px-6">
+                  <div className="text-6xl mb-4">💝</div>
                   <p 
+                    className="text-gray-600 mb-2"
                     style={{
                       fontFamily: typography.sans,
-                      fontSize: 'var(--font-size-base, 1rem)',
-                      color: colors.text.whiteMuted
+                      fontSize: 'var(--font-size-base, 1rem)'
                     }}
                   >
                     Nenhum favorito ainda
                   </p>
                   <p 
-                    className="text-sm mt-2"
+                    className="text-sm text-gray-500"
                     style={{
                       fontFamily: typography.sans,
-                      fontSize: 'calc(var(--font-size-base, 1rem) * 0.875)',
-                      color: colors.text.whiteMuted
+                      fontSize: 'calc(var(--font-size-base, 1rem) * 0.875)'
                     }}
                   >
                     Marque devocionais como favoritos para vê-los aqui
                   </p>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  {favoritos.map((favorito) => (
-                    <div
-                      key={favorito.id}
-                      className="p-4 rounded-xl transition-all hover:bg-white/5 cursor-pointer"
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)'
-                      }}
-                      onClick={() => {
-                        setModalFavoritos(false);
-                        abrirModalDevocional(favorito.date);
-                      }}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="text-xl">⭐</div>
-                        <div className="flex-1">
+                <div>
+                  {(() => {
+                    // Organizar favoritos por mês/ano
+                    const favoritosPorMes = favoritos.reduce((acc, favorito) => {
+                      const data = new Date(favorito.date);
+                      const mesAno = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
+                      const nomeMes = data.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+                      
+                      if (!acc[mesAno]) {
+                        acc[mesAno] = {
+                          nomeMes,
+                          favoritos: []
+                        };
+                      }
+                      acc[mesAno].favoritos.push(favorito);
+                      return acc;
+                    }, {} as any);
+
+                    // Ordenar por data (mais recente primeiro)
+                    const mesesOrdenados = Object.keys(favoritosPorMes).sort().reverse();
+
+                    return mesesOrdenados.map((mesAno) => (
+                      <div key={mesAno}>
+                        {/* Cabeçalho do Mês */}
+                        <div className="sticky top-0 bg-gray-50 px-6 py-3 border-b border-gray-200">
                           <h4 
-                            className="font-semibold mb-1"
-                            style={{
-                              fontFamily: typography.serif,
-                              color: colors.text.white,
-                              fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
-                            }}
-                          >
-                            {favorito.title}
-                          </h4>
-                          <p 
-                            className="text-sm"
+                            className="font-semibold text-gray-800"
                             style={{
                               fontFamily: typography.sans,
-                              color: colors.text.whiteMuted,
-                              fontSize: 'var(--font-size-base, 1rem)'
+                              fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)',
+                              textTransform: 'capitalize'
                             }}
                           >
-                            📅 {favorito.date}
-                          </p>
+                            📅 {favoritosPorMes[mesAno].nomeMes}
+                          </h4>
                         </div>
-                        <div 
-                          className="text-xs px-2 py-1 rounded-full"
-                          style={{
-                            background: 'rgba(255, 255, 255, 0.1)',
-                            color: colors.text.whiteMuted,
-                            fontFamily: typography.sans
-                          }}
-                        >
-                          Ver
+
+                        {/* Lista de Favoritos do Mês */}
+                        <div className="divide-y divide-gray-100">
+                          {favoritosPorMes[mesAno].favoritos
+                            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                            .map((favorito) => (
+                            <div
+                              key={favorito.id}
+                              className="p-4 hover:bg-gray-50 cursor-pointer transition-colors"
+                              onClick={() => {
+                                setModalFavoritos(false);
+                                abrirModalDevocional(favorito.date);
+                              }}
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className="text-2xl">⭐</div>
+                                <div className="flex-1">
+                                  <h5 
+                                    className="font-semibold mb-1 text-gray-800"
+                                    style={{
+                                      fontFamily: typography.serif,
+                                      fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
+                                    }}
+                                  >
+                                    {favorito.title}
+                                  </h5>
+                                  <p 
+                                    className="text-sm text-gray-600"
+                                    style={{
+                                      fontFamily: typography.sans,
+                                      fontSize: 'var(--font-size-base, 1rem)'
+                                    }}
+                                  >
+                                    📅 {favorito.date}
+                                  </p>
+                                  <p 
+                                    className="text-xs text-gray-500 mt-1"
+                                    style={{
+                                      fontFamily: typography.sans,
+                                      fontSize: 'calc(var(--font-size-base, 1rem) * 0.875)'
+                                    }}
+                                  >
+                                    📖 {favorito.reference}
+                                  </p>
+                                </div>
+                                <div 
+                                  className="text-xs px-3 py-1 rounded-full bg-red-100 text-red-600 font-medium"
+                                  style={{
+                                    fontFamily: typography.sans
+                                  }}
+                                >
+                                  Ver
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ));
+                  })()}
                 </div>
               )}
             </div>
