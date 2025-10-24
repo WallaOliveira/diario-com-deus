@@ -1,5 +1,17 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useStatsStore } from '@/store/useStatsStore';
+import { FiArrowLeft, FiHeart, FiTrendingUp, FiBookmark } from 'react-icons/fi';
+import Link from 'next/link';
+import Container from '@/components/Container';
+import { FontSizeControls } from '@/components/FontSizeControls';
+import { colors, typography, spacing } from '@/lib/design-system';
+import { getMotivationalMessage, getProgressLevel, getProgressLevelMessage } from '@/lib/motivational-messages';
+import ModalDevocional from '@/components/ModalDevocional';
+import Loading from '@/components/Loading';
 import { addFavorite, removeFavorite, getUserFavorites } from '@/lib/database';
 
 // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
