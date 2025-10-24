@@ -382,10 +382,10 @@ export async function updateUserStats(userId: string): Promise<void> {
   const earlyBirdCount = hour < 7 ? stats.early_bird_count + 1 : stats.early_bird_count;
   const nightOwlCount = hour >= 22 ? stats.night_owl_count + 1 : stats.night_owl_count;
 
-  // 5. Calcular novo nível
+  // 5. Calcular novo nível (sistema simplificado)
   const totalMoments = stats.total_moments + 10; // +10 por devocional
-  const level = calculateSpiritualLevel(totalMoments);
-  const levelProgress = calculateLevelProgress(totalMoments);
+  const level = { key: 'iniciante', name: 'Iniciante' }; // Sistema simplificado
+  const levelProgress = Math.min((totalMoments % 100) / 100, 1); // Progresso simplificado
 
   // 6. Atualizar no banco
   const { error } = await supabase
@@ -453,39 +453,9 @@ export async function checkAndUnlockAchievements(userId: string): Promise<void> 
     .select('id')
     .eq('user_id', userId);
 
-  // Verificar novas conquistas
-  const newAchievements = checkNewAchievements(
-    {
-      totalMoments: stats.total_moments,
-      currentStreak: stats.current_streak,
-      longestStreak: stats.longest_streak,
-      earlyBirdCount: stats.early_bird_count,
-      nightOwlCount: stats.night_owl_count,
-      comebackCount: stats.comeback_count,
-      themeCompletions,
-      audioUsedCount,
-      notesCount,
-      prayersCount,
-      favoritesCount: favorites?.length || 0,
-      trailsStarted: 0, // TODO: implementar trilhas
-      trailsCompleted: 0,
-    },
-    unlockedKeys
-  );
+  // Sistema de conquistas removido
 
-  // Salvar novas conquistas
-  for (const achievement of newAchievements) {
-    await supabase
-      .from('user_achievements')
-      .insert({
-        user_id: userId,
-        achievement_key: achievement.key,
-        achievement_type: achievement.type,
-        title: achievement.title,
-        description: achievement.description,
-        icon: achievement.icon,
-      });
-  }
+  // Sistema de conquistas removido - sem salvamento
 }
 
 /**

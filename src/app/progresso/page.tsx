@@ -1337,7 +1337,7 @@ export default function ProgressoPage() {
               ))}
                 </div>
 
-            {favoritosFiltrados.length > 5 && (
+            {favoritos.length > 5 && (
               <div className="text-center mt-4">
                 <p 
                   style={{ 
@@ -1346,7 +1346,7 @@ export default function ProgressoPage() {
                     color: colors.text.whiteMuted
                   }}
                 >
-                  +{favoritosFiltrados.length - 5} devocionais favoritos adicionais
+                  +{favoritos.length - 5} devocionais favoritos adicionais
                       </p>
                   </div>
                   )}
@@ -1530,7 +1530,7 @@ export default function ProgressoPage() {
                             'Setembro': '09', 'Outubro': '10', 'Novembro': '11', 'Dezembro': '12'
                           };
                           
-                          data = new Date(`${ano}-${meses[mes]}-${dia.padStart(2, '0')}`);
+                          data = new Date(`${ano}-${(meses as any)[mes]}-${dia.padStart(2, '0')}`);
                         } else {
                           data = new Date(favorito.date);
                         }
@@ -1579,7 +1579,7 @@ export default function ProgressoPage() {
                         {/* Lista de Favoritos do Mês */}
                         <div className="divide-y" style={{ borderColor: colors.border }}>
                           {favoritosPorMes[mesAno].favoritos
-                            .sort((a, b) => {
+                            .sort((a: any, b: any) => {
                               let dataA, dataB;
                               try {
                                 if (a.date.includes('de')) {
@@ -1595,7 +1595,7 @@ export default function ProgressoPage() {
                                     'Setembro': '09', 'Outubro': '10', 'Novembro': '11', 'Dezembro': '12'
                                   };
                                   
-                                  dataA = new Date(`${anoA}-${meses[mesA]}-${diaA.padStart(2, '0')}`);
+                                  dataA = new Date(`${anoA}-${(meses as any)[mesA]}-${diaA.padStart(2, '0')}`);
                                 } else {
                                   dataA = new Date(a.date);
                                 }
@@ -1613,7 +1613,7 @@ export default function ProgressoPage() {
                                     'Setembro': '09', 'Outubro': '10', 'Novembro': '11', 'Dezembro': '12'
                                   };
                                   
-                                  dataB = new Date(`${anoB}-${meses[mesB]}-${diaB.padStart(2, '0')}`);
+                                  dataB = new Date(`${anoB}-${(meses as any)[mesB]}-${diaB.padStart(2, '0')}`);
                                 } else {
                                   dataB = new Date(b.date);
                                 }
@@ -1624,14 +1624,14 @@ export default function ProgressoPage() {
                               
                               return dataB.getTime() - dataA.getTime();
                             })
-                            .map((favorito) => (
+                            .map((favorito: any) => (
                             <div
                               key={favorito.id}
                               className="p-4 hover:bg-white/5 cursor-pointer transition-colors"
                               onClick={() => {
                                 setModalFavoritos(false);
                                 // Abrir o devocional correto
-                                const devocionalData = devocionaisPorData[favorito.date];
+                                const devocionalData = (devocionaisPorData as any)[favorito.date];
                                 if (devocionalData) {
                                   setModalDevocional({
                                     isOpen: true,

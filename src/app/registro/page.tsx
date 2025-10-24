@@ -203,7 +203,7 @@ export default function RegistroPage() {
               className="mt-1"
               style={{ 
                 fontFamily: typography.sans,
-                fontSize: typography.body.xs,
+                fontSize: typography.body.sm,
                 color: colors.text.whiteMuted
               }}
             >
@@ -242,7 +242,6 @@ export default function RegistroPage() {
           </div>
 
           <Button
-            type="submit"
             disabled={loading}
             variant="primary"
             size="lg"

@@ -108,7 +108,7 @@ export const useStatsStore = create<StatsState>((set, get) => ({
       // Atualizar sessionStorage
       const sessionViewed = sessionStorage.getItem('achievements_viewed_this_session');
       const viewedIds = sessionViewed ? JSON.parse(sessionViewed) : [];
-      const updatedViewedIds = [...new Set([...viewedIds, ...achievementIds])];
+      const updatedViewedIds = Array.from(new Set([...viewedIds, ...achievementIds]));
       sessionStorage.setItem('achievements_viewed_this_session', JSON.stringify(updatedViewedIds));
       
       // Marcar como "vistas" no banco (async, não bloqueia)

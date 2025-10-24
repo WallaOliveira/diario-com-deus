@@ -112,10 +112,11 @@ export default function TrilhaPazInteriorPage() {
         await saveDevotionalProgress({
           userId: currentUser.id,
           devotionalId: `trilha-paz-${diaAtual}`,
-          notes: notes,
-          prayer: '',
-          duration: duration,
-          completedAt: new Date().toISOString()
+          durationMinutes: duration,
+          personalNotes: notes,
+          personalPrayer: '',
+          usedAudio: false,
+          completedAllSteps: true
         });
         
         // Atualizar stats do usuário
@@ -178,17 +179,18 @@ export default function TrilhaPazInteriorPage() {
     }
   };
 
-  const handleSaveFavorite = async (content: string, type: 'verse' | 'quote' | 'prayer', reference?: string) => {
+  const handleSaveFavorite = async (content: string, type: 'verse' | 'reflection' | 'prayer', reference?: string) => {
     const currentUser = DEV_MODE ? mockUser : user;
     if (!currentUser) return;
     
     try {
       await addFavorite({
         userId: currentUser.id,
+        devotionalId: `trilha-paz-${diaAtual}`,
         type,
         content,
         reference,
-        tags: [trilha?.tema || 'trilha']
+        notes: ''
       });
       
     } catch (error) {
@@ -208,7 +210,7 @@ export default function TrilhaPazInteriorPage() {
           minHeight: '100vh'
         }}
       >
-        <Confetti />
+        <Confetti show={true} />
         <div className="text-center space-y-6 animate-fadeIn max-w-md">
           <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto flex items-center justify-center">
             <FiCheck size={40} className="text-white" />

@@ -400,7 +400,7 @@ export const utils = {
   
   // Título responsivo
   responsiveTitle: {
-    fontSize: { mobile: typography.title.mobile, desktop: typography.title.desktop },
+    fontSize: { mobile: typography.title.diario, desktop: typography.title.deus },
     fontFamily: typography.serif,
     fontWeight: typography.weights.semibold,
     letterSpacing: typography.letterSpacing.tight,
