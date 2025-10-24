@@ -9,7 +9,7 @@ import { useRespiraModal } from '@/hooks/useRespiraModal';
 import { FiArrowLeft, FiVolume2, FiCheck, FiHeart } from 'react-icons/fi';
 import Link from 'next/link';
 import Confetti from '@/components/Confetti';
-import AchievementModal from '@/components/AchievementModal';
+// AchievementModal removido
 import ModalRespira from '@/components/ModalRespira';
 import ToastCelebracao from '@/components/ToastCelebracao';
 import { FontSizeControls } from '@/components/FontSizeControls';
@@ -32,7 +32,7 @@ export default function SessaoExpressPage() {
   const router = useRouter();
   const { user, checkUser } = useAuthStore();
   const { markComplete } = useProgressStore();
-  const { refreshAll, newAchievements, clearNewAchievements } = useStatsStore();
+  const { refreshAll } = useStatsStore();
   const [step, setStep] = useState(1);
   const [notes, setNotes] = useState('');
   const [completed, setCompleted] = useState(false);
@@ -227,13 +227,7 @@ export default function SessaoExpressPage() {
           </Link>
         </div>
         
-        {/* Modal de Conquistas */}
-        {newAchievements.length > 0 && (
-          <AchievementModal 
-            achievements={newAchievements}
-            onClose={() => clearNewAchievements(currentUser.id)}
-          />
-        )}
+        {/* Sistema de conquistas removido */}
       </div>
     );
   }

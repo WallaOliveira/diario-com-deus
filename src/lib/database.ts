@@ -4,7 +4,7 @@
  */
 
 import { supabase } from './supabase';
-import { checkNewAchievements, calculateSpiritualLevel, calculateLevelProgress } from './achievements';
+// Sistema de conquistas removido
 
 // ================================================
 // TYPES

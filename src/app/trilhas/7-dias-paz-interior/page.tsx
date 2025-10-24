@@ -9,7 +9,7 @@ import { useRespiraModal } from '@/hooks/useRespiraModal';
 import { FiArrowLeft, FiCheck, FiHeart, FiLock } from 'react-icons/fi';
 import Link from 'next/link';
 import Confetti from '@/components/Confetti';
-import AchievementModal from '@/components/AchievementModal';
+// AchievementModal removido
 import ModalRespira from '@/components/ModalRespira';
 import ToastCelebracao from '@/components/ToastCelebracao';
 import { FontSizeControls } from '@/components/FontSizeControls';
@@ -32,7 +32,7 @@ export default function TrilhaPazInteriorPage() {
   const router = useRouter();
   const { user, checkUser } = useAuthStore();
   const { markComplete } = useProgressStore();
-  const { refreshAll, newAchievements, clearNewAchievements } = useStatsStore();
+  const { refreshAll } = useStatsStore();
   
   // Estados principais
   const [diaAtual, setDiaAtual] = useState(1);
@@ -272,13 +272,7 @@ export default function TrilhaPazInteriorPage() {
           </div>
         </div>
         
-        {/* Modal de Conquistas */}
-        {newAchievements.length > 0 && (
-          <AchievementModal 
-            achievements={newAchievements}
-            onClose={clearNewAchievements}
-          />
-        )}
+        {/* Sistema de conquistas removido */}
       </div>
     );
   }

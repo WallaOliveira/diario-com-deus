@@ -10,7 +10,7 @@ import { FiBook, FiMap, FiHeart, FiCalendar, FiLogOut, FiMenu, FiGift, FiLock } 
 import Tutorial, { useTutorial } from '@/components/Tutorial';
 import PWAInstallGuide, { usePWAInstallGuide } from '@/components/PWAInstallGuide';
 import PWAInstallBanner from '@/components/PWAInstallBanner';
-import AchievementModal from '@/components/AchievementModal';
+// AchievementModal removido
 import HelpButton from '@/components/HelpButton';
 import Container from '@/components/Container';
 import { FontSizeControls } from '@/components/FontSizeControls';
@@ -165,7 +165,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const { user, loading, signOut, checkUser } = useAuthStore();
   const { streak, completedToday, fetchProgress, showStreak, toggleStreak } = useProgressStore();
-  const { stats, achievements, newAchievements, loadStats, loadAchievements, clearNewAchievements } = useStatsStore();
+  const { stats, achievements, loadStats, loadAchievements } = useStatsStore();
   const { showTutorial, openTutorial, closeTutorial } = useTutorial();
   const { showGuide, openGuide, closeGuide } = usePWAInstallGuide();
   const [inactivityStatus, setInactivityStatus] = useState<{
@@ -653,13 +653,7 @@ export default function DashboardPage() {
       {/* Banner de Instalação Inteligente */}
       <PWAInstallBanner onOpenGuide={openGuide} />
       
-      {/* Modal de Conquistas */}
-      {newAchievements.length > 0 && currentUser && (
-        <AchievementModal 
-          achievements={newAchievements}
-          onClose={() => clearNewAchievements(currentUser.id)}
-        />
-      )}
+      {/* Sistema de conquistas removido */}
 
     </div>
   );
