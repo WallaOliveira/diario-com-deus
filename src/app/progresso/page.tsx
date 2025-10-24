@@ -1379,20 +1379,24 @@ export default function ProgressoPage() {
 
       {/* Modal de Favoritos */}
       {modalFavoritos && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div 
-            className="bg-white rounded-2xl w-full max-w-lg max-h-[85vh] overflow-hidden shadow-2xl"
+            className="rounded-2xl w-full max-w-lg max-h-[85vh] overflow-hidden"
             style={{
-              boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)'
+              background: colors.background.card,
+              border: `2px solid ${colors.accent.gold}`,
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)'
             }}
           >
             {/* Header do Modal */}
-            <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-red-500 to-pink-500">
+            <div className="p-6 border-b" style={{ borderColor: colors.border }}>
               <div className="flex items-center justify-between">
                 <h3 
-                  className="text-xl font-bold text-white"
+                  className="text-xl font-bold"
                   style={{
                     fontFamily: typography.serif,
+                    color: colors.text.white,
                     fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)'
                   }}
                 >
@@ -1400,32 +1404,34 @@ export default function ProgressoPage() {
                 </h3>
                 <button
                   onClick={() => setModalFavoritos(false)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors text-white"
+                  className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+                  style={{ color: colors.text.whiteMuted }}
                 >
                   ✕
                 </button>
               </div>
             </div>
 
-            {/* Lista de Favoritos Organizada por Data */}
+            {/* Dropdown de Favoritos */}
             <div className="overflow-y-auto max-h-[70vh]">
               {favoritos.length === 0 ? (
                 <div className="text-center py-12 px-6">
                   <div className="text-6xl mb-4">💝</div>
                   <p 
-                    className="text-gray-600 mb-2"
                     style={{
                       fontFamily: typography.sans,
-                      fontSize: 'var(--font-size-base, 1rem)'
+                      fontSize: 'var(--font-size-base, 1rem)',
+                      color: colors.text.whiteMuted
                     }}
                   >
                     Nenhum favorito ainda
                   </p>
                   <p 
-                    className="text-sm text-gray-500"
+                    className="text-sm mt-2"
                     style={{
                       fontFamily: typography.sans,
-                      fontSize: 'calc(var(--font-size-base, 1rem) * 0.875)'
+                      fontSize: 'calc(var(--font-size-base, 1rem) * 0.875)',
+                      color: colors.text.whiteMuted
                     }}
                   >
                     Marque devocionais como favoritos para vê-los aqui
@@ -1456,12 +1462,19 @@ export default function ProgressoPage() {
                     return mesesOrdenados.map((mesAno) => (
                       <div key={mesAno}>
                         {/* Cabeçalho do Mês */}
-                        <div className="sticky top-0 bg-gray-50 px-6 py-3 border-b border-gray-200">
+                        <div 
+                          className="sticky top-0 px-6 py-3 border-b"
+                          style={{ 
+                            background: colors.background.primary,
+                            borderColor: colors.border
+                          }}
+                        >
                           <h4 
-                            className="font-semibold text-gray-800"
+                            className="font-semibold"
                             style={{
                               fontFamily: typography.sans,
                               fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)',
+                              color: colors.text.white,
                               textTransform: 'capitalize'
                             }}
                           >
@@ -1470,13 +1483,13 @@ export default function ProgressoPage() {
                         </div>
 
                         {/* Lista de Favoritos do Mês */}
-                        <div className="divide-y divide-gray-100">
+                        <div className="divide-y" style={{ borderColor: colors.border }}>
                           {favoritosPorMes[mesAno].favoritos
                             .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
                             .map((favorito) => (
                             <div
                               key={favorito.id}
-                              className="p-4 hover:bg-gray-50 cursor-pointer transition-colors"
+                              className="p-4 hover:bg-white/5 cursor-pointer transition-colors"
                               onClick={() => {
                                 setModalFavoritos(false);
                                 abrirModalDevocional(favorito.date);
@@ -1486,36 +1499,41 @@ export default function ProgressoPage() {
                                 <div className="text-2xl">⭐</div>
                                 <div className="flex-1">
                                   <h5 
-                                    className="font-semibold mb-1 text-gray-800"
+                                    className="font-semibold mb-1"
                                     style={{
                                       fontFamily: typography.serif,
-                                      fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
+                                      fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)',
+                                      color: colors.text.white
                                     }}
                                   >
                                     {favorito.title}
                                   </h5>
                                   <p 
-                                    className="text-sm text-gray-600"
+                                    className="text-sm"
                                     style={{
                                       fontFamily: typography.sans,
-                                      fontSize: 'var(--font-size-base, 1rem)'
+                                      fontSize: 'var(--font-size-base, 1rem)',
+                                      color: colors.text.whiteMuted
                                     }}
                                   >
                                     📅 {favorito.date}
                                   </p>
                                   <p 
-                                    className="text-xs text-gray-500 mt-1"
+                                    className="text-xs mt-1"
                                     style={{
                                       fontFamily: typography.sans,
-                                      fontSize: 'calc(var(--font-size-base, 1rem) * 0.875)'
+                                      fontSize: 'calc(var(--font-size-base, 1rem) * 0.875)',
+                                      color: colors.accent.purple
                                     }}
                                   >
                                     📖 {favorito.reference}
                                   </p>
                                 </div>
                                 <div 
-                                  className="text-xs px-3 py-1 rounded-full bg-red-100 text-red-600 font-medium"
+                                  className="text-xs px-3 py-1 rounded-full font-medium"
                                   style={{
+                                    background: colors.accent.gold,
+                                    color: colors.text.white,
                                     fontFamily: typography.sans
                                   }}
                                 >
