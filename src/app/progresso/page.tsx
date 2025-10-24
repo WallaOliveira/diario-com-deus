@@ -585,7 +585,7 @@ export default function ProgressoPage() {
                 fontFamily: typography.sans
               }}
             >
-              ❤️ Favoritos ({favoritos.length})
+              ❤️ Favoritos
             </button>
           </div>
 
