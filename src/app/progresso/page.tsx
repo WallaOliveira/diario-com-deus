@@ -327,11 +327,41 @@ export default function ProgressoPage() {
 
   // Função para abrir modal de devocional
   const abrirModalDevocional = (data: string) => {
+    console.log('Tentando abrir devocional para data:', data);
+    console.log('Devocionais disponíveis:', Object.keys(devocionaisPorData));
+    
     const devocional = devocionaisPorData[data];
     if (devocional) {
+      console.log('Devocional encontrado:', devocional);
       setModalDevocional({
         isOpen: true,
         devocional: devocional
+      });
+    } else {
+      console.log('Nenhum devocional encontrado para a data:', data);
+      // Criar um devocional mock para qualquer data clicada
+      const dataObj = new Date(data);
+      const dataFormatada = dataObj.toLocaleDateString('pt-BR', { 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric' 
+      });
+      
+      const devocionalMock = {
+        id: `dev-${data}`,
+        title: 'Momento com Deus',
+        verse: 'Busquem primeiro o Reino de Deus e a sua justiça, e todas essas coisas serão acrescentadas a vocês.',
+        reference: 'Mateus 6:33',
+        reflection: 'Cada dia é uma oportunidade de buscar a Deus e crescer em nossa fé. Mesmo nos momentos simples, Ele está presente.',
+        prayer: 'Senhor, obrigado por este dia. Ajuda-me a buscar-Te em todas as coisas e confiar em Teu amor.',
+        action: 'Hoje, vou dedicar um momento especial para agradecer a Deus pelas bênçãos recebidas.',
+        date: dataFormatada,
+        isFavorited: false
+      };
+      
+      setModalDevocional({
+        isOpen: true,
+        devocional: devocionalMock
       });
     }
   };
@@ -556,19 +586,6 @@ export default function ProgressoPage() {
             </div>
           </div>
 
-          {/* Controle do Calendário */}
-          <div className="flex items-center justify-center mb-4 sm:mb-6">
-            <button
-              onClick={() => setCalendarioExpandido(!calendarioExpandido)}
-              className="px-6 py-3 rounded-lg text-sm font-medium transition-all bg-blue-500 text-white hover:bg-blue-600"
-              style={{
-                fontSize: 'var(--font-size-base, 1rem)',
-                fontFamily: typography.sans
-              }}
-            >
-              📅 {calendarioExpandido ? 'Ocultar Calendário' : 'Ver Calendário'}
-            </button>
-          </div>
 
           {/* Calendário de Progresso */}
           <div 

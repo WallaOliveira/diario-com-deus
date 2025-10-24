@@ -60,28 +60,29 @@ export default function ModalDevocional({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{
+        <div className="flex items-start justify-between p-4 sm:p-6 border-b border-white/10">
+          <div className="flex items-start gap-3 flex-1 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{
               background: colors.accent.gold
             }}>
-              <FiCalendar className="text-white" size={20} />
+              <FiCalendar className="text-white" size={16} />
             </div>
-            <div>
+            <div className="min-w-0 flex-1">
               <h2 
-                className="font-bold"
+                className="font-bold leading-tight break-words"
                 style={{ 
                   fontFamily: typography.serif,
-                  fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
+                  fontSize: 'clamp(1rem, calc(var(--font-size-base, 1rem) * 1.2), 1.5rem)',
                   color: colors.text.white
                 }}
               >
                 {devocional.title}
               </h2>
               <p 
+                className="text-sm opacity-80 mt-1"
                 style={{ 
                   fontFamily: typography.sans,
-                  fontSize: 'var(--font-size-base, 1rem)',
+                  fontSize: 'clamp(0.875rem, calc(var(--font-size-base, 1rem) * 0.875), 1rem)',
                   color: colors.text.whiteMuted
                 }}
               >
@@ -89,13 +90,13 @@ export default function ModalDevocional({
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 ml-2">
             <FontSizeControls />
             <button
               onClick={onClose}
-              className="p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-all"
+              className="p-1.5 sm:p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-all"
             >
-              <FiX size={20} />
+              <FiX size={18} />
             </button>
           </div>
         </div>
