@@ -69,11 +69,14 @@ export default function ModalDevocional({
             </div>
             <div className="min-w-0 flex-1">
               <h2 
-                className="font-bold leading-tight break-words"
+                className="font-bold leading-tight"
                 style={{ 
                   fontFamily: typography.serif,
-                  fontSize: 'clamp(1rem, calc(var(--font-size-base, 1rem) * 1.2), 1.5rem)',
-                  color: colors.text.white
+                  fontSize: 'clamp(1rem, calc(var(--font-size-base, 1rem) * 1.1), 1.3rem)',
+                  color: colors.text.white,
+                  wordBreak: 'keep-all',
+                  hyphens: 'none',
+                  lineHeight: '1.2'
                 }}
               >
                 {devocional.title}
@@ -208,51 +211,47 @@ export default function ModalDevocional({
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-white/10">
-          <div className="flex items-center justify-between gap-4">
-            <p 
-              style={{ 
+        <div className="p-4 sm:p-6 border-t border-white/10">
+          <div className="flex items-center justify-center gap-2 sm:gap-3">
+            <button
+              onClick={() => onToggleFavorite(devocional)}
+              className={`flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
+                devocional.isFavorited 
+                  ? 'text-white bg-red-500 hover:bg-red-600' 
+                  : 'text-red-500 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50'
+              }`}
+              style={{
                 fontFamily: typography.sans,
-                fontSize: 'var(--font-size-base, 1rem)',
-                color: colors.text.whiteMuted
+                fontSize: 'clamp(0.875rem, calc(var(--font-size-base, 1rem) * 0.875), 1rem)',
+                fontWeight: typography.weights.medium,
+                minHeight: '40px'
               }}
             >
-              {devocional.isFavorited ? '⭐ Nos seus favoritos' : '💝 Adicione aos favoritos'}
-            </p>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => onToggleFavorite(devocional)}
-                className={`px-6 py-2 rounded-xl font-medium transition-all flex items-center gap-2 ${
-                  devocional.isFavorited 
-                    ? 'text-white bg-red-500 hover:bg-red-600' 
-                    : 'text-red-500 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50'
-                }`}
-                style={{
-                  fontFamily: typography.sans,
-                  fontSize: 'var(--font-size-base, 1rem)',
-                  fontWeight: typography.weights.medium
-                }}
-              >
-                <FiHeart 
-                  size={16} 
-                  fill={devocional.isFavorited ? 'currentColor' : 'none'}
-                />
+              <FiHeart 
+                size={14} 
+                fill={devocional.isFavorited ? 'currentColor' : 'none'}
+              />
+              <span className="hidden sm:inline">
                 {devocional.isFavorited ? 'Favoritado' : 'Favoritar'}
-              </button>
-              <button
-                onClick={onClose}
-                className="px-6 py-2 rounded-xl font-medium transition-all"
-                style={{
-                  background: colors.accent.gold,
-                  color: 'white',
-                  fontFamily: typography.sans,
-                  fontSize: 'var(--font-size-base, 1rem)',
-                  fontWeight: typography.weights.medium
-                }}
-              >
-                Fechar
-              </button>
-            </div>
+              </span>
+              <span className="sm:hidden">
+                {devocional.isFavorited ? '❤️' : '🤍'}
+              </span>
+            </button>
+            <button
+              onClick={onClose}
+              className="flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-xl font-medium transition-all"
+              style={{
+                background: colors.accent.gold,
+                color: 'white',
+                fontFamily: typography.sans,
+                fontSize: 'clamp(0.875rem, calc(var(--font-size-base, 1rem) * 0.875), 1rem)',
+                fontWeight: typography.weights.medium,
+                minHeight: '40px'
+              }}
+            >
+              Fechar
+            </button>
           </div>
         </div>
       </div>
