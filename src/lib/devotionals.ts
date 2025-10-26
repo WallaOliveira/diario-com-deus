@@ -60,8 +60,36 @@ export function getDevotionalsByTag(tag: string): Devotional[] {
  * Retorna o devocional do dia (baseado na data para consistência)
  * Mesmo usuário vê mesmo devocional no mesmo dia
  */
-export function getDevotionalOfTheDay(): Devotional {
+export function getDevotionalOfTheDay(emotion?: string): Devotional {
   const devotionals = getAllDevotionals();
+  
+  // Se tem emoção, filtrar por emoção
+  if (emotion) {
+    const filteredByEmotion = devotionals.filter(d => {
+      // Verificar se alguma tag corresponde à emoção
+      const emotionMap: { [key: string]: string[] } = {
+        'ansioso': ['ansiedade', 'ansioso'],
+        'grato': ['gratidão', 'grato'],
+        'cansado': ['cansado', 'descanso'],
+        'esperançoso': ['esperança', 'esperançoso'],
+        'triste': ['triste', 'luto'],
+        'alegre': ['alegria', 'celebração']
+      };
+      
+      const emotionTags = emotionMap[emotion] || [];
+      return d.tags.some(tag => emotionTags.some(eTag => tag.toLowerCase().includes(eTag.toLowerCase())));
+    });
+    
+    // Se encontrou devocional com essa emoção, usar
+    if (filteredByEmotion.length > 0) {
+      const today = new Date();
+      const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 1000 / 60 / 60 / 24);
+      const index = dayOfYear % filteredByEmotion.length;
+      return filteredByEmotion[index];
+    }
+  }
+  
+  // Fallback: devocional normal
   const today = new Date();
   const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 1000 / 60 / 60 / 24);
   const index = dayOfYear % devotionals.length;

@@ -9,7 +9,7 @@ import Link from 'next/link';
 import Container from '@/components/Container';
 import { FontSizeControls } from '@/components/FontSizeControls';
 import { colors, typography, spacing } from '@/lib/design-system';
-import { getMotivationalMessage, getProgressLevel, getProgressLevelMessage } from '@/lib/motivational-messages';
+import { getMotivationalMessage, getProgressLevel, getProgressLevelMessage, getEngagementMessage } from '@/lib/motivational-messages';
 import ModalDevocional from '@/components/ModalDevocional';
 import Loading from '@/components/Loading';
 import { addFavorite, removeFavorite, getUserFavorites } from '@/lib/database';
@@ -140,9 +140,9 @@ export default function ProgressoPage() {
 
   useEffect(() => {
     if (!DEV_MODE) {
-    checkUser();
+      checkUser();
     } else {
-      // Em modo DEV, definir loading como false imediatamente
+      // Em modo DEV, definir loading como true para permitir carregamento
       setDadosCarregados(false);
     }
   }, [checkUser]);
@@ -164,24 +164,27 @@ export default function ProgressoPage() {
   }, []);
 
   useEffect(() => {
-    if (!DEV_MODE && !loading && !user) {
-      router.push('/login');
-    } else if (currentUser?.id) {
-      // Em modo DEV, não carregar dados do Supabase
-      if (DEV_MODE) {
-        // Simular dados carregados
-        setTimeout(() => {
-          setDadosCarregados(true);
-          carregarFavoritosReais(); // Carregar favoritos reais do database
+    const loadData = async () => {
+      if (!DEV_MODE && !loading && !user) {
+        router.push('/login');
+      } else if (currentUser?.id) {
+        // Em modo DEV, não carregar dados do Supabase
+        if (DEV_MODE) {
+          // Simular dados carregados
+          setTimeout(() => {
+            setDadosCarregados(true);
+            carregarEmocaoSelecionada();
+          }, 500);
+        } else {
+          await loadStats(currentUser.id);
           carregarEmocaoSelecionada();
-        }, 1000);
-      } else {
-        loadStats(currentUser.id);
-        carregarFavoritosReais(); // Carregar favoritos reais do database
-        carregarEmocaoSelecionada();
+          setDadosCarregados(true);
+        }
       }
-    }
-  }, [currentUser, loading, user, router, loadStats]);
+    };
+
+    loadData();
+  }, [currentUser?.id, loading, user, router]);
 
   // Carregar favoritos reais do database
   const carregarFavoritosReais = async () => {
@@ -444,6 +447,11 @@ export default function ProgressoPage() {
     return <Loading />;
   }
 
+  // Em DEV mode, garantir que dados sejam carregados
+  if (DEV_MODE && !dadosCarregados) {
+    return <Loading />;
+  }
+
   return (
     <div 
       className="min-h-screen pb-20"
@@ -498,85 +506,57 @@ export default function ProgressoPage() {
 
       <Container maxWidth="xl" className="py-6 space-y-6">
 
-        {/* Insights Inteligentes e Estatísticas */}
+        {/* Estatísticas Simples */}
         {stats && (
-          <div className="space-y-4">
-            {/* Nível de Progresso */}
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            {/* Dias Seguidos */}
             <div 
               className="p-4 rounded-xl text-center"
               style={{
-                background: `linear-gradient(135deg, ${colors.accent.blue}15 0%, ${colors.accent.purple}15 100%)`,
-                border: `1px solid ${colors.accent.blue}40`,
+                background: colors.background.card,
+                border: `1px solid ${colors.border}`,
                 backdropFilter: 'blur(10px)'
               }}
             >
-              <div className="flex items-center justify-center gap-3 mb-2">
-                <span className="text-xl">💡</span>
-                <h3 
-                  className="font-bold"
-                  style={{ 
-                    fontFamily: typography.serif,
-                    fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
-                    color: colors.text.white
-                  }}
-                >
-                  {getProgressLevelMessage(getProgressLevel(stats))}
-                </h3>
-          </div>
-              <p 
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: 'var(--font-size-base, 1rem)',
-                  color: colors.text.whiteMuted,
-                  fontStyle: 'italic'
-                }}
+              <div className="text-3xl mb-2">🔥</div>
+              <div 
+                className="text-2xl font-bold mb-1"
+                style={{ color: colors.accent.gold }}
               >
-                {getMotivationalMessage('streak', stats?.current_streak || 0).insight}
-              </p>
-      </div>
-
-            {/* Estatísticas Rápidas */}
-            <div className="grid grid-cols-3 gap-3">
-              {/* Dias Seguidos */}
-              <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                <div className="text-xl mb-1">
-                  {getMotivationalMessage('streak', stats?.current_streak || 0).emoji}
-                    </div>
-                <div 
-                  className="text-sm font-bold mb-1"
-                  style={{ color: getMotivationalMessage('streak', stats?.current_streak || 0).color }}
-                >
-                  {getMotivationalMessage('streak', stats?.current_streak || 0).primary}
-                  </div>
-                </div>
-
-              {/* Esta Semana */}
-              <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                <div className="text-xl mb-1">
-                  {getMotivationalMessage('weekly', calcularProgressoSemanal()).emoji}
-                    </div>
-                <div 
-                  className="text-sm font-bold mb-1"
-                  style={{ color: getMotivationalMessage('weekly', calcularProgressoSemanal()).color }}
-                >
-                  {getMotivationalMessage('weekly', calcularProgressoSemanal()).primary}
-                  </div>
-                </div>
-
-              {/* Total */}
-              <div className="text-center p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                <div className="text-xl mb-1">
-                  {getMotivationalMessage('total', stats?.total_moments || 0).emoji}
-                    </div>
-                <div 
-                  className="text-sm font-bold mb-1"
-                  style={{ color: getMotivationalMessage('total', stats?.total_moments || 0).color }}
-                >
-                  {getMotivationalMessage('total', stats?.total_moments || 0).primary}
-                  </div>
-                  </div>
-                </div>
+                {stats.current_streak || 0}
               </div>
+              <div 
+                className="text-sm"
+                style={{ color: colors.text.whiteMuted }}
+              >
+                Dias consecutivos
+              </div>
+            </div>
+
+            {/* Total de Devocionais */}
+            <div 
+              className="p-4 rounded-xl text-center"
+              style={{
+                background: colors.background.card,
+                border: `1px solid ${colors.border}`,
+                backdropFilter: 'blur(10px)'
+              }}
+            >
+              <div className="text-3xl mb-2">✨</div>
+              <div 
+                className="text-2xl font-bold mb-1"
+                style={{ color: colors.accent.blue }}
+              >
+                {stats.total_moments || 0}
+              </div>
+              <div 
+                className="text-sm"
+                style={{ color: colors.text.whiteMuted }}
+              >
+                Devocionais concluídos
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Meus Momentos com Deus - Seção Unificada */}
@@ -617,7 +597,6 @@ export default function ProgressoPage() {
               </p>
             </div>
           </div>
-
 
           {/* Calendário de Progresso */}
           <div 

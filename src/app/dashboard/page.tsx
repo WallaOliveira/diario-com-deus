@@ -14,6 +14,7 @@ import PWAInstallBanner from '@/components/PWAInstallBanner';
 import HelpButton from '@/components/HelpButton';
 import Container from '@/components/Container';
 import { FontSizeControls } from '@/components/FontSizeControls';
+import EmotionalCheckIn, { emotions } from '@/components/EmotionalCheckIn';
 import { colors, typography, spacing, components, animations, utils } from '@/lib/design-system';
 import { 
   checkInactivityStatus, 
@@ -21,122 +22,9 @@ import {
   getComebackReward,
   requestNotificationPermission 
 } from '@/lib/reengagement';
+import { getEngagementMessage } from '@/lib/motivational-messages';
 
-// Sistema de mensagens dinâmicas
-const getDynamicMessage = (streak: number, lastLogin: string | null, completedToday: boolean, emotion?: string) => {
-  const now = new Date();
-  const lastLoginDate = lastLogin ? new Date(lastLogin) : null;
-  const daysSinceLastLogin = lastLoginDate ? Math.floor((now.getTime() - lastLoginDate.getTime()) / (1000 * 60 * 60 * 24)) : 0;
-  
-  // Se completou hoje
-  if (completedToday) {
-    return {
-      title: '✨ Que lindo compromisso com Deus!',
-      message: 'Você já fez seu devocional hoje. Cada momento com Ele fortalece sua fé!',
-      emoji: '✨',
-      animation: 'celebrate',
-      color: 'gold'
-    };
-  }
-
-  // Se tem check-in emocional, personalizar mensagem
-  if (emotion) {
-    switch (emotion) {
-      case 'ansioso':
-        return {
-          title: '💙 Deus está no controle',
-          message: 'Respire fundo. Mesmo na ansiedade, Deus te ama e tem cuidado de você. Que tal um momento de paz?',
-          emoji: '💙',
-          animation: 'gentle',
-          color: 'blue'
-        };
-      case 'grato':
-        return {
-          title: '🙏 Que lindo coração grato!',
-          message: 'A gratidão transforma tudo! Vamos celebrar as bênçãos de hoje com Deus?',
-          emoji: '🙏',
-          animation: 'sunshine',
-          color: 'yellow'
-        };
-      case 'cansado':
-        return {
-          title: '🌙 Vinde a mim, cansados',
-          message: 'Deus conhece seu cansaço. Ele oferece descanso para sua alma. Aceita esse convite?',
-          emoji: '🌙',
-          animation: 'gentle',
-          color: 'purple'
-        };
-      case 'esperançoso':
-        return {
-          title: '🌟 Sua esperança é linda!',
-          message: 'Que bom ter esperança! Deus tem planos de esperança para você. Vamos descobrir juntos?',
-          emoji: '🌟',
-          animation: 'sparkle',
-          color: 'gold'
-        };
-    }
-  }
-  
-  // Usuário ativo (0-1 dias)
-  if (daysSinceLastLogin <= 1) {
-    if (streak >= 7) {
-      return {
-        title: '🔥 Que constância incrível!',
-        message: `${streak} dias seguidos! Você está criando um hábito abençoado.`,
-        emoji: '🔥',
-        animation: 'fire',
-        color: 'orange'
-      };
-    } else if (streak >= 3) {
-      return {
-        title: '🌟 Sua fé está crescendo!',
-        message: `${streak} dias seguidos! Continue assim, cada dia conta.`,
-        emoji: '🌟',
-        animation: 'sparkle',
-        color: 'yellow'
-      };
-    } else {
-      return {
-        title: '☀️ Que bom ter você aqui hoje!',
-        message: 'Reserve poucos minutos para estar com Deus. Você não vai se arrepender.',
-        emoji: '☀️',
-        animation: 'sunshine',
-        color: 'yellow'
-      };
-    }
-  }
-  
-  // Usuário regular (2-3 dias)
-  if (daysSinceLastLogin <= 3) {
-    return {
-      title: '😊 Que bom te ver novamente!',
-      message: 'Deus está sempre aqui, te esperando com carinho. Que tal um momento especial hoje?',
-      emoji: '😊',
-      animation: 'gentle',
-      color: 'blue'
-    };
-  }
-  
-  // Usuário retorno (4-7 dias)
-  if (daysSinceLastLogin <= 7) {
-    return {
-      title: '💙 Sentimos sua falta!',
-      message: 'Deus te espera com amor. Não há condenação, só acolhimento. Vamos recomeçar?',
-      emoji: '💙',
-      animation: 'heartbeat',
-      color: 'purple'
-    };
-  }
-  
-  // Usuário longo retorno (8+ dias)
-  return {
-    title: '🤗 Que alegria te ver de volta!',
-    message: 'Recomeçar é um ato de coragem. Deus te acolhe com amor infinito. Bem-vindo!',
-    emoji: '🤗',
-    animation: 'aurora',
-    color: 'green'
-  };
-};
+// Sistema de mensagens dinâmicas agora usa getEngagementMessage do lib/motivational-messages
 
 // Função para obter ícone do nível espiritual
 function getLevelIcon(level: number): string {
@@ -175,16 +63,37 @@ export default function DashboardPage() {
   } | null>(null);
   const [showComebackReward, setShowComebackReward] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [showEmotionalCheckIn, setShowEmotionalCheckIn] = useState(false);
+  const [currentEmotion, setCurrentEmotion] = useState<string | null>(null);
 
   // Em modo DEV, usar mockUser
   const currentUser = DEV_MODE ? mockUser : user;
-  
-  // Mensagem dinâmica baseada no comportamento
-  const dynamicMessage = getDynamicMessage(
-    streak || 0, 
-    currentUser?.last_login || null, 
-    completedToday
-  );
+
+  // Verificar se precisa mostrar check-in emocional
+  useEffect(() => {
+    const emotion = localStorage.getItem('current_emotion');
+    
+    // NÃO FORÇAR CHECK-IN - só aparece quando usuário clica no card
+    // setShowEmotionalCheckIn(true); // REMOVIDO
+    
+    if (emotion) {
+      setCurrentEmotion(emotion);
+    }
+  }, []);
+
+  const handleEmotionSelect = (emotion: string) => {
+    setCurrentEmotion(emotion);
+    setShowEmotionalCheckIn(false);
+    localStorage.setItem('last_emotional_checkin', new Date().toDateString());
+    
+    // Redirecionar automaticamente para o devocional emocional
+    router.push('/devocional-emocional');
+  };
+
+  const handleSkipCheckIn = () => {
+    setShowEmotionalCheckIn(false);
+    // Não salvar last_emotional_checkin, permitir que o usuário escolha depois
+  };
 
   useEffect(() => {
     if (!DEV_MODE) {
@@ -436,60 +345,63 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Mensagem dinâmica de boas-vindas */}
-        <div 
-          className={`relative overflow-hidden ${dynamicMessage.animation}-container`}
-          style={{
-            background: colors.background.card,
-            borderRadius: '16px',
-            padding: spacing.fixed.cardPadding,
-            border: `1px solid ${colors.border}`,
-            backdropFilter: 'blur(10px)'
-          }}
-        >
-          {/* Animação de fundo */}
-          <div 
-            className={`absolute inset-0 ${dynamicMessage.animation}-bg`}
-            style={{ 
-              opacity: 0.1,
-              background: dynamicMessage.color === 'gold' ? 'linear-gradient(45deg, #fbbf24, #f59e0b)' :
-                         dynamicMessage.color === 'orange' ? 'linear-gradient(45deg, #f97316, #ea580c)' :
-                         dynamicMessage.color === 'yellow' ? 'linear-gradient(45deg, #eab308, #ca8a04)' :
-                         dynamicMessage.color === 'blue' ? 'linear-gradient(45deg, #3b82f6, #2563eb)' :
-                         dynamicMessage.color === 'purple' ? 'linear-gradient(45deg, #8b5cf6, #7c3aed)' :
-                         'linear-gradient(45deg, #10b981, #059669)'
-            }}
+        {/* Check-in Emocional */}
+        {showEmotionalCheckIn && (
+          <EmotionalCheckIn 
+            onSelect={handleEmotionSelect}
+            onSkip={handleSkipCheckIn}
           />
-          
-          <div className="relative z-10">
-            <h2 
-              className={`mb-2 ${dynamicMessage.animation}-text`}
-              style={{ 
+        )}
+
+
+        {/* Mensagem dinâmica de boas-vindas */}
+        {stats && (
+          <div className="mb-4 text-center relative">
+            {/* Efeito de brilho pulsante no texto */}
+            <style jsx>{`
+              @keyframes pulse-text-glow {
+                0%, 100% {
+                  text-shadow: 0 0 8px rgba(212, 175, 55, 0.3),
+                              0 0 16px rgba(212, 175, 55, 0.2),
+                              0 0 24px rgba(212, 175, 55, 0.1);
+                }
+                50% {
+                  text-shadow: 0 0 12px rgba(212, 175, 55, 0.6),
+                              0 0 24px rgba(212, 175, 55, 0.4),
+                              0 0 36px rgba(212, 175, 55, 0.2);
+                }
+              }
+            `}</style>
+            
+            <p 
+              className="font-semibold mb-1"
+              style={{
                 fontFamily: typography.serif,
-                fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
-                fontWeight: typography.weights.semibold,
-                color: colors.text.white
+                fontSize: 'calc(var(--font-size-base, 1rem) * 1.15)',
+                color: colors.text.white,
+                animation: 'pulse-text-glow 3s ease-in-out infinite'
               }}
             >
-              {dynamicMessage.title}
-            </h2>
+              {getEngagementMessage(stats).message}
+            </p>
             <p 
-              style={{ 
+              className="italic"
+              style={{
                 fontFamily: typography.sans,
-                fontSize: 'var(--font-size-base, 1rem)',
+                fontSize: 'calc(var(--font-size-base, 1rem) * 0.9)',
                 color: colors.text.whiteMuted
               }}
             >
-              {dynamicMessage.message}
+              {getEngagementMessage(stats).subMessage}
             </p>
           </div>
-        </div>
+        )}
 
 
         {/* Atalhos principais */}
         <div className="flex flex-col gap-4">
           {/* Devocional do Dia */}
-          <Link href="/devocional-do-dia" className="devocional-do-dia-card group transition-all hover:scale-105" style={{
+          <Link href="/devocional" className="devocional-do-dia-card group transition-all hover:scale-105" style={{
             ...components.card.base,
             padding: spacing.fixed.cardPadding,
             boxShadow: colors.shadow.card
@@ -524,6 +436,7 @@ export default function DashboardPage() {
               </div>
             </div>
           </Link>
+
 
 
           {/* Trilhas Guiadas */}

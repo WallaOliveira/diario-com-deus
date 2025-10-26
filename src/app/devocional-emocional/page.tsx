@@ -9,13 +9,14 @@ import { useRespiraModal } from '@/hooks/useRespiraModal';
 import { FiArrowLeft, FiVolume2, FiCheck, FiHeart } from 'react-icons/fi';
 import Link from 'next/link';
 import Confetti from '@/components/Confetti';
+import EmotionalCheckIn from '@/components/EmotionalCheckIn';
 // AchievementModal removido
 import ModalRespira from '@/components/ModalRespira';
 import ToastCelebracao from '@/components/ToastCelebracao';
 import { FontSizeControls } from '@/components/FontSizeControls';
 import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
 import { analytics } from '@/lib/analytics';
-import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
+import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite, getRandomDevotionalByTheme } from '@/lib/database';
 import { colors, typography, spacing } from '@/lib/design-system';
 
 // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
@@ -42,6 +43,8 @@ export default function SessaoExpressPage() {
   const [showSugestao, setShowSugestao] = useState(false);
   const [showOracaoLivre, setShowOracaoLivre] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
+  const [showCheckIn, setShowCheckIn] = useState(false);
+  const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
   
   // Toast de celebração
   const [showToast, setShowToast] = useState(false);
@@ -56,20 +59,30 @@ export default function SessaoExpressPage() {
     }
   }, [checkUser]);
 
-  useEffect(() => {
-    // Carrega devocional do dia (sem filtro de emoção)
-    const devotionalOfDay = getDevotionalOfTheDay();
-    setDevocional(devotionalOfDay);
+  const handleEmotionSelect = async (emotion: string) => {
+    setSelectedEmotion(emotion);
+    setShowCheckIn(false);
+    // NÃO SALVAR NO LOCALSTORAGE - fluxo limpo
     
-    // TESTE: Forçar toast para debug
+    // Carrega devocional filtrado por emoção (com userId para não repetir)
+    const currentUser = DEV_MODE ? mockUser : user;
+    if (currentUser) {
+      const devotionalOfDay = await getRandomDevotionalByTheme(emotion, currentUser.id);
+      setDevocional(devotionalOfDay);
     
-    // Track devocional iniciado
-    if (devotionalOfDay) {
-      analytics.devotionalStarted(devotionalOfDay.tema);
+      // Track devocional iniciado
+      if (devotionalOfDay) {
+        analytics.devotionalStarted(devotionalOfDay.theme);
+      }
+      
+      // Mostrar modal RESPIRA apenas se não foi mostrado hoje
+      showRespiraModal();
     }
+  };
 
-    // Mostrar modal RESPIRA apenas se não foi mostrado hoje
-    showRespiraModal();
+  useEffect(() => {
+    // Sempre mostrar check-in ao entrar nessa página
+    setShowCheckIn(true);
   }, []);
 
   useEffect(() => {
@@ -234,6 +247,37 @@ export default function SessaoExpressPage() {
 
   const currentUser = DEV_MODE ? mockUser : user;
   
+  // Se não tem emoção e está mostrando check-in
+  if (showCheckIn) {
+    return (
+      <div 
+        className="min-h-screen"
+        style={{
+          background: colors.background.primary,
+          minHeight: '100vh'
+        }}
+      >
+        <header className="bg-white/10 backdrop-blur border-b border-white/20 sticky top-0 z-10">
+          <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+            <Link href="/devocional" className="text-blue-100 hover:text-white transition-colors">
+              <FiArrowLeft size={24} />
+            </Link>
+            <div className="flex items-center gap-3">
+              <FontSizeControls />
+            </div>
+          </div>
+        </header>
+
+        <div className="max-w-2xl mx-auto px-4 py-8">
+          <EmotionalCheckIn 
+            onSelect={handleEmotionSelect}
+            onBack={() => router.push('/devocional')}
+          />
+        </div>
+      </div>
+    );
+  }
+
   if (!currentUser || !devocional) {
     return (
       <div 
@@ -266,7 +310,11 @@ export default function SessaoExpressPage() {
       <header className="bg-white/10 backdrop-blur border-b border-white/20 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
           <button 
-            onClick={() => router.back()}
+            onClick={() => {
+              setDevocional(null);
+              setShowCheckIn(true);
+              setSelectedEmotion(null);
+            }}
             className="text-blue-100 hover:text-white transition-colors"
           >
             <FiArrowLeft size={24} />
@@ -695,3 +743,4 @@ export default function SessaoExpressPage() {
     </div>
   );
 }
+

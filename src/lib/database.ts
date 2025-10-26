@@ -123,23 +123,40 @@ export async function getDevotionalBySlug(slug: string): Promise<Devotional | nu
 }
 
 /**
- * Buscar devocional aleatório por tema
+ * Buscar devocional aleatório por tema (SEM REPETIR)
  */
-export async function getRandomDevotionalByTheme(theme: string): Promise<Devotional | null> {
-  const { data, error } = await supabase
+export async function getRandomDevotionalByTheme(theme: string, userId: string): Promise<Devotional | null> {
+  // 1. Buscar devocionais do tema
+  const { data: devotionals, error } = await supabase
     .from('devotionals')
     .select('*')
     .eq('theme', theme)
     .eq('is_active', true);
 
-  if (error || !data || data.length === 0) {
+  if (error || !devotionals || devotionals.length === 0) {
     console.error('Erro ao buscar devocional:', error);
     return null;
   }
 
-  // Retorna um aleatório
-  const randomIndex = Math.floor(Math.random() * data.length);
-  return data[randomIndex];
+  // 2. Buscar IDs de devocionais já vistos por este usuário hoje
+  const today = new Date().toISOString().split('T')[0];
+  const { data: progress } = await supabase
+    .from('user_progress')
+    .select('devotional_id')
+    .eq('user_id', userId)
+    .gte('completed_at', `${today}T00:00:00`);
+
+  const seenIds = progress?.map(p => p.devotional_id) || [];
+
+  // 3. Filtrar devocionais não vistos
+  const available = devotionals.filter(d => !seenIds.includes(d.id));
+
+  // 4. Se viu todos, resetar para hoje (mostrar todos novamente)
+  const devotionalsToUse = available.length > 0 ? available : devotionals;
+
+  // 5. Retornar aleatório dos disponíveis
+  const randomIndex = Math.floor(Math.random() * devotionalsToUse.length);
+  return devotionalsToUse[randomIndex];
 }
 
 /**
@@ -267,7 +284,7 @@ export async function getUserDevotionalHistory(
 }
 
 /**
- * Verificar se usuário já fez devocional hoje
+ * Verificar se usuário já fez devocional hoje (LIMITE: 1 por dia)
  */
 export async function userCompletedToday(userId: string): Promise<boolean> {
   const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
@@ -285,6 +302,7 @@ export async function userCompletedToday(userId: string): Promise<boolean> {
     return false;
   }
 
+  // Se já fez 1 devocional hoje, bloquear
   return (data?.length || 0) > 0;
 }
 

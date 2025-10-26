@@ -198,3 +198,74 @@ export const getProgressLevelMessage = (level: ProgressLevel): string => {
       return "🏆 Avançado - Que exemplo de dedicação!";
   }
 };
+
+/**
+ * Mensagem dinâmica baseada no engajamento do usuário
+ */
+export const getEngagementMessage = (stats: any): { message: string; subMessage: string } => {
+  const streak = stats?.current_streak || 0;
+  const total = stats?.total_moments || 0;
+  const lastActivity = stats?.last_activity_date;
+  
+  // Usuário novo (sem atividade)
+  if (streak === 0 && total === 0) {
+    return {
+      message: "Olá! Que bom ter você aqui",
+      subMessage: "Hoje é o dia perfeito para começar seu momento com Deus"
+    };
+  }
+  
+  // Usuário com 1-2 dias (iniciando)
+  if (streak <= 2 && total <= 3) {
+    return {
+      message: "Que bom ver você aqui novamente",
+      subMessage: "Cada dia que você vem fortalece sua fé"
+    };
+  }
+  
+  // Usuário com 3-6 dias (em crescimento)
+  if (streak >= 3 && streak < 7) {
+    return {
+      message: "Parabéns pela constância!",
+      subMessage: `Você já está em ${streak} dias seguidos, que perseverança`
+    };
+  }
+  
+  // Usuário com 7+ dias (consistente)
+  if (streak >= 7 && streak < 14) {
+    return {
+      message: "Uma semana inteira! Incrível",
+      subMessage: "Você está construindo algo bonito na sua vida"
+    };
+  }
+  
+  // Usuário com 14-29 dias (muito consistente)
+  if (streak >= 14 && streak < 30) {
+    return {
+      message: "Mais de duas semanas, que inspiração",
+      subMessage: `${streak} dias de encontro com Deus, você é exemplo`
+    };
+  }
+  
+  // Usuário com 30+ dias (master do hábito)
+  if (streak >= 30) {
+    return {
+      message: "Você é impressionante",
+      subMessage: `${streak} dias seguidos! Sua dedicação inspira tantos`
+    };
+  }
+  
+  // Usuário voltando após tempo
+  if (streak === 0 && total > 0) {
+    return {
+      message: "Que alegria te ver de volta",
+      subMessage: "Nunca é tarde para retomar. Hoje é um novo começo"
+    };
+  }
+  
+  // Mensagem padrão
+  return {
+    message: "Que bom ter você aqui",
+    subMessage: "Vamos aproveitar este momento com Deus"
+  };
+};
