@@ -15,7 +15,7 @@ import ToastCelebracao from '@/components/ToastCelebracao';
 import { FontSizeControls } from '@/components/FontSizeControls';
 import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
 import { analytics } from '@/lib/analytics';
-import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
+import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite, userCompletedToday } from '@/lib/database';
 import { colors, typography, spacing } from '@/lib/design-system';
 
 // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
@@ -57,20 +57,34 @@ export default function SessaoExpressPage() {
   }, [checkUser]);
 
   useEffect(() => {
-    // Carrega devocional do dia (sem filtro de emoção)
-    const devotionalOfDay = getDevotionalOfTheDay();
-    setDevocional(devotionalOfDay);
-    
-    // TESTE: Forçar toast para debug
-    
-    // Track devocional iniciado
-    if (devotionalOfDay) {
-      analytics.devotionalStarted(devotionalOfDay.tema);
-    }
+    const loadDevotional = async () => {
+      const currentUser = DEV_MODE ? mockUser : user;
+      
+      // VERIFICAR LIMITE: 1 devocional por dia
+      if (currentUser) {
+        const alreadyCompleted = await userCompletedToday(currentUser.id);
+        if (alreadyCompleted) {
+          alert('Você já completou seu devocional de hoje! Volte amanhã para continuar sua jornada. 🙏');
+          router.push('/dashboard');
+          return;
+        }
+      }
+      
+      // Carrega devocional do dia (sem filtro de emoção)
+      const devotionalOfDay = getDevotionalOfTheDay();
+      setDevocional(devotionalOfDay);
+      
+      // Track devocional iniciado
+      if (devotionalOfDay) {
+        analytics.devotionalStarted(devotionalOfDay.tema);
+      }
 
-    // Mostrar modal RESPIRA apenas se não foi mostrado hoje
-    showRespiraModal();
-  }, []);
+      // Mostrar modal RESPIRA apenas se não foi mostrado hoje
+      showRespiraModal();
+    };
+    
+    loadDevotional();
+  }, [user, router, showRespiraModal]);
 
   useEffect(() => {
     if (!DEV_MODE && user === null) {

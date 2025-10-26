@@ -16,7 +16,7 @@ import ToastCelebracao from '@/components/ToastCelebracao';
 import { FontSizeControls } from '@/components/FontSizeControls';
 import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
 import { analytics } from '@/lib/analytics';
-import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite, getRandomDevotionalByTheme } from '@/lib/database';
+import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite, getRandomDevotionalByTheme, userCompletedToday } from '@/lib/database';
 import { colors, typography, spacing } from '@/lib/design-system';
 
 // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
@@ -60,24 +60,32 @@ export default function SessaoExpressPage() {
   }, [checkUser]);
 
   const handleEmotionSelect = async (emotion: string) => {
+    const currentUser = DEV_MODE ? mockUser : user;
+    if (!currentUser) return;
+
+    // VERIFICAR LIMITE: 1 devocional por dia
+    const alreadyCompleted = await userCompletedToday(currentUser.id);
+    if (alreadyCompleted) {
+      // Exibir mensagem de bloqueio
+      alert('Você já completou seu devocional de hoje! Volte amanhã para continuar sua jornada. 🙏');
+      router.push('/dashboard');
+      return;
+    }
+
     setSelectedEmotion(emotion);
     setShowCheckIn(false);
-    // NÃO SALVAR NO LOCALSTORAGE - fluxo limpo
     
     // Carrega devocional filtrado por emoção (com userId para não repetir)
-    const currentUser = DEV_MODE ? mockUser : user;
-    if (currentUser) {
-      const devotionalOfDay = await getRandomDevotionalByTheme(emotion, currentUser.id);
-      setDevocional(devotionalOfDay);
-    
-      // Track devocional iniciado
-      if (devotionalOfDay) {
-        analytics.devotionalStarted(devotionalOfDay.theme);
-      }
-      
-      // Mostrar modal RESPIRA apenas se não foi mostrado hoje
-      showRespiraModal();
+    const devotionalOfDay = await getRandomDevotionalByTheme(emotion, currentUser.id);
+    setDevocional(devotionalOfDay);
+  
+    // Track devocional iniciado
+    if (devotionalOfDay) {
+      analytics.devotionalStarted(devotionalOfDay.theme);
     }
+    
+    // Mostrar modal RESPIRA apenas se não foi mostrado hoje
+    showRespiraModal();
   };
 
   useEffect(() => {
