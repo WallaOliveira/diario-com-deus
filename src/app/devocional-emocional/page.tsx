@@ -14,6 +14,7 @@ import EmotionalCheckIn from '@/components/EmotionalCheckIn';
 import ModalRespira from '@/components/ModalRespira';
 import ToastCelebracao from '@/components/ToastCelebracao';
 import { FontSizeControls } from '@/components/FontSizeControls';
+import DailyLimitModal from '@/components/DailyLimitModal';
 import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
 import { analytics } from '@/lib/analytics';
 import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite, getRandomDevotionalByTheme, userCompletedToday } from '@/lib/database';
@@ -50,6 +51,9 @@ export default function SessaoExpressPage() {
   const [showToast, setShowToast] = useState(false);
   const [toastData, setToastData] = useState({ titulo: '', descricao: '', icone: '' });
   
+  // Modal de limite diário
+  const [showLimitModal, setShowLimitModal] = useState(false);
+  
   // Hook para controlar o modal RESPIRA
   const { showRespira, showRespiraModal, closeRespiraModal, continueRespiraModal, continueAndDisableRespiraModal } = useRespiraModal();
 
@@ -69,9 +73,8 @@ export default function SessaoExpressPage() {
       // Verificar se está em trilha ativa
       const trailProgress = localStorage.getItem('trilha-7-dias-paz-interior-progress');
       if (!trailProgress) {
-        // Não está em trilha - bloquear segundo devocional
-        alert('Você já completou seu devocional de hoje! Volte amanhã para continuar sua jornada. 🙏');
-        router.push('/dashboard');
+        // Não está em trilha - mostrar modal amigável
+        setShowLimitModal(true);
         return;
       }
     }
@@ -752,6 +755,7 @@ export default function SessaoExpressPage() {
         descricao={toastData.descricao}
         icone={toastData.icone}
       />
+      <DailyLimitModal isOpen={showLimitModal} onClose={() => setShowLimitModal(false)} />
     </div>
   );
 }
