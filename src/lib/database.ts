@@ -291,11 +291,10 @@ export async function userCompletedToday(userId: string): Promise<boolean> {
 
   const { data, error } = await supabase
     .from('user_progress')
-    .select('id')
+    .select('id, devotional_id')
     .eq('user_id', userId)
     .gte('completed_at', `${today}T00:00:00`)
-    .lte('completed_at', `${today}T23:59:59`)
-    .limit(1);
+    .lte('completed_at', `${today}T23:59:59`);
 
   if (error) {
     console.error('Erro ao verificar devocional de hoje:', error);

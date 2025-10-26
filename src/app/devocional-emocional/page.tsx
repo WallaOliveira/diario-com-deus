@@ -63,13 +63,17 @@ export default function SessaoExpressPage() {
     const currentUser = DEV_MODE ? mockUser : user;
     if (!currentUser) return;
 
-    // VERIFICAR LIMITE: 1 devocional por dia
+    // VERIFICAR LIMITE: 1 devocional (do dia ou emocional) por dia
     const alreadyCompleted = await userCompletedToday(currentUser.id);
     if (alreadyCompleted) {
-      // Exibir mensagem de bloqueio
-      alert('Você já completou seu devocional de hoje! Volte amanhã para continuar sua jornada. 🙏');
-      router.push('/dashboard');
-      return;
+      // Verificar se está em trilha ativa
+      const trailProgress = localStorage.getItem('trilha-7-dias-paz-interior-progress');
+      if (!trailProgress) {
+        // Não está em trilha - bloquear segundo devocional
+        alert('Você já completou seu devocional de hoje! Volte amanhã para continuar sua jornada. 🙏');
+        router.push('/dashboard');
+        return;
+      }
     }
 
     setSelectedEmotion(emotion);
