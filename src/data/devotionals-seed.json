@@ -163,6 +163,51 @@
     "oracao": "Senhor, me sinto sozinho(a). Parece que Tu estás distante. Mas a Tua Palavra diz que se eu te buscar, Te encontro. Estou aqui buscando a Ti de todo meu coração. Me mostra que estás presente. Amém.",
     "versiculo_contexto": "Deus disse isso ao povo de Israel no EXÍLIO. Eles sentiam que Ele os havia esquecido. Ainda assim, Deus promete: se você me buscar de VERDADE, vai me achar.",
     "aplicacao_pratica": "Todo dia, busque Deus por 5 minutos. Não peça nada. Apenas busque SUA presença."
+  },
+  {
+    "id": "culpado-01",
+    "tema": "Culpado",
+    "emoji": "💔",
+    "tags": ["culpa", "perdão", "purificação"],
+    "audiencia": ["todas"],
+    "contexto": "Deus não apenas perdoa. Ele PURIFICA. Remove TUDO. Não sobram resíduos de culpa quando Ele me limpa.",
+    "referencia": "1 João 1:9",
+    "texto": "Se confessarmos os nossos pecados, ele é fiel e justo para nos perdoar os pecados e nos purificar de toda injustiça.",
+    "palavraViva": "Deus não apenas me perdoa. Ele me PURIFICA. Remove TUDO. Não sobram resíduos de culpa quando Ele me limpa.",
+    "acao": "Liste 3 coisas das quais se sente culpado(a). Depois de cada uma, escreva: \"Deus me perdoa e me purifica disso.\" Agora, queime ou jogue fora esse papel. Você não precisa mais carregar isso. Deus já lavou.",
+    "oracao": "Senhor, estou carregando culpa por [situações]. Mas a Tua Palavra diz que se eu confessar, Tu perdoas E purificas. Eu confesso. Eu recebo Tua limpeza. Obrigado(a) por me perdoar completamente. Amém.",
+    "versiculo_contexto": "João está falando para cristãos que pecaram DEPOIS de conhecer Jesus. A culpa esmagadora os oprimia. Mas ele lembra: Deus não só perdoa, ELE LIMPA. Perdão + purificação = zero culpa remanescente.",
+    "aplicacao_pratica": "Perdão de Deus = zero culpa. Acredite nisso."
+  },
+  {
+    "id": "grato-02",
+    "tema": "Grato",
+    "emoji": "🙏",
+    "tags": ["gratidão", "contentamento", "perspectiva"],
+    "audiencia": ["todas"],
+    "contexto": "Paulo estava escrevendo para igreja perseguida. Sem casa, sem segurança, sendo massacrados. Ainda assim diz: \"Em TUDO, dê graças.\" Não \"por tudo estar bom\", mas \"AINDA QUE seja difícil, agradeça QUE DEUS ESTÁ AQUI.\"",
+    "referencia": "1 Tessalonicenses 5:18",
+    "texto": "Em tudo dai graças, porque esta é a vontade de Deus em Cristo Jesus para convosco.",
+    "palavraViva": "Gratidão não é sobre circunstâncias perfeitas. É reconhecer que Deus está presente, mesmo em meio ao caos.",
+    "acao": "Escreva 3 coisas específicas pelas quais você É grato hoje (pode ser café quente, saúde para acordar, um sorriso). Pense em cada uma por 30 segundos. Deus está presente em cada uma.",
+    "oracao": "Senhor, obrigado(a) por [3 coisas específicas]. Perdoa-me por reclamar tanto e focar no que falta. Ajuda-me a ter olhos gratos que enxergam Tuas bênçãos todos os dias, mesmo nas coisas simples. Amém.",
+    "versiculo_contexto": "Gratidão não é sobre circunstâncias perfeitas, mas sobre reconhecer que Deus está presente mesmo em meio ao caos.",
+    "aplicacao_pratica": "Antes de dormir hoje, agradeça a Deus por 3 coisas que aconteceram. Torne isso um hábito noturno."
+  },
+  {
+    "id": "alegre-01",
+    "tema": "Alegre",
+    "emoji": "😊",
+    "tags": ["alegria", "presença", "plenitude"],
+    "audiencia": ["todas"],
+    "contexto": "Na presença de Deus há PLENITUDE de alegria. Não \"felicidade temporária\", mas alegria COMPLETA. À mão direita de Deus (lugar de honra, próximo a Deus) há DELÍCIAS para sempre.",
+    "referencia": "Salmos 16:11",
+    "texto": "Tu me farás ver os caminhos da vida; na tua presença há plenitude de alegria, à tua mão direita há delícias perpetuamente.",
+    "palavraViva": "Na presença de Deus, há alegria PLENA. Não temporária, mas COMPLETA. Delícias PERPETUAMENTE.",
+    "acao": "Reserve 5 minutos hoje para sentir a presença de Deus. Respire, feche os olhos, imagina Ele bem perto. Agora, SENTA essa alegria que vem da presença dEle.",
+    "oracao": "Deus, na Tua presença há PLENITUDE de alegria. Não temporária, completa. À Tua mão direita, delícias para sempre. Me dá mais de Tua presença hoje para sentir essa alegria. Amém.",
+    "versiculo_contexto": "Na presença de Deus há plenitude de alegria. Não temporária, mas completa. À mão direita de Deus há delícias perpetuamente.",
+    "aplicacao_pratica": "Presença de Deus = alegria plena."
   }
 ]
 
