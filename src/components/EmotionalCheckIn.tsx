@@ -19,7 +19,7 @@ export const emotions: Emotion[] = [
   { id: 'angustiado', label: 'Angustiado', emoji: '🕊️', color: colors.accent.gold },
   // Emoções boas (5) - Desejos
   { id: 'grato', label: 'Grato', emoji: '🙏', color: colors.accent.gold },
-  { id: 'esperançoso', label: 'Esperançoso', emoji: '✨', color: colors.accent.yellow },
+  { id: 'esperançoso', label: 'Esperançoso', emoji: '✨', color: colors.accent.gold },
   { id: 'alegre', label: 'Alegre', emoji: '😊', color: colors.accent.green },
   { id: 'amoroso', label: 'Amoroso', emoji: '💕', color: colors.accent.pink },
   { id: 'motivado', label: 'Motivado', emoji: '🚀', color: colors.accent.blue },
