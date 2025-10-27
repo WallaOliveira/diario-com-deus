@@ -65,34 +65,30 @@ export default function SessaoExpressPage() {
       try {
         const currentUser = DEV_MODE ? mockUser : user;
         
-        // TODO: Implementar limite diário após migrar devocionais para JSON
-        // VERIFICAR LIMITE: 1 devocional (do dia ou emocional) por dia
-        // Temporariamente desabilitado para evitar travamento
-        /*
+        // VERIFICAR LIMITE: 1 devocional (do dia ou emocional) por dia usando localStorage
         if (currentUser) {
-          try {
-            const alreadyCompleted = await userCompletedToday(currentUser.id);
-            console.log('✅ Verificação de limite:', alreadyCompleted ? 'Já completou hoje' : 'Pode completar');
+          const today = new Date().toISOString().split('T')[0];
+          const lastDevotionalKey = `last-devotional-${currentUser.id}`;
+          const lastDevotionalDate = localStorage.getItem(lastDevotionalKey);
+          
+          console.log('✅ Verificação de limite (localStorage):', lastDevotionalDate === today ? 'Já completou hoje' : 'Pode completar');
+          
+          if (lastDevotionalDate === today) {
+            // Verificar se está em trilha ativa
+            const trailProgress = localStorage.getItem('trilha-7-dias-paz-interior-progress');
+            console.log('📊 Trilha ativa:', trailProgress ? 'Sim' : 'Não');
             
-            if (alreadyCompleted) {
-              // Verificar se está em trilha ativa
-              const trailProgress = localStorage.getItem('trilha-7-dias-paz-interior-progress');
-              console.log('📊 Trilha ativa:', trailProgress ? 'Sim' : 'Não');
-              
-              if (!trailProgress) {
-                // Não está em trilha - mostrar modal amigável
-                console.log('🚫 Mostrando modal de limite');
-                setShowLimitModal(true);
-                return;
-              }
+            if (!trailProgress) {
+              // Não está em trilha - mostrar modal amigável
+              console.log('🚫 Mostrando modal de limite');
+              setShowLimitModal(true);
+              return;
             }
-          } catch (error) {
-            console.error('❌ Erro ao verificar limite:', error);
-            // Em caso de erro, permitir continuar
           }
+          
+          // Salvar data do último devocional
+          localStorage.setItem(lastDevotionalKey, today);
         }
-        */
-        console.log('📖 Carregando devocional (limite temporariamente desabilitado)');
         
         // Carrega devocional do dia (sem filtro de emoção)
         const devotionalOfDay = getDevotionalOfTheDay();
