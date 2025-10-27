@@ -12,6 +12,8 @@ interface DailyLimitModalProps {
 export default function DailyLimitModal({ isOpen, onClose }: DailyLimitModalProps) {
   const router = useRouter();
 
+  console.log('🎭 DailyLimitModal render:', isOpen ? 'VISIBLE' : 'HIDDEN');
+
   if (!isOpen) return null;
 
   const handleExploreTrilhas = () => {
