@@ -238,6 +238,51 @@
     "oracao": "Senhor, Tu me criaste com propósito. Boas obras que Tu já preparou. Me dá motivação para viver esse propósito hoje. Uso minha vida para algo MAIOR. Amém.",
     "versiculo_contexto": "Deus não te criou por acaso. Ele já preparou boas obras PARA você. Antes mesmo de você nascer.",
     "aplicacao_pratica": "Você foi criado com propósito. Viva isso hoje."
+  },
+  {
+    "id": "amoroso-01",
+    "tema": "Amoroso",
+    "emoji": "💕",
+    "tags": ["amor", "ação", "paciência"],
+    "audiencia": ["todas"],
+    "contexto": "Amor BÍBLICO não é sentimento. É AÇÃO. Paciência, benignidade, não buscar próprio interesse. Qualidade do SEU amor?",
+    "referencia": "1 Coríntios 13:4-7",
+    "texto": "O amor é paciente, é benigno; o amor não arde em ciúmes, não se ufana, não se ensoberbece; não se conduz inconvenientemente, não procura os seus interesses, não se exaspera, não se ressente do mal; não se alegra com a injustiça, mas regozija com a verdade; tudo sofre, tudo crê, tudo espera, tudo suporta.",
+    "palavraViva": "Amor verdadeiro é AÇÃO. Paciente, benigno, generoso, suporta tudo.",
+    "acao": "Para alguém que você ama hoje, faça UMA ação gentil (não apenas diga \"te amo\"). Amor = ação.",
+    "oracao": "Deus, ajuda-me a amar VERDADEIRAMENTE. Paciente, benigno, generoso. Não palavras apenas, AÇÕES. Transforma meu amor. Amém.",
+    "versiculo_contexto": "Amor bíblico não é sentimento. É ação. Paciência, benignidade, não buscar próprio interesse.",
+    "aplicacao_pratica": "Amor = ação, não sentimento apenas."
+  },
+  {
+    "id": "cansado-01",
+    "tema": "Cansado",
+    "emoji": "🌙",
+    "tags": ["descanso", "renovação", "forças"],
+    "audiencia": ["todas"],
+    "contexto": "Você está cansado? Deus te chama para descansar NEle. Não é preguiça, é confiar que Ele renova forças.",
+    "referencia": "Mateus 11:28-30",
+    "texto": "Vinde a mim, todos os que estais cansados e oprimidos, e eu vos aliviarei. Tomai sobre vós o meu jugo, e aprendei de mim, que sou manso e humilde de coração; e encontrareis descanso para as vossas almas.",
+    "palavraViva": "Jesus me chama quando estou cansado. Ele renova minhas forças. Descanso vem dele.",
+    "acao": "Hoje, quando se sentir cansado(a), pare por 5 minutos. Feche os olhos. Diga: \"Jesus, estou cansado. Renova minhas forças.\" E apenas descanse.",
+    "oracao": "Jesus, estou cansado(a) e sobrecarregado(a). Tu me chamas para descansar em Ti. Renova minhas forças. Dá-me descanso para minha alma. Amém.",
+    "versiculo_contexto": "Jesus faz este convite para pessoas sobrecarregadas. Não é vergonha estar cansado. É oportunidade de receber descanso NEle.",
+    "aplicacao_pratica": "Descanso verdadeiro vem de confiar em Cristo, não de tentar fazer tudo sozinho."
+  },
+  {
+    "id": "perdido-01",
+    "tema": "Perdido",
+    "emoji": "🔍",
+    "tags": ["direção", "propósito", "caminho"],
+    "audiencia": ["todas"],
+    "contexto": "Você está perdido, sem saber qual caminho tomar? Deus promete te guiar. Não precisa ver todo o caminho, só o próximo passo.",
+    "referencia": "Isaías 42:16",
+    "texto": "Farei que os cegos andem pelo caminho que nunca trilharam; conduzi-los-ei por veredas que não conheciam; tornarei as trevas em luz diante deles, e tornarei tortuoso em planície. Estas coisas farei, e não as desampararei.",
+    "palavraViva": "Deus me conduz por caminho que não conheço. Transforma trevas em luz. Tornam tortuoso em plano. Não me abandona.",
+    "acao": "Se você está perdido hoje, escreva: \"Deus me guia. Ele transforma trevas em luz. Eu confio Nele para me mostrar o caminho.\"",
+    "oracao": "Senhor, estou perdido. Não sei qual caminho tomar. Mas Tu prometeste me conduzir por caminho que não conheço. Transformar trevas em luz. Me guia hoje. Amém.",
+    "versiculo_contexto": "Deus promete guiar até os cegos por caminho que não conheciam. Ele transforma trevas em luz, torna o difícil em fácil.",
+    "aplicacao_pratica": "Você não está realmente perdido se Deus está guiando. Confie no próximo passo."
   }
 ]
 
