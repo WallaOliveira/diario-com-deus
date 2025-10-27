@@ -64,26 +64,37 @@ export default function SessaoExpressPage() {
   }, [checkUser]);
 
   const handleEmotionSelect = async (emotion: string) => {
+    console.log('💙 Emoção selecionada:', emotion);
     const currentUser = DEV_MODE ? mockUser : user;
-    if (!currentUser) return;
+    if (!currentUser) {
+      console.log('❌ Sem usuário');
+      return;
+    }
 
     // VERIFICAR LIMITE: 1 devocional (do dia ou emocional) por dia
     const alreadyCompleted = await userCompletedToday(currentUser.id);
+    console.log('✅ Verificação de limite:', alreadyCompleted ? 'Já completou hoje' : 'Pode completar');
+    
     if (alreadyCompleted) {
       // Verificar se está em trilha ativa
       const trailProgress = localStorage.getItem('trilha-7-dias-paz-interior-progress');
+      console.log('📊 Trilha ativa:', trailProgress ? 'Sim' : 'Não');
+      
       if (!trailProgress) {
         // Não está em trilha - mostrar modal amigável
+        console.log('🚫 Mostrando modal de limite');
         setShowLimitModal(true);
         return;
       }
     }
 
+    console.log('📝 Configurando devocional emocional');
     setSelectedEmotion(emotion);
     setShowCheckIn(false);
     
     // Carrega devocional filtrado por emoção
     const devotionalOfDay = getDevotionalOfTheDay(emotion);
+    console.log('📖 Devocional carregado:', devotionalOfDay?.tema);
     setDevocional(devotionalOfDay);
   
     // Track devocional iniciado
