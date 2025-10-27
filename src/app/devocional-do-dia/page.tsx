@@ -62,43 +62,52 @@ export default function SessaoExpressPage() {
 
   useEffect(() => {
     const loadDevotional = async () => {
-      const currentUser = DEV_MODE ? mockUser : user;
-      
-      // VERIFICAR LIMITE: 1 devocional (do dia ou emocional) por dia
-      if (currentUser) {
-        const alreadyCompleted = await userCompletedToday(currentUser.id);
-        console.log('✅ Verificação de limite:', alreadyCompleted ? 'Já completou hoje' : 'Pode completar');
+      try {
+        const currentUser = DEV_MODE ? mockUser : user;
         
-        if (alreadyCompleted) {
-          // Verificar se está em trilha ativa
-          const trailProgress = localStorage.getItem('trilha-7-dias-paz-interior-progress');
-          console.log('📊 Trilha ativa:', trailProgress ? 'Sim' : 'Não');
-          
-          if (!trailProgress) {
-            // Não está em trilha - mostrar modal amigável
-            console.log('🚫 Mostrando modal de limite');
-            setShowLimitModal(true);
-            return;
+        // VERIFICAR LIMITE: 1 devocional (do dia ou emocional) por dia
+        if (currentUser) {
+          try {
+            const alreadyCompleted = await userCompletedToday(currentUser.id);
+            console.log('✅ Verificação de limite:', alreadyCompleted ? 'Já completou hoje' : 'Pode completar');
+            
+            if (alreadyCompleted) {
+              // Verificar se está em trilha ativa
+              const trailProgress = localStorage.getItem('trilha-7-dias-paz-interior-progress');
+              console.log('📊 Trilha ativa:', trailProgress ? 'Sim' : 'Não');
+              
+              if (!trailProgress) {
+                // Não está em trilha - mostrar modal amigável
+                console.log('🚫 Mostrando modal de limite');
+                setShowLimitModal(true);
+                return;
+              }
+            }
+          } catch (error) {
+            console.error('❌ Erro ao verificar limite:', error);
+            // Em caso de erro, permitir continuar
           }
         }
-      }
-      
-      // Carrega devocional do dia (sem filtro de emoção)
-      const devotionalOfDay = getDevotionalOfTheDay();
-      console.log('📖 Devocional carregado:', devotionalOfDay?.tema);
-      setDevocional(devotionalOfDay);
-      
-      // Track devocional iniciado
-      if (devotionalOfDay) {
-        analytics.devotionalStarted(devotionalOfDay.tema);
-      }
+        
+        // Carrega devocional do dia (sem filtro de emoção)
+        const devotionalOfDay = getDevotionalOfTheDay();
+        console.log('📖 Devocional carregado:', devotionalOfDay?.tema);
+        setDevocional(devotionalOfDay);
+        
+        // Track devocional iniciado
+        if (devotionalOfDay) {
+          analytics.devotionalStarted(devotionalOfDay.tema);
+        }
 
-      // Mostrar modal RESPIRA apenas se não foi mostrado hoje
-      showRespiraModal();
+        // Mostrar modal RESPIRA apenas se não foi mostrado hoje
+        showRespiraModal();
+      } catch (error) {
+        console.error('❌ Erro ao carregar devocional:', error);
+      }
     };
     
     loadDevotional();
-  }, [user, router]); // REMOVIDO showRespiraModal para evitar loop infinito
+  }, [user, router]);
 
   useEffect(() => {
     if (!DEV_MODE && user === null) {
