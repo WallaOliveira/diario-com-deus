@@ -86,8 +86,8 @@ export default function SessaoExpressPage() {
             }
           }
           
-          // Salvar data do último devocional
-          localStorage.setItem(lastDevotionalKey, today);
+          // NÃO salvar aqui - apenas verificar
+          // Será salvo quando COMPLETAR o devocional
         }
         
         // Carrega devocional do dia (sem filtro de emoção)
@@ -161,6 +161,11 @@ export default function SessaoExpressPage() {
         
         // Salvar timestamp de atividade para controle de conquistas
         localStorage.setItem('last_activity_timestamp', Date.now().toString());
+        
+        // Salvar data do último devocional completado (para limite diário)
+        const today = new Date().toISOString().split('T')[0];
+        const lastDevotionalKey = `last-devotional-${currentUser.id}`;
+        localStorage.setItem(lastDevotionalKey, today);
         
         // Mostrar toast de celebração
         setToastData({
