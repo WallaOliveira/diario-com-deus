@@ -71,22 +71,9 @@ export default function SessaoExpressPage() {
       return;
     }
 
-    // VERIFICAR LIMITE: 1 devocional (do dia ou emocional) por dia
-    const alreadyCompleted = await userCompletedToday(currentUser.id);
-    console.log('✅ Verificação de limite:', alreadyCompleted ? 'Já completou hoje' : 'Pode completar');
-    
-    if (alreadyCompleted) {
-      // Verificar se está em trilha ativa
-      const trailProgress = localStorage.getItem('trilha-7-dias-paz-interior-progress');
-      console.log('📊 Trilha ativa:', trailProgress ? 'Sim' : 'Não');
-      
-      if (!trailProgress) {
-        // Não está em trilha - mostrar modal amigável
-        console.log('🚫 Mostrando modal de limite');
-        setShowLimitModal(true);
-        return;
-      }
-    }
+    // TODO: Implementar limite diário após migrar devocionais para JSON
+    // VERIFICAR LIMITE: Temporariamente desabilitado
+    // const alreadyCompleted = await userCompletedToday(currentUser.id);
 
     console.log('📝 Configurando devocional emocional');
     setSelectedEmotion(emotion);

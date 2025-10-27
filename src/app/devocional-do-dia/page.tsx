@@ -65,7 +65,10 @@ export default function SessaoExpressPage() {
       try {
         const currentUser = DEV_MODE ? mockUser : user;
         
+        // TODO: Implementar limite diário após migrar devocionais para JSON
         // VERIFICAR LIMITE: 1 devocional (do dia ou emocional) por dia
+        // Temporariamente desabilitado para evitar travamento
+        /*
         if (currentUser) {
           try {
             const alreadyCompleted = await userCompletedToday(currentUser.id);
@@ -88,6 +91,8 @@ export default function SessaoExpressPage() {
             // Em caso de erro, permitir continuar
           }
         }
+        */
+        console.log('📖 Carregando devocional (limite temporariamente desabilitado)');
         
         // Carrega devocional do dia (sem filtro de emoção)
         const devotionalOfDay = getDevotionalOfTheDay();
