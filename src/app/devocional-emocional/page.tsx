@@ -71,27 +71,7 @@ export default function SessaoExpressPage() {
       return;
     }
 
-    // VERIFICAR LIMITE: 1 devocional (do dia ou emocional) por dia usando localStorage
-    const today = new Date().toISOString().split('T')[0];
-    const lastDevotionalKey = `last-devotional-${currentUser.id}`;
-    const lastDevotionalDate = localStorage.getItem(lastDevotionalKey);
-    
-    console.log('✅ Verificação de limite (localStorage):', lastDevotionalDate === today ? 'Já completou hoje' : 'Pode completar');
-    
-    if (lastDevotionalDate === today) {
-      // Verificar se está em trilha ativa
-      const trailProgress = localStorage.getItem('trilha-7-dias-paz-interior-progress');
-      console.log('📊 Trilha ativa:', trailProgress ? 'Sim' : 'Não');
-      
-      if (!trailProgress) {
-        // Não está em trilha - mostrar modal amigável
-        console.log('🚫 Mostrando modal de limite');
-        setShowLimitModal(true);
-        return;
-      }
-    }
-    
-    // NÃO salvar aqui - será salvo quando COMPLETAR o devocional
+    // SEM verificação de limite - permitir abrir
     
     console.log('📝 Configurando devocional emocional');
     setSelectedEmotion(emotion);
