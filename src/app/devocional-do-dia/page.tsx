@@ -98,7 +98,7 @@ export default function SessaoExpressPage() {
     };
     
     loadDevotional();
-  }, [user, router, showRespiraModal]);
+  }, [user, router]); // REMOVIDO showRespiraModal para evitar loop infinito
 
   useEffect(() => {
     if (!DEV_MODE && user === null) {
