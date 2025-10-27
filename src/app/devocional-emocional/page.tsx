@@ -17,7 +17,7 @@ import { FontSizeControls } from '@/components/FontSizeControls';
 import DailyLimitModal from '@/components/DailyLimitModal';
 import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
 import { analytics } from '@/lib/analytics';
-import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite, getRandomDevotionalByTheme, userCompletedToday } from '@/lib/database';
+import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite, userCompletedToday } from '@/lib/database';
 import { colors, typography, spacing } from '@/lib/design-system';
 
 // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
@@ -82,13 +82,13 @@ export default function SessaoExpressPage() {
     setSelectedEmotion(emotion);
     setShowCheckIn(false);
     
-    // Carrega devocional filtrado por emoção (com userId para não repetir)
-    const devotionalOfDay = await getRandomDevotionalByTheme(emotion, currentUser.id);
+    // Carrega devocional filtrado por emoção
+    const devotionalOfDay = getDevotionalOfTheDay(emotion);
     setDevocional(devotionalOfDay);
   
     // Track devocional iniciado
     if (devotionalOfDay) {
-      analytics.devotionalStarted(devotionalOfDay.theme);
+      analytics.devotionalStarted(devotionalOfDay.tema);
     }
     
     // Mostrar modal RESPIRA apenas se não foi mostrado hoje

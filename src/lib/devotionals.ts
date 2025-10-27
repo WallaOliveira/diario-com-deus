@@ -66,18 +66,31 @@ export function getDevotionalOfTheDay(emotion?: string): Devotional {
   // Se tem emoção, filtrar por emoção
   if (emotion) {
     const filteredByEmotion = devotionals.filter(d => {
-      // Verificar se alguma tag corresponde à emoção
+      // Mapear emoções para tags e tema
       const emotionMap: { [key: string]: string[] } = {
         'ansioso': ['ansiedade', 'ansioso'],
-        'grato': ['gratidão', 'grato'],
-        'cansado': ['cansado', 'descanso'],
-        'esperançoso': ['esperança', 'esperançoso'],
-        'triste': ['triste', 'luto'],
-        'alegre': ['alegria', 'celebração']
+        'solitario': ['solidão', 'solitário', 'sozinho'],
+        'culpado': ['culpa', 'culpado', 'pecado'],
+        'perdido': ['perdido', 'direção', 'propósito'],
+        'cansado': ['cansado', 'descanso', 'esgotado'],
+        'inseguro': ['insegurança', 'inseguro', 'confiança'],
+        'angustiado': ['angústia', 'angustiado', 'dor'],
+        'grato': ['gratidão', 'grato', 'agradecer'],
+        'esperançoso': ['esperança', 'esperançoso', 'futuro'],
+        'alegre': ['alegria', 'alegre', 'celebração'],
+        'amoroso': ['amor', 'amoroso', 'relacionamento'],
+        'motivado': ['motivação', 'motivado', 'propósito']
       };
       
       const emotionTags = emotionMap[emotion] || [];
-      return d.tags.some(tag => emotionTags.some(eTag => tag.toLowerCase().includes(eTag.toLowerCase())));
+      
+      // Verificar se tema ou tags correspondem à emoção
+      const temaMatch = d.tema.toLowerCase().includes(emotion.toLowerCase());
+      const tagsMatch = d.tags.some(tag => 
+        emotionTags.some(eTag => tag.toLowerCase().includes(eTag.toLowerCase()))
+      );
+      
+      return temaMatch || tagsMatch;
     });
     
     // Se encontrou devocional com essa emoção, usar
