@@ -429,25 +429,22 @@ export default function ProgressoPage() {
     // Adicionar dias do mês atual
     for (let dia = 1; dia <= ultimoDiaMes.getDate(); dia++) {
       const dataAtual = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), dia);
-  const hoje = new Date();
+      const hoje = new Date();
       const isHoje = dataAtual.toDateString() === hoje.toDateString();
       const isPassado = dataAtual < hoje;
       
-      // Simular usuário novo - sem devocionais completados
-      const isCompleted = false;
-      
-      // Adicionar devocional para alguns dias específicos
+      // Verificar se há devocional para esta data
       const dataStr = dataAtual.toISOString().split('T')[0];
-      if ((devocionaisPorData as any)[dataStr]) {
-        // Já existe devocional para esta data
-      }
+      const devocionalParaData = devocionaisCalendario[dataStr];
+      const isCompleted = !!devocionalParaData;
       
       dias.push({
         day: dia,
         date: dataAtual,
         isCompleted,
         isHoje,
-        isPassado
+        isPassado,
+        devocional: devocionalParaData
       });
     }
     
@@ -457,9 +454,9 @@ export default function ProgressoPage() {
   // Função para abrir modal de devocional
   const abrirModalDevocional = (data: string) => {
     console.log('Tentando abrir devocional para data:', data);
-    console.log('Devocionais disponíveis:', Object.keys(devocionaisPorData));
+    console.log('Devocionais disponíveis:', Object.keys(devocionaisCalendario));
     
-    const devocional = (devocionaisPorData as any)[data];
+    const devocional = devocionaisCalendario[data];
     if (devocional) {
       console.log('Devocional encontrado:', devocional);
       setModalDevocional({
