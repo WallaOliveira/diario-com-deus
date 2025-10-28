@@ -868,7 +868,28 @@ export default function ProgressoPage() {
                         >
                           {dia.day}
                           </button>
-                          {/* Marcação de favoritos */}
+                          
+                          {/* Indicador de favorito */}
+                          {dia.isCompleted && dia.devocional?.isFavorited && (
+                            <div 
+                              className="absolute -top-1 -right-1 w-3 h-3 rounded-full"
+                              style={{ background: colors.accent.gold }}
+                            >
+                              <FiHeart size={8} className="text-white m-0.5" />
+                            </div>
+                          )}
+                          
+                          {/* Indicador de trilha */}
+                          {dia.isCompleted && dia.devocional?.type === 'trail' && (
+                            <div 
+                              className="absolute -top-1 -left-1 w-3 h-3 rounded-full"
+                              style={{ background: colors.accent.purple }}
+                            >
+                              <span className="text-white text-[8px] font-bold">T</span>
+                            </div>
+                          )}
+                          
+                          {/* Marcação de favoritos (legado) */}
                           {dia.isCompleted && diaTemFavoritos(dia.date.toISOString().split('T')[0]) && (
                             <button
                               onClick={(e) => {
