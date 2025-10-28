@@ -50,8 +50,45 @@ export default function ProgressoPage() {
   // Em modo DEV, usar mockUser
   const currentUser = DEV_MODE ? mockUser : user;
 
-  // Mock de devocionais por data (fallback simplificado)
-  const devocionaisPorDataMock: Record<string, any> = {};
+  // Mock de devocionais por data (fallback para DEV_MODE)
+  const devocionaisPorDataMock: Record<string, any> = {
+    '2025-10-27': {
+      id: 'dev-2025-10-27',
+      title: 'Gratidão Transforma Perspectiva',
+      verse: 'Em tudo dai graças, porque esta é a vontade de Deus em Cristo Jesus para convosco.',
+      reference: '1 Tessalonicenses 5:18',
+      reflection: 'Gratidão não é sobre circunstâncias perfeitas. É reconhecer que Deus está presente, mesmo em meio ao caos.',
+      prayer: 'Senhor, obrigado(a) por [3 coisas específicas]. Perdoa-me por reclamar tanto e focar no que falta.',
+      action: 'Escreva 3 coisas específicas pelas quais você é grato hoje',
+      date: '27 de Outubro, 2025',
+      isFavorited: false,
+      type: 'devotional'
+    },
+    '2025-10-26': {
+      id: 'dev-2025-10-26',
+      title: 'Paz que Excede',
+      verse: 'Não andeis ansiosos de coisa alguma; em tudo, porém, sejam conhecidas diante de Deus as vossas petições.',
+      reference: 'Filipenses 4:6-7',
+      reflection: 'A paz de Deus não é ausência de problemas, mas presença de Deus no meio deles.',
+      prayer: 'Pai, entrego minha ansiedade sobre [situação]. Enche meu coração com Tua paz.',
+      action: 'Respire fundo 3 vezes e diga: Deus cuida de mim',
+      date: '26 de Outubro, 2025',
+      isFavorited: true,
+      type: 'devotional'
+    },
+    '2025-10-25': {
+      id: 'trilha-paz-dia-1',
+      title: 'Respire e Confie',
+      verse: 'Aquietai-vos e sabei que eu sou Deus',
+      reference: 'Salmo 46:10',
+      reflection: 'Deus não está pedindo para você resolver tudo sozinho. Ele está dizendo: Pare. Respire. Eu cuido de você.',
+      prayer: 'Pai, ensina-me a parar e confiar em Ti. Ajuda-me a descansar na Tua paz.',
+      action: 'Hoje, quando sentir ansiedade, pare por 30 segundos e respire',
+      date: '25 de Outubro, 2025',
+      isFavorited: false,
+      type: 'trail'
+    }
+  };
 
   // Usar dados reais se disponíveis, senão usar mock
   const devocionaisCalendario = progressoReal.length > 0 
