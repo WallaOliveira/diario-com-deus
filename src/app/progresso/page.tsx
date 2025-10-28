@@ -12,7 +12,7 @@ import { colors, typography, spacing } from '@/lib/design-system';
 import { getMotivationalMessage, getProgressLevel, getProgressLevelMessage, getEngagementMessage } from '@/lib/motivational-messages';
 import ModalDevocional from '@/components/ModalDevocional';
 import Loading from '@/components/Loading';
-import { addFavorite, removeFavorite, getUserFavorites } from '@/lib/database';
+import { addFavorite, removeFavorite, getUserFavorites, getUserProgress, getUserFavoritesList } from '@/lib/database';
 
 // 🚧 MODO DESENVOLVIMENTO - Bypass de autenticação
 const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
@@ -41,12 +41,106 @@ export default function ProgressoPage() {
     devocional: any | null;
   }>({ isOpen: false, devocional: null });
   const [modalFavoritos, setModalFavoritos] = useState(false);
+  
+  // Novos estados para dados reais do Supabase
+  const [progressoReal, setProgressoReal] = useState<any[]>([]);
+  const [favoritosReais, setFavoritosReais] = useState<any[]>([]);
+  const [carregandoDados, setCarregandoDados] = useState(false);
 
   // Em modo DEV, usar mockUser
   const currentUser = DEV_MODE ? mockUser : user;
 
-  // Mock de devocionais por data
-  const devocionaisPorData = {
+  // Usar dados reais se disponíveis, senão usar mock
+  // (definido antes de usar na função)
+  const devocionaisCalendario = progressoReal.length > 0 
+    ? (() => {
+        const devocionaisPorDataReal: Record<string, any> = {};
+        
+        progressoReal.forEach(item => {
+          if (!item.completed_at) return;
+          
+          const dataCompleta = new Date(item.completed_at);
+          const ano = dataCompleta.getFullYear();
+          const mes = String(dataCompleta.getMonth() + 1).padStart(2, '0');
+          const dia = String(dataCompleta.getDate()).padStart(2, '0');
+          const chave = `${ano}-${mes}-${dia}`;
+          
+          // Verificar se foi favoritado
+          const isFavorited = favoritosReais.some(
+            fav => fav.devotional_id === item.devotional_id
+          );
+          
+          // Detectar se é trilha
+          const isTrail = item.devotional_id?.startsWith('trilha-');
+          
+          devocionaisPorDataReal[chave] = {
+            id: item.devotional_id,
+            title: item.devotionals?.tema || item.devotionals?.tema || 'Devocional',
+            verse: item.devotionals?.texto || item.personal_notes || '',
+            reference: item.devotionals?.referencia || '',
+            reflection: item.devotionals?.palavraViva || item.personal_notes || '',
+            prayer: item.devotionals?.oracao || '',
+            action: item.devotionals?.acao || '',
+            date: dataCompleta.toLocaleDateString('pt-BR', { 
+              day: '2-digit', 
+              month: '2-digit', 
+              year: 'numeric' 
+            }),
+            isFavorited: isFavorited,
+            type: isTrail ? 'trail' : 'devotional',
+            completedAt: item.completed_at
+          };
+        });
+        
+        return devocionaisPorDataReal;
+      })()
+    : devocionaisPorDataMock;
+
+  // Função para transformar dados reais em formato de calendário (ETAPA 2)
+  const transformarDadosParaCalendario = (progresso: any[]) => {
+    const devocionaisPorDataReal: Record<string, any> = {};
+    
+    progresso.forEach(item => {
+      if (!item.completed_at) return;
+      
+      const dataCompleta = new Date(item.completed_at);
+      const ano = dataCompleta.getFullYear();
+      const mes = String(dataCompleta.getMonth() + 1).padStart(2, '0');
+      const dia = String(dataCompleta.getDate()).padStart(2, '0');
+      const chave = `${ano}-${mes}-${dia}`;
+      
+      // Verificar se foi favoritado
+      const isFavorited = favoritosReais.some(
+        fav => fav.devotional_id === item.devotional_id
+      );
+      
+      // Detectar se é trilha
+      const isTrail = item.devotional_id?.startsWith('trilha-');
+      
+      devocionaisPorDataReal[chave] = {
+        id: item.devotional_id,
+        title: item.devotionals?.tema || item.devotionals?.tema || 'Devocional',
+        verse: item.devotionals?.texto || item.personal_notes || '',
+        reference: item.devotionals?.referencia || '',
+        reflection: item.devotionals?.palavraViva || item.personal_notes || '',
+        prayer: item.devotionals?.oracao || '',
+        action: item.devotionals?.acao || '',
+        date: dataCompleta.toLocaleDateString('pt-BR', { 
+          day: '2-digit', 
+          month: '2-digit', 
+          year: 'numeric' 
+        }),
+        isFavorited: isFavorited,
+        type: isTrail ? 'trail' : 'devotional',
+        completedAt: item.completed_at
+      };
+    });
+    
+    return devocionaisPorDataReal;
+  };
+
+  // Mock de devocionais por data (fallback)
+  const devocionaisPorDataMock = {
     '2025-10-14': {
       id: 'dev-2025-10-14',
       title: 'A Fé que Move Montanhas',
@@ -140,19 +234,51 @@ export default function ProgressoPage() {
 
   useEffect(() => {
     if (!DEV_MODE) {
-      checkUser();
+    checkUser();
     } else {
       // Em modo DEV, definir loading como true para permitir carregamento
       setDadosCarregados(false);
     }
   }, [checkUser]);
 
+  // Carregar dados reais do Supabase (ETAPA 1)
+  useEffect(() => {
+    const carregarDados = async () => {
+      if (!currentUser) return;
+      
+      setCarregandoDados(true);
+      
+      try {
+        // Buscar progresso real
+        const progress = await getUserProgress(currentUser.id);
+        console.log('📊 Progresso carregado:', progress);
+        setProgressoReal(progress);
+        
+        // Buscar favoritos reais
+        const favoritos = await getUserFavoritesList(currentUser.id);
+        console.log('💙 Favoritos carregados:', favoritos);
+        setFavoritosReais(favoritos);
+        
+        setDadosCarregados(true);
+      } catch (error) {
+        console.error('❌ Erro ao carregar dados:', error);
+      } finally {
+        setCarregandoDados(false);
+      }
+    };
+    
+    carregarDados();
+  }, [currentUser]);
+
   // Listener para novos favoritos
   useEffect(() => {
     const handleFavoriteAdded = async (event: CustomEvent) => {
       console.log('🔄 Novo favorito detectado:', event.detail);
       // Recarregar favoritos quando um novo for adicionado
-      await carregarFavoritosReais();
+      if (currentUser) {
+        const favoritos = await getUserFavoritesList(currentUser.id);
+        setFavoritosReais(favoritos);
+      }
       console.log('✅ Favoritos recarregados na página de progresso!');
     };
 
@@ -161,23 +287,23 @@ export default function ProgressoPage() {
     return () => {
       window.removeEventListener('favoriteAdded', handleFavoriteAdded as unknown as EventListener);
     };
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
     const loadData = async () => {
-      if (!DEV_MODE && !loading && !user) {
-        router.push('/login');
-      } else if (currentUser?.id) {
-        // Em modo DEV, não carregar dados do Supabase
-        if (DEV_MODE) {
-          // Simular dados carregados
-          setTimeout(() => {
-            setDadosCarregados(true);
-            carregarEmocaoSelecionada();
-          }, 500);
-        } else {
-          await loadStats(currentUser.id);
+    if (!DEV_MODE && !loading && !user) {
+      router.push('/login');
+    } else if (currentUser?.id) {
+      // Em modo DEV, não carregar dados do Supabase
+      if (DEV_MODE) {
+        // Simular dados carregados
+        setTimeout(() => {
+          setDadosCarregados(true);
           carregarEmocaoSelecionada();
+          }, 500);
+      } else {
+          await loadStats(currentUser.id);
+        carregarEmocaoSelecionada();
           setDadosCarregados(true);
         }
       }
@@ -391,19 +517,19 @@ export default function ProgressoPage() {
         });
         
         if (result.success) {
-          // Atualizar estado do devocional
+    // Atualizar estado do devocional
           const devocionalAtualizado = { ...devocional, isFavorited: true };
-          
-          // Atualizar dados mock
-          const dataKey = devocional.id.split('-').slice(1).join('-');
+    
+    // Atualizar dados mock
+    const dataKey = devocional.id.split('-').slice(1).join('-');
           (devocionaisPorData as any)[dataKey] = devocionalAtualizado;
-          
-          // Atualizar modal
-          setModalDevocional({
-            isOpen: true,
-            devocional: devocionalAtualizado
-          });
-          
+    
+    // Atualizar modal
+    setModalDevocional({
+      isOpen: true,
+      devocional: devocionalAtualizado
+    });
+    
           // Atualizar lista de favoritos
           setFavoritos(prev => {
             const jaExiste = prev.some(fav => fav.id === devocionalAtualizado.id);
@@ -524,14 +650,14 @@ export default function ProgressoPage() {
                 style={{ color: colors.accent.gold }}
               >
                 {stats.current_streak || 0}
-              </div>
-              <div 
+                    </div>
+                <div 
                 className="text-sm"
                 style={{ color: colors.text.whiteMuted }}
-              >
+                >
                 Dias consecutivos
-              </div>
-            </div>
+                  </div>
+                </div>
 
             {/* Total de Devocionais */}
             <div 
@@ -548,15 +674,15 @@ export default function ProgressoPage() {
                 style={{ color: colors.accent.blue }}
               >
                 {stats.total_moments || 0}
-              </div>
-              <div 
+                    </div>
+                <div 
                 className="text-sm"
                 style={{ color: colors.text.whiteMuted }}
-              >
+                >
                 Devocionais concluídos
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
         )}
 
         {/* Meus Momentos com Deus - Seção Unificada */}
@@ -575,7 +701,7 @@ export default function ProgressoPage() {
             }}>
               <span className="text-xl sm:text-2xl">🙏</span>
             </div>
-            <div>
+                    <div>
               <h3 
                 className="font-bold mb-1"
                 style={{ 
@@ -585,7 +711,7 @@ export default function ProgressoPage() {
                 }}
               >
                 Meus Momentos com Deus
-              </h3>
+                      </h3>
               <p 
                 style={{ 
                   fontFamily: typography.sans,
@@ -595,8 +721,8 @@ export default function ProgressoPage() {
               >
                 Seu histórico e momentos especiais salvos
               </p>
-            </div>
-          </div>
+                    </div>
+                  </div>
 
           {/* Calendário de Progresso */}
           <div 
@@ -712,38 +838,38 @@ export default function ProgressoPage() {
                         <div className="w-10 h-10 sm:w-8 sm:h-8" />
                       ) : (
                         <div className="relative">
-                          <button
-                            onClick={() => {
-                              if (dia.isCompleted) {
-                                const dataStr = dia.date.toISOString().split('T')[0];
-                                abrirModalDevocional(dataStr);
-                              }
-                            }}
-                            className={`
+                        <button
+                          onClick={() => {
+                            if (dia.isCompleted) {
+                              const dataStr = dia.date.toISOString().split('T')[0];
+                              abrirModalDevocional(dataStr);
+                            }
+                          }}
+                          className={`
                               w-10 h-10 sm:w-8 sm:h-8 rounded-full flex items-center justify-center mx-auto text-sm sm:text-xs font-medium
-                              transition-all duration-200
-                              ${dia.isHoje ? 'ring-2 ring-blue-400' : ''}
-                              ${dia.isCompleted ? 'cursor-pointer hover:scale-110' : 'cursor-default'}
-                            `}
-                            style={{
-                              background: dia.isCompleted 
-                                ? colors.accent.green 
-                                : dia.isHoje 
-                                  ? colors.accent.blue 
-                                  : dia.isPassado 
-                                    ? 'rgba(255, 255, 255, 0.1)' 
-                                    : 'rgba(255, 255, 255, 0.05)',
-                              border: dia.isCompleted 
-                                ? `2px solid ${colors.accent.green}` 
-                                : dia.isHoje 
-                                  ? `2px solid ${colors.accent.blue}` 
-                                  : `1px solid ${colors.border}`,
-                              color: dia.isCompleted || dia.isHoje 
-                                ? colors.text.white 
-                                : colors.text.whiteMuted
-                            }}
-                          >
-                            {dia.day}
+                            transition-all duration-200
+                            ${dia.isHoje ? 'ring-2 ring-blue-400' : ''}
+                            ${dia.isCompleted ? 'cursor-pointer hover:scale-110' : 'cursor-default'}
+                          `}
+                          style={{
+                            background: dia.isCompleted 
+                              ? colors.accent.green 
+                              : dia.isHoje 
+                                ? colors.accent.blue 
+                                : dia.isPassado 
+                                  ? 'rgba(255, 255, 255, 0.1)' 
+                                  : 'rgba(255, 255, 255, 0.05)',
+                            border: dia.isCompleted 
+                              ? `2px solid ${colors.accent.green}` 
+                              : dia.isHoje 
+                                ? `2px solid ${colors.accent.blue}` 
+                                : `1px solid ${colors.border}`,
+                            color: dia.isCompleted || dia.isHoje 
+                              ? colors.text.white 
+                              : colors.text.whiteMuted
+                          }}
+                        >
+                          {dia.day}
                           </button>
                           {/* Marcação de favoritos */}
                           {dia.isCompleted && diaTemFavoritos(dia.date.toISOString().split('T')[0]) && (
@@ -762,7 +888,7 @@ export default function ProgressoPage() {
                               title={`${obterFavoritosDoDia(dia.date.toISOString().split('T')[0]).length} favorito(s) - Clique para ver`}
                             >
                               <span className="text-xs">❤️</span>
-                            </button>
+                        </button>
                           )}
                         </div>
                       )}
@@ -824,9 +950,9 @@ export default function ProgressoPage() {
               >
                 Toque para ver o calendário completo
               </p>
-            )}
-          </div>
-        </div>
+                        )}
+                      </div>
+                    </div>
 
         {/* Trilhas Feitas - Seção Secundária */}
         <div 
@@ -1064,19 +1190,19 @@ export default function ProgressoPage() {
                     )}
                 >
                   <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <div className="text-2xl">⭐</div>
-                      <div className="flex-1">
-                        <h4 
+                      <div className="flex items-start gap-3">
+                        <div className="text-2xl">⭐</div>
+                        <div className="flex-1">
+                          <h4 
                           className="font-semibold mb-2"
-                          style={{ 
-                            fontFamily: typography.serif,
-                            color: colors.text.white,
+                              style={{ 
+                                fontFamily: typography.serif,
+                              color: colors.text.white,
                             fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
-                          }}
-                        >
-                          {favorito.title}
-                        </h4>
+                              }}
+                            >
+                            {favorito.title}
+                            </h4>
                         <p 
                           className="text-sm mb-2"
                           style={{ 
@@ -1098,18 +1224,18 @@ export default function ProgressoPage() {
                         >
                           "{favorito.verse}"
                         </div>
-                        <p 
-                          className="text-xs"
-                          style={{ 
-                            fontFamily: typography.sans,
+                            <p 
+                            className="text-xs"
+                              style={{ 
+                                fontFamily: typography.sans,
                             color: colors.accent.purple,
                             fontSize: 'calc(var(--font-size-base, 1rem) * 0.875)'
-                          }}
-                        >
+                              }}
+                            >
                           📖 {favorito.reference}
-                        </p>
-                      </div>
+                      </p>
                     </div>
+                  </div>
                       <div className="flex items-center gap-2">
                         <span 
                           className="text-xs px-2 py-1 rounded-full"
