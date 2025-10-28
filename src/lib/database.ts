@@ -305,6 +305,48 @@ export async function userCompletedToday(userId: string): Promise<boolean> {
   return (data?.length || 0) > 0;
 }
 
+/**
+ * Buscar progresso do usuário (devocionais completados)
+ */
+export async function getUserProgress(userId: string): Promise<any[]> {
+  const { data, error } = await supabase
+    .from('user_progress')
+    .select(`
+      *,
+      devotionals (*)
+    `)
+    .eq('user_id', userId)
+    .order('completed_at', { ascending: false });
+
+  if (error) {
+    console.error('Erro ao buscar progresso:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
+ * Buscar favoritos do usuário
+ */
+export async function getUserFavoritesList(userId: string): Promise<any[]> {
+  const { data, error } = await supabase
+    .from('user_favorites')
+    .select(`
+      *,
+      devotionals (*)
+    `)
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Erro ao buscar favoritos:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
 // ================================================
 // USER STATS
 // ================================================
