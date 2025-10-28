@@ -477,22 +477,13 @@ export default function TrilhaDinamicaPage({ params }: { params: { id: string } 
           </div>
         )}
 
-        {/* Step 2: REFLEXÃO - Reflexão Guiada */}
+        {/* Step 2: PALAVRA VIVA - Reflexão Guiada */}
         {step === 2 && (
           <div className="animate-fadeIn space-y-6">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-white mb-2">
-                💡 Reflexão
+                💡 Palavra Viva
               </h2>
-              <p 
-                className="text-white/80"
-                style={{ 
-                  fontFamily: typography.sans,
-                  fontSize: 'var(--font-size-base, 1rem)'
-                }}
-              >
-                {diaData.titulo}
-              </p>
             </div>
 
             <div 
@@ -673,20 +664,11 @@ export default function TrilhaDinamicaPage({ params }: { params: { id: string } 
 
               <button
                 onClick={() => handleSaveFavorite(diaData.texto, 'verse', diaData.referencia)}
-                className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors"
+                className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors mb-4"
                 style={{ fontFamily: typography.sans }}
               >
                 <FiHeart size={18} />
-                <span>Favoritar este dia</span>
-              </button>
-              
-              <button
-                onClick={() => handleSaveFavorite(diaData.palavraViva, 'reflection', undefined)}
-                className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-white/10 text-white border border-white/20 rounded-xl hover:bg-white/20 transition-colors"
-                style={{ fontFamily: typography.sans }}
-              >
-                <FiHeart size={18} />
-                <span>Favoritar reflexão</span>
+                <span>Favoritar esse Devocional</span>
               </button>
 
             <div className="flex gap-3">

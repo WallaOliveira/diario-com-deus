@@ -622,7 +622,7 @@ export default function TrilhaPazInteriorPage() {
               style={{ fontFamily: typography.sans }}
             >
               <FiHeart size={18} />
-              <span>Favoritar este dia</span>
+              <span>Favoritar esse Devocional</span>
             </button>
 
             <div className="flex gap-3">

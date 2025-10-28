@@ -709,7 +709,7 @@ export default function SessaoExpressPage() {
                 }}
               >
                 <FiHeart size={18} fill={isFavorited ? '#fff' : 'none'} />
-                <span>{isFavorited ? 'Favoritado ✓' : 'Favoritar este devocional'}</span>
+                <span>{isFavorited ? 'Favoritado ✓' : 'Favoritar esse Devocional'}</span>
               </button>
 
               <div className="flex gap-3">

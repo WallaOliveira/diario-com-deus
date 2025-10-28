@@ -21,10 +21,10 @@ export default function PresentesPage() {
         backdropFilter: 'blur(10px)'
       }}>
         <Container maxWidth="xl">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center">
             <Link 
               href="/dashboard"
-              className="p-2 transition-colors hover:opacity-80"
+              className="p-2 transition-colors hover:opacity-80 mr-1.5"
               style={{ color: colors.text.whiteMuted }}
             >
               <FiArrowLeft size={20} />
@@ -48,7 +48,9 @@ export default function PresentesPage() {
                 </h1>
               </div>
             </div>
-            <FontSizeControls />
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              <FontSizeControls />
+            </div>
           </div>
         </Container>
       </header>

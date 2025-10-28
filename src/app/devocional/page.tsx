@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { FiArrowLeft, FiBook, FiHeart } from 'react-icons/fi';
 import Link from 'next/link';
 import { colors, typography } from '@/lib/design-system';
+import { FontSizeControls } from '@/components/FontSizeControls';
 
 export default function DevocionalSelectionPage() {
   const router = useRouter();
@@ -18,12 +19,12 @@ export default function DevocionalSelectionPage() {
     >
       {/* Header */}
       <header className="bg-white/10 backdrop-blur border-b border-white/20 sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center">
+        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-4">
           <Link href="/dashboard" className="text-blue-100 hover:text-white transition-colors">
             <FiArrowLeft size={24} />
           </Link>
           <h1 
-            className="ml-4 font-bold"
+            className="flex-1 font-bold"
             style={{
               fontFamily: typography.serif,
               fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
@@ -32,6 +33,9 @@ export default function DevocionalSelectionPage() {
           >
             Devocional do Dia
           </h1>
+          <div className="flex-shrink-0">
+            <FontSizeControls />
+          </div>
         </div>
       </header>
 
