@@ -12,7 +12,6 @@ import Confetti from '@/components/Confetti';
 // AchievementModal removido
 import ModalRespira from '@/components/ModalRespira';
 import ToastCelebracao from '@/components/ToastCelebracao';
-import { FontSizeControls } from '@/components/FontSizeControls';
 import DailyLimitModal from '@/components/DailyLimitModal';
 import { getDevotionalOfTheDay, type Devotional } from '@/lib/devotionals';
 import { analytics } from '@/lib/analytics';
@@ -228,7 +227,7 @@ export default function SessaoExpressPage() {
           </div>
           <h1 
             className="text-4xl font-bold text-white"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            style={{ fontFamily: typography.sans }}
           >
             ✨ Parabéns!
           </h1>
@@ -300,7 +299,6 @@ export default function SessaoExpressPage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <FontSizeControls />
             <span 
               className="text-sm text-blue-100"
               style={{ fontFamily: "'Inter', sans-serif" }}
@@ -319,7 +317,7 @@ export default function SessaoExpressPage() {
               <h1 
                 className="font-bold text-white mb-2"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)'
                 }}
               >
@@ -347,7 +345,7 @@ export default function SessaoExpressPage() {
               <p 
                 className="text-white leading-relaxed italic"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: 'var(--font-size-base, 1rem)'
                 }}
               >
@@ -607,7 +605,7 @@ export default function SessaoExpressPage() {
                 <p 
                   className="text-white leading-relaxed italic"
                   style={{ 
-                    fontFamily: typography.serif,
+                    fontFamily: typography.sans,
                     fontSize: 'var(--font-size-base, 1rem)'
                   }}
                 >

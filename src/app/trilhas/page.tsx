@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { FiArrowLeft, FiClock, FiCheckCircle, FiMap, FiChevronDown, FiChevronUp, FiLock } from 'react-icons/fi';
 import Container from '@/components/Container';
-import { FontSizeControls } from '@/components/FontSizeControls';
+
 import { colors, typography, spacing } from '@/lib/design-system';
 import { TRILHAS_DISPONIVEIS, calcularProgressoTrilha, getProximoDiaDisponivel } from '@/lib/trilhas';
 import Link from 'next/link';
@@ -98,7 +98,7 @@ export default function TrilhasPage() {
               <h1 
                 className="font-bold"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
                   fontWeight: typography.weights.semibold,
                   color: colors.text.white
@@ -117,7 +117,7 @@ export default function TrilhasPage() {
               </p>
             </div>
             <div className="flex items-center gap-1.5 flex-shrink-0">
-              <FontSizeControls />
+              
             </div>
           </div>
         </Container>
@@ -145,7 +145,7 @@ export default function TrilhasPage() {
               <h2 
                 className="font-bold text-left"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
                   fontWeight: typography.weights.semibold,
                   color: colors.text.white
@@ -208,7 +208,7 @@ export default function TrilhasPage() {
                       <h3 
                         className="font-bold mb-2"
                         style={{ 
-                          fontFamily: typography.serif,
+                          fontFamily: typography.sans,
                           fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
                           fontWeight: typography.weights.semibold,
                           color: 'white'
@@ -325,7 +325,7 @@ export default function TrilhasPage() {
           <h3 
             className="font-bold mb-2"
             style={{ 
-              fontFamily: typography.serif,
+              fontFamily: typography.sans,
               fontSize: typography.heading.h3,
               fontWeight: typography.weights.semibold,
               color: colors.text.white

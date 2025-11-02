@@ -12,7 +12,6 @@ import Confetti from '@/components/Confetti';
 // AchievementModal removido
 import ModalRespira from '@/components/ModalRespira';
 import ToastCelebracao from '@/components/ToastCelebracao';
-import { FontSizeControls } from '@/components/FontSizeControls';
 import { getTrilhaById, getTrilhaDia, type TrilhaDia } from '@/lib/trilhas';
 import { analytics } from '@/lib/analytics';
 import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
@@ -221,7 +220,7 @@ export default function TrilhaDinamicaPage({ params }: { params: { id: string } 
           
           <h1 
             className="text-4xl font-bold text-white"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            style={{ fontFamily: typography.sans }}
           >
             {isUltimoDia ? '🎉 Parabéns!' : '✨ Dia Completo!'}
           </h1>
@@ -377,7 +376,6 @@ export default function TrilhaDinamicaPage({ params }: { params: { id: string } 
               >
                 {step}/4
               </span>
-              <FontSizeControls />
             </div>
           </div>
           <div className="h-2 bg-white/20 rounded-full overflow-hidden">
@@ -422,7 +420,7 @@ export default function TrilhaDinamicaPage({ params }: { params: { id: string } 
               <p 
                 className="text-white leading-relaxed italic text-lg"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: 'var(--font-size-base, 1rem)'
                 }}
               >
@@ -624,7 +622,7 @@ export default function TrilhaDinamicaPage({ params }: { params: { id: string } 
               <p 
                 className="text-white leading-relaxed italic"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: 'var(--font-size-base, 1rem)'
                 }}
               >

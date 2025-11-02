@@ -7,7 +7,6 @@ import { useStatsStore } from '@/store/useStatsStore';
 import { FiArrowLeft, FiHeart, FiTrendingUp, FiBookmark } from 'react-icons/fi';
 import Link from 'next/link';
 import Container from '@/components/Container';
-import { FontSizeControls } from '@/components/FontSizeControls';
 import { colors, typography, spacing } from '@/lib/design-system';
 import { getMotivationalMessage, getProgressLevel, getProgressLevelMessage, getEngagementMessage } from '@/lib/motivational-messages';
 import ModalDevocional from '@/components/ModalDevocional';
@@ -550,7 +549,7 @@ export default function ProgressoPage() {
               <h1 
                 className="text-2xl font-bold"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   color: colors.text.white,
                   fontWeight: typography.weights.semibold,
                   fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)'
@@ -569,7 +568,7 @@ export default function ProgressoPage() {
               </p>
             </div>
             
-            <FontSizeControls />
+            
           </div>
         </Container>
       </header>
@@ -649,7 +648,7 @@ export default function ProgressoPage() {
               <h3 
                 className="font-bold mb-1"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
                   color: colors.text.white
                 }}
@@ -939,7 +938,7 @@ export default function ProgressoPage() {
               <h3 
                 className="font-bold mb-1"
                               style={{ 
-                                fontFamily: typography.serif,
+                                fontFamily: typography.sans,
                   fontSize: typography.heading.h3,
                     color: colors.text.white
                               }}
@@ -1069,7 +1068,7 @@ export default function ProgressoPage() {
                 <h3 
                   className="font-bold mb-1"
                     style={{ 
-                      fontFamily: typography.serif,
+                      fontFamily: typography.sans,
                     fontSize: typography.heading.h3,
                       color: colors.text.white
                     }}
@@ -1161,7 +1160,7 @@ export default function ProgressoPage() {
                           <h4 
                           className="font-semibold mb-2"
                               style={{ 
-                                fontFamily: typography.serif,
+                                fontFamily: typography.sans,
                               color: colors.text.white,
                             fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)'
                               }}
@@ -1183,7 +1182,7 @@ export default function ProgressoPage() {
                           style={{ 
                             background: 'rgba(255, 255, 255, 0.05)',
                             color: colors.text.white,
-                            fontFamily: typography.serif,
+                            fontFamily: typography.sans,
                             fontSize: 'var(--font-size-base, 1rem)'
                           }}
                         >
@@ -1234,7 +1233,7 @@ export default function ProgressoPage() {
                     <p 
                       className="mb-1 leading-relaxed"
                       style={{
-                      fontFamily: typography.serif,
+                      fontFamily: typography.sans,
                         color: colors.text.white,
                         fontSize: typography.body.md,
                         fontStyle: 'italic'
@@ -1393,7 +1392,7 @@ export default function ProgressoPage() {
           <h3 
             className="font-bold mb-3"
             style={{ 
-              fontFamily: typography.serif,
+              fontFamily: typography.sans,
               fontSize: typography.heading.h2,
               fontWeight: typography.weights.semibold,
               color: colors.text.white,
@@ -1487,7 +1486,7 @@ export default function ProgressoPage() {
                 <h3 
                   className="text-xl font-bold"
                   style={{
-                    fontFamily: typography.serif,
+                    fontFamily: typography.sans,
                     color: colors.text.white,
                     fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)'
                   }}
@@ -1666,7 +1665,7 @@ export default function ProgressoPage() {
                                   <h5 
                                     className="font-semibold mb-1"
                                     style={{
-                                      fontFamily: typography.serif,
+                                      fontFamily: typography.sans,
                                       fontSize: 'calc(var(--font-size-base, 1rem) * 1.125)',
                                       color: colors.text.white
                                     }}

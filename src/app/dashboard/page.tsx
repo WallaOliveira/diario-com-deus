@@ -13,7 +13,6 @@ import PWAInstallBanner from '@/components/PWAInstallBanner';
 // AchievementModal removido
 import HelpButton from '@/components/HelpButton';
 import Container from '@/components/Container';
-import { FontSizeControls } from '@/components/FontSizeControls';
 import EmotionalCheckIn, { emotions } from '@/components/EmotionalCheckIn';
 import { colors, typography, spacing, components, animations, utils } from '@/lib/design-system';
 import { 
@@ -209,7 +208,7 @@ export default function DashboardPage() {
                   <span 
                     className="font-bold whitespace-nowrap"
                     style={{ 
-                      fontFamily: typography.serif,
+                      fontFamily: typography.sans,
                       fontWeight: typography.weights.semibold,
                       fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
                       letterSpacing: typography.letterSpacing.tight,
@@ -221,7 +220,7 @@ export default function DashboardPage() {
                   <span 
                     className="font-light whitespace-nowrap"
                     style={{ 
-                      fontFamily: typography.serif,
+                      fontFamily: typography.sans,
                       fontWeight: typography.weights.light,
                       fontSize: 'var(--font-size-base, 1rem)',
                       color: colors.text.whiteSubtle,
@@ -235,7 +234,7 @@ export default function DashboardPage() {
                   <span 
                     className="font-bold whitespace-nowrap"
                     style={{ 
-                      fontFamily: typography.serif,
+                      fontFamily: typography.sans,
                       fontWeight: typography.weights.semibold,
                       fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
                       letterSpacing: typography.letterSpacing.tight,
@@ -257,7 +256,6 @@ export default function DashboardPage() {
               </div>
             </div>
             <div className="flex items-center gap-1.5 flex-shrink-0">
-              <FontSizeControls />
               <button
                 onClick={() => setShowMenu(!showMenu)}
                 className="p-1.5 transition-colors hover:opacity-80 relative"

@@ -8,7 +8,7 @@ import Title from '@/components/Title';
 import Button from '@/components/Button';
 import Container from '@/components/Container';
 import Toast from '@/components/Toast';
-import { FontSizeControls } from '@/components/FontSizeControls';
+
 import { useToast } from '@/hooks/useToast';
 import { analytics } from '@/lib/analytics';
 import { colors, typography, spacing } from '@/lib/design-system';
@@ -49,7 +49,7 @@ export default function LoginPage() {
         {/* Header com Nova Identidade */}
         <div className="text-center mb-8">
           <div className="flex justify-end mb-4">
-            <FontSizeControls />
+            
           </div>
           
           <Link href="/" className="inline-block mb-6">
@@ -64,7 +64,7 @@ export default function LoginPage() {
           <h1 
             className="mb-2"
             style={{ 
-              fontFamily: typography.serif,
+              fontFamily: typography.sans,
               fontWeight: typography.weights.semibold,
               fontSize: 'calc(var(--font-size-base, 1rem) * 2)',
               color: colors.text.white,

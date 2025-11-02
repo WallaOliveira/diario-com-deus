@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { FiArrowLeft, FiBook, FiHeart } from 'react-icons/fi';
 import Link from 'next/link';
 import { colors, typography } from '@/lib/design-system';
-import { FontSizeControls } from '@/components/FontSizeControls';
+
 
 export default function DevocionalSelectionPage() {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function DevocionalSelectionPage() {
           <h1 
             className="flex-1 font-bold"
             style={{
-              fontFamily: typography.serif,
+              fontFamily: typography.sans,
               fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
               color: colors.text.white
             }}
@@ -34,7 +34,7 @@ export default function DevocionalSelectionPage() {
             Devocional do Dia
           </h1>
           <div className="flex-shrink-0">
-            <FontSizeControls />
+            
           </div>
         </div>
       </header>
@@ -73,7 +73,7 @@ export default function DevocionalSelectionPage() {
                 <h3 
                   className="font-bold mb-2"
                   style={{
-                    fontFamily: typography.serif,
+                    fontFamily: typography.sans,
                     fontSize: 'calc(var(--font-size-base, 1rem) * 1.3)',
                     color: colors.text.white
                   }}
@@ -121,7 +121,7 @@ export default function DevocionalSelectionPage() {
                 <h3 
                   className="font-bold mb-2"
                   style={{
-                    fontFamily: typography.serif,
+                    fontFamily: typography.sans,
                     fontSize: 'calc(var(--font-size-base, 1rem) * 1.3)',
                     color: colors.text.white
                   }}

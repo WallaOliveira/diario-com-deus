@@ -3,7 +3,7 @@
 import { FiArrowLeft, FiDownload, FiMusic, FiImage, FiBookOpen } from 'react-icons/fi';
 import Link from 'next/link';
 import Container from '@/components/Container';
-import { FontSizeControls } from '@/components/FontSizeControls';
+
 import { colors, typography, spacing } from '@/lib/design-system';
 
 export default function PresentesPage() {
@@ -39,7 +39,7 @@ export default function PresentesPage() {
                 <h1 
                   className="font-bold text-white"
                   style={{ 
-                    fontFamily: typography.serif,
+                    fontFamily: typography.sans,
                     fontSize: 'calc(var(--font-size-base, 1rem) * 1.25)',
                     fontWeight: typography.weights.semibold
                   }}
@@ -49,7 +49,7 @@ export default function PresentesPage() {
               </div>
             </div>
             <div className="flex items-center gap-1.5 flex-shrink-0">
-              <FontSizeControls />
+              
             </div>
           </div>
         </Container>
@@ -61,7 +61,7 @@ export default function PresentesPage() {
           <h2 
             className="font-bold mb-4 text-white"
             style={{ 
-              fontFamily: typography.serif,
+              fontFamily: typography.sans,
               fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
               fontWeight: typography.weights.semibold
             }}
@@ -122,7 +122,7 @@ export default function PresentesPage() {
           <h2 
             className="font-bold mb-4 text-white"
             style={{ 
-              fontFamily: typography.serif,
+              fontFamily: typography.sans,
               fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)',
               fontWeight: typography.weights.semibold
             }}
