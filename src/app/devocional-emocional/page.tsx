@@ -451,7 +451,7 @@ export default function SessaoExpressPage() {
               <h2 
                 className="font-bold text-white mb-2"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)'
                 }}
               >
@@ -519,7 +519,7 @@ export default function SessaoExpressPage() {
               <h2 
                 className="font-bold text-white mb-2"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)'
                 }}
               >
@@ -620,7 +620,7 @@ export default function SessaoExpressPage() {
               <h2 
                 className="font-bold text-white mb-2"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: 'calc(var(--font-size-base, 1rem) * 1.5)'
                 }}
               >

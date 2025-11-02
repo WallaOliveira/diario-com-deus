@@ -82,7 +82,7 @@ export default function RegistroPage() {
           <h1 
             className="mb-2"
             style={{ 
-              fontFamily: typography.serif,
+              fontFamily: typography.sans,
               fontWeight: typography.weights.semibold,
               fontSize: typography.heading.h1,
               color: colors.text.white

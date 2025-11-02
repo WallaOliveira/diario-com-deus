@@ -143,7 +143,7 @@ export default function FavoritosPage() {
                 <h1 
                   className="font-bold text-white"
                   style={{ 
-                    fontFamily: typography.serif,
+                    fontFamily: typography.sans,
                     fontSize: typography.heading.h3,
                     fontWeight: typography.weights.semibold
                   }}
@@ -175,7 +175,7 @@ export default function FavoritosPage() {
             <h2 
               className="text-2xl font-bold text-white mb-4"
               style={{ 
-                fontFamily: typography.serif,
+                fontFamily: typography.sans,
                 fontWeight: typography.weights.semibold
               }}
             >
@@ -219,7 +219,7 @@ export default function FavoritosPage() {
                       <h3 
                         className="font-bold text-white"
                         style={{ 
-                          fontFamily: typography.serif,
+                          fontFamily: typography.sans,
                           fontSize: typography.heading.h3,
                           fontWeight: typography.weights.semibold
                         }}

@@ -77,7 +77,7 @@ export default function ModoLivrePage() {
               <h1 
                 className="font-bold"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: typography.heading.h2,
                   fontWeight: typography.weights.semibold,
                   color: colors.text.white
@@ -118,7 +118,7 @@ export default function ModoLivrePage() {
               <h2 
                 className="font-bold mb-2"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: typography.heading.h3,
                   fontWeight: typography.weights.semibold,
                   color: colors.text.white
@@ -231,7 +231,7 @@ export default function ModoLivrePage() {
                     <p 
                       className="font-medium"
                       style={{ 
-                        fontFamily: typography.serif,
+                        fontFamily: typography.sans,
                         fontSize: typography.heading.h3,
                         fontWeight: typography.weights.semibold,
                         color: colors.text.white
@@ -252,7 +252,7 @@ export default function ModoLivrePage() {
             <p 
               className="text-center font-medium"
               style={{ 
-                fontFamily: typography.serif,
+                fontFamily: typography.sans,
                 fontSize: typography.heading.h3,
                 fontWeight: typography.weights.semibold,
                 color: colors.text.white
@@ -281,7 +281,7 @@ export default function ModoLivrePage() {
                       <p 
                         className="font-medium mb-1"
                         style={{ 
-                          fontFamily: typography.serif,
+                          fontFamily: typography.sans,
                           fontSize: typography.heading.h3,
                           fontWeight: typography.weights.semibold,
                           color: colors.text.white

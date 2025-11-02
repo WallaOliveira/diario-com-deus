@@ -91,7 +91,7 @@ export default function ModalRespira({ isOpen, onClose, onContinue, onContinueAn
               )}
             </div>
             <div className="flex items-center gap-2">
-              <FontSizeControls />
+              
               <button
                 onClick={onClose}
                 className="p-2 text-white/60 hover:text-white transition-colors"

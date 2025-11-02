@@ -12,7 +12,7 @@ import Confetti from '@/components/Confetti';
 // AchievementModal removido
 import ModalRespira from '@/components/ModalRespira';
 import ToastCelebracao from '@/components/ToastCelebracao';
-import { FontSizeControls } from '@/components/FontSizeControls';
+
 import { getTrilhaById, getTrilhaDia, type TrilhaDia } from '@/lib/trilhas';
 import { analytics } from '@/lib/analytics';
 import { saveDevotionalProgress, updateUserStats, checkAndUnlockAchievements, addFavorite } from '@/lib/database';
@@ -334,7 +334,7 @@ export default function TrilhaPazInteriorPage() {
               >
                 {step}/4
               </span>
-              <FontSizeControls />
+              
             </div>
           </div>
           <div className="h-2 bg-white/20 rounded-full overflow-hidden">
@@ -376,7 +376,7 @@ export default function TrilhaPazInteriorPage() {
               <p 
                 className="text-white leading-relaxed italic text-lg"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: 'var(--font-size-base, 1rem)'
                 }}
               >
@@ -578,7 +578,7 @@ export default function TrilhaPazInteriorPage() {
               <p 
                 className="text-white leading-relaxed italic"
                 style={{ 
-                  fontFamily: typography.serif,
+                  fontFamily: typography.sans,
                   fontSize: 'var(--font-size-base, 1rem)'
                 }}
               >
