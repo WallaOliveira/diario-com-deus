@@ -18,7 +18,7 @@ const ESTADOS_CORACAO = [
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { user, checkUser } = useAuthStore();
+  const { user, loading, checkUser } = useAuthStore();
   const [step, setStep] = useState(1);
   const [estadoEscolhido, setEstadoEscolhido] = useState('');
   const [queroHabito, setQueroHabito] = useState(false);
@@ -28,10 +28,10 @@ export default function OnboardingPage() {
   }, [checkUser]);
 
   useEffect(() => {
-    if (user === null) {
+    if (!loading && user === null) {
       router.push('/login');
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   const handleEstadoClick = (estado: string) => {
     setEstadoEscolhido(estado);

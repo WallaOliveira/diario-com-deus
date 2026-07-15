@@ -42,7 +42,7 @@ const PREMIUM_FEATURES = [
 
 export default function TrialPage() {
   const router = useRouter();
-  const { user, checkUser } = useAuthStore();
+  const { user, loading, checkUser } = useAuthStore();
   const { startTrial, isTrialActive } = useSubscriptionStore();
 
   useEffect(() => {
@@ -50,10 +50,10 @@ export default function TrialPage() {
   }, [checkUser]);
 
   useEffect(() => {
-    if (user === null) {
+    if (!loading && user === null) {
       router.push('/login');
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   const handleStartTrial = () => {
     startTrial();

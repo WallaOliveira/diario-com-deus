@@ -9,7 +9,7 @@ interface AuthState {
   user: any | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error?: string }>;
-  signUp: (email: string, password: string, name: string, phone?: string) => Promise<{ error?: string }>;
+  signUp: (email: string, password: string, name: string, phone?: string) => Promise<{ error?: string; needsConfirmation?: boolean }>;
   signOut: () => Promise<void>;
   checkUser: () => Promise<void>;
 }
@@ -63,8 +63,12 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       if (error) return { error: getErrorMessage(error.message) };
 
-      set({ user: data.user });
-      return {};
+      // Se o Supabase exigir confirmação de e-mail, não há sessão ainda.
+      const needsConfirmation = !data.session;
+      if (data.session) {
+        set({ user: data.user });
+      }
+      return { needsConfirmation };
     } catch (error: any) {
       return { error: getErrorMessage(error) };
     }

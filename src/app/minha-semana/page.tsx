@@ -11,7 +11,7 @@ import { ptBR } from 'date-fns/locale';
 
 export default function MinhaSemanePage() {
   const router = useRouter();
-  const { user, checkUser } = useAuthStore();
+  const { user, loading, checkUser } = useAuthStore();
   const { streak, showStreak, toggleStreak, fetchProgress } = useProgressStore();
 
   useEffect(() => {
@@ -19,12 +19,12 @@ export default function MinhaSemanePage() {
   }, [checkUser]);
 
   useEffect(() => {
-    if (user === null) {
+    if (!loading && user === null) {
       router.push('/login');
     } else {
       fetchProgress(user.id);
     }
-  }, [user, router, fetchProgress]);
+  }, [user, loading, router, fetchProgress]);
 
   if (!user) return null;
 

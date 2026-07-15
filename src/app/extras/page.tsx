@@ -107,17 +107,17 @@ const PLANOS_PREMIUM = {
 
 export default function ExtrasPage() {
   const router = useRouter();
-  const { user, checkUser } = useAuthStore();
+  const { user, loading, checkUser } = useAuthStore();
 
   useEffect(() => {
     checkUser();
   }, [checkUser]);
 
   useEffect(() => {
-    if (user === null) {
+    if (!loading && user === null) {
       router.push('/login');
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   const handleComprar = (extraId: string, preco: number) => {
     // Aqui você implementaria integração com Stripe/PagSeguro

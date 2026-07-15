@@ -465,7 +465,7 @@ export default function ProgressoPage() {
     
     // Atualizar dados mock
     const dataKey = devocional.id.split('-').slice(1).join('-');
-          (devocionaisPorData as any)[dataKey] = devocionalAtualizado;
+          (devocionaisCalendario as any)[dataKey] = devocionalAtualizado;
     
     // Atualizar modal
     setModalDevocional({
@@ -1650,7 +1650,7 @@ export default function ProgressoPage() {
                               onClick={() => {
                                 setModalFavoritos(false);
                                 // Abrir o devocional correto
-                                const devocionalData = (devocionaisPorData as any)[favorito.date];
+                                const devocionalData = (devocionaisCalendario as any)[favorito.date];
                                 if (devocionalData) {
                                   setModalDevocional({
                                     isOpen: true,

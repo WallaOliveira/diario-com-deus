@@ -34,7 +34,7 @@ const ESTADOS_CORACAO = [
 
 export default function ModoLivrePage() {
   const router = useRouter();
-  const { user, checkUser } = useAuthStore();
+  const { user, loading, checkUser } = useAuthStore();
   const [busca, setBusca] = useState('');
   const [aba, setAba] = useState<'temas' | 'estado'>('temas');
 
@@ -43,10 +43,10 @@ export default function ModoLivrePage() {
   }, [checkUser]);
 
   useEffect(() => {
-    if (user === null) {
+    if (!loading && user === null) {
       router.push('/login');
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   if (!user) return null;
 

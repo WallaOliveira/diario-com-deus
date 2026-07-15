@@ -30,7 +30,7 @@ const mockUser = {
 
 export default function SessaoExpressPage() {
   const router = useRouter();
-  const { user, checkUser } = useAuthStore();
+  const { user, loading, checkUser } = useAuthStore();
   const { markComplete } = useProgressStore();
   const { refreshAll } = useStatsStore();
   const [step, setStep] = useState(1);
@@ -84,13 +84,13 @@ export default function SessaoExpressPage() {
     };
     
     loadDevotional();
-  }, [user, router]);
+  }, [user, loading, router]);
 
   useEffect(() => {
-    if (!DEV_MODE && user === null) {
+    if (!DEV_MODE && !loading && user === null) {
       router.push('/login');
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   const handleNext = () => {
     if (step < 4) {

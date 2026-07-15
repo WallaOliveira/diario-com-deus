@@ -65,17 +65,17 @@ const BONUS_ITEMS = [
 
 export default function BonusPage() {
   const router = useRouter();
-  const { user, checkUser } = useAuthStore();
+  const { user, loading, checkUser } = useAuthStore();
 
   useEffect(() => {
     checkUser();
   }, [checkUser]);
 
   useEffect(() => {
-    if (user === null) {
+    if (!loading && user === null) {
       router.push('/login');
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   const handleDownload = (bonusId: string) => {
     // Aqui você implementaria o download real

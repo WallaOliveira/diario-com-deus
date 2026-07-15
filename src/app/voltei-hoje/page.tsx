@@ -8,17 +8,17 @@ import Link from 'next/link';
 
 export default function VolteiHojePage() {
   const router = useRouter();
-  const { user, checkUser } = useAuthStore();
+  const { user, loading, checkUser } = useAuthStore();
 
   useEffect(() => {
     checkUser();
   }, [checkUser]);
 
   useEffect(() => {
-    if (user === null) {
+    if (!loading && user === null) {
       router.push('/login');
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   if (!user) return null;
 

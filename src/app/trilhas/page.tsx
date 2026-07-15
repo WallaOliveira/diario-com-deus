@@ -27,7 +27,7 @@ interface TrilhaComProgresso {
 
 export default function TrilhasPage() {
   const router = useRouter();
-  const { user, checkUser } = useAuthStore();
+  const { user, loading, checkUser } = useAuthStore();
   const [trilhasComProgresso, setTrilhasComProgresso] = useState<TrilhaComProgresso[]>([]);
   const [mostrarExplicacao, setMostrarExplicacao] = useState(false);
 
@@ -38,10 +38,10 @@ export default function TrilhasPage() {
   }, [checkUser]);
 
   useEffect(() => {
-    if (!DEV_MODE && user === null) {
+    if (!DEV_MODE && !loading && user === null) {
       router.push('/login');
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   useEffect(() => {
     // Carregar progresso das trilhas do localStorage

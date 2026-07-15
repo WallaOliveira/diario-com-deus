@@ -67,21 +67,12 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
   },
 
   markComplete: async (userId: string, devotionalId: string, notes?: string) => {
+    // O registro no banco já é feito por saveDevotionalProgress (lib/database.ts).
+    // Aqui apenas recalculamos o estado local (streak / completou hoje).
     try {
-      const { error } = await supabase.from('user_progress').insert({
-        user_id: userId,
-        devotional_id: devotionalId,
-        completed_at: new Date().toISOString(),
-        notes,
-        action_completed: true,
-      });
-
-      if (error) throw error;
-
-      // Atualizar estado local
       await get().fetchProgress(userId);
     } catch (error) {
-      console.error('Error marking complete:', error);
+      console.error('Error refreshing progress:', error);
     }
   },
 

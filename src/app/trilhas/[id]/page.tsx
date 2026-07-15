@@ -29,7 +29,7 @@ const mockUser = {
 
 export default function TrilhaDinamicaPage({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const { user, checkUser } = useAuthStore();
+  const { user, loading, checkUser } = useAuthStore();
   const { markComplete } = useProgressStore();
   const { refreshAll } = useStatsStore();
   
@@ -67,10 +67,10 @@ export default function TrilhaDinamicaPage({ params }: { params: { id: string } 
   }, [checkUser]);
 
   useEffect(() => {
-    if (!DEV_MODE && user === null) {
+    if (!DEV_MODE && !loading && user === null) {
       router.push('/login');
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   useEffect(() => {
     // Carregar progresso do localStorage (temporário - depois virá do Supabase)

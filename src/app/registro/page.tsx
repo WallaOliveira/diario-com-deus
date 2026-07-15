@@ -52,10 +52,16 @@ export default function RegistroPage() {
     if (result.error) {
       showError(result.error);
       setLoading(false);
+    } else if (result.needsConfirmation) {
+      // Supabase exige confirmação de e-mail antes de entrar
+      analytics.signUp();
+      success('Conta criada! Confirme seu e-mail para entrar.');
+      setTimeout(() => router.push('/login'), 2500);
     } else {
+      // Já está logado — vai direto para o app
       analytics.signUp();
       success('Conta criada com sucesso!');
-      setTimeout(() => router.push('/login'), 1500);
+      setTimeout(() => router.push('/dashboard'), 1000);
     }
   };
 

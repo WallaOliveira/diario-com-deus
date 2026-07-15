@@ -30,7 +30,7 @@ const mockUser = {
 
 export default function TrilhaPazInteriorPage() {
   const router = useRouter();
-  const { user, checkUser } = useAuthStore();
+  const { user, loading, checkUser } = useAuthStore();
   const { markComplete } = useProgressStore();
   const { refreshAll } = useStatsStore();
   
@@ -65,10 +65,10 @@ export default function TrilhaPazInteriorPage() {
   }, [checkUser]);
 
   useEffect(() => {
-    if (!DEV_MODE && user === null) {
+    if (!DEV_MODE && !loading && user === null) {
       router.push('/login');
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   useEffect(() => {
     // Carregar progresso do localStorage (temporário - depois virá do Supabase)
@@ -111,7 +111,7 @@ export default function TrilhaPazInteriorPage() {
         // Salvar progresso no Supabase
         await saveDevotionalProgress({
           userId: currentUser.id,
-          devotionalId: `trilha-paz-${diaAtual}`,
+          devotionalId: `trilha-7-dias-paz-interior-dia-${diaAtual}`,
           durationMinutes: duration,
           personalNotes: notes,
           personalPrayer: '',
@@ -138,7 +138,7 @@ export default function TrilhaPazInteriorPage() {
         localStorage.setItem('trilha-7-dias-paz-interior-progress', JSON.stringify(progressData));
         
         // Atualizar store local
-        await markComplete(currentUser.id, `trilha-paz-${diaAtual}`, notes);
+        await markComplete(currentUser.id, `trilha-7-dias-paz-interior-dia-${diaAtual}`, notes);
         
         // Atualizar stats no store
         await refreshAll(currentUser.id);
@@ -186,7 +186,7 @@ export default function TrilhaPazInteriorPage() {
     try {
       await addFavorite({
         userId: currentUser.id,
-        devotionalId: `trilha-paz-${diaAtual}`,
+        devotionalId: `trilha-7-dias-paz-interior-dia-${diaAtual}`,
         type,
         content,
         reference,
